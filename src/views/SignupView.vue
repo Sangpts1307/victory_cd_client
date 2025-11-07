@@ -7,10 +7,20 @@ import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
         <div class="signin-card">
             <img src="@/assets/MyLogo.jpg" alt="My Logo" class="logo" />
 
-            <h2 class="title">Đăng nhập tài khoản</h2>
-            <p class="subtitle">Chào mừng trở lại! Vui lòng đăng nhập để tiếp tục.</p>
+            <h2 class="title">Tạo tài khoản mới</h2>
+            <p class="subtitle">Điền thông tin bên dưới để đăng ký tài khoản.</p>
 
             <form class="form">
+                <div class="input-group">
+                    <label>Tên người dùng</label>
+                    <input
+                        type="text"
+                        v-model="username"
+                        placeholder="Nhập tên người dùng"
+                        required
+                    />
+                </div>
+
                 <div class="input-group">
                     <label>Email</label>
                     <input type="email" v-model="email" placeholder="Nhập email của bạn" required />
@@ -26,9 +36,19 @@ import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
                     />
                 </div>
 
+                <div class="input-group">
+                    <label>Xác nhận mật khẩu</label>
+                    <input
+                        type="password"
+                        v-model="passwordConfirm"
+                        placeholder="Nhập lại mật khẩu"
+                        required
+                    />
+                </div>
+
                 <button type="submit" class="btn-primary" :disabled="loading">
-                    <span v-if="loading">Đang đăng nhập...</span>
-                    <span v-else>Đăng nhập</span>
+                    <span v-if="loading">Đang tạo tài khoản...</span>
+                    <span v-else>Đăng ký</span>
                 </button>
             </form>
 
@@ -36,11 +56,11 @@ import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
                 <span>Hoặc</span>
             </div>
 
-            <GoogleLoginComponent :title="'Đăng nhập'" />
+            <GoogleLoginComponent :title="'Đăng ký'" />
 
             <p class="footer-text">
-                Chưa có tài khoản?
-                <button @click="navigateToSignup">Đăng ký ngay</button>
+                Đã có tài khoản?
+                <button @click="navigateToLogin">Đăng nhập ngay</button>
             </p>
         </div>
     </div>
@@ -51,13 +71,15 @@ export default {
     data() {
         return {
             loading: false,
+            username: '',
             email: '',
             password: '',
+            passwordConfirm: '',
         }
     },
     methods: {
-        navigateToSignup() {
-            this.$router.push('/signup')
+        navigateToLogin() {
+            this.$router.push('/login')
         },
     },
 }
@@ -175,6 +197,38 @@ export default {
     height: 1px;
     background: #ccc;
     margin: 0 10px;
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+    cursor: pointer;
+    font-size: 14px;
+    transition:
+        background 0.2s,
+        transform 0.1s;
+}
+
+.btn-social img {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-social:hover {
+    background: #f0f0f0;
+    transform: scale(1.02);
 }
 
 .footer-text {
