@@ -1,104 +1,5 @@
 <template>
-    <div id="header">
-        <div class="header-top">
-            Nhanh tay! Giảm giá đến 60% – Số lượng có hạn! <a href="#"> Mua ngay</a>
-        </div>
-
-        <div class="main-header">
-            <div class="container-custom d-flex align-items-center justify-content-between">
-                <a href="#" class="navbar-brand text-decoration-none text-dark">
-                    Motta <small>Best For Shopping</small>
-                </a>
-
-                <div class="search-wrap">
-                    <div class="search-box">
-                        <input type="text" placeholder="Tìm kiếm..." />
-                    </div>
-                    <button class="btn-search">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-
-                <div class="header-actions">
-                    <div class="account-dropdown">
-                        <input type="checkbox" id="toggle-account">
-                        <label for="toggle-account"
-                            class="account-toggle d-flex align-items-center text-decoration-none">
-                            <i class="bi bi-person"></i> Tài khoản
-                        </label>
-
-                        <div class="dropdown-menu-account">
-                            <a href="#">Thông tin cá nhân</a>
-                            <a href="#">Lịch sử mua hàng</a>
-                            <a href="#">
-                                Đăng xuất
-                                <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
-                                    viewBox="0 0 32 32">
-                                    <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
-                                    <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="cart-badge">
-                        <a href="#" class="d-flex align-items-center text-decoration-none">
-                            <i class="bi bi-cart"></i> Giỏ hàng
-                        </a>
-                        <span class="badge">4</span>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-
-        <!-- Shop-category -->
-        <div class="menu-row">
-            <div class="container-custom">
-                <a href="#" class="shop-category">
-                    <i class="bi bi-grid-3x3-gap-fill"></i>
-                    <div class="title">Giới thiệu</div>
-                    <i class="bi bi-chevron-down ms-auto text-muted"></i>
-                </a>
-
-                <nav class="menu-nav">
-                    <ul class="nav">
-                        <li class="nav-item has-dropdown">
-                            <a class="nav-link" href="#">CD nhạc Việt</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">CD Nhạc Trẻ</a></li>
-                                <li><a href="#">CD Trữ Tình</a></li>
-                                <li><a href="#">CD Cổ Điển</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-dropdown">
-                            <a class="nav-link" href="#">CD nhạc Quốc tế</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Rock</a></li>
-                                <li><a href="#">Jazz</a></li>
-                                <li><a href="#">Pop</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-dropdown">
-                            <a class="nav-link" href="#">CD Hải ngoại</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Bolero</a></li>
-                                <li><a href="#">Trữ tình xưa</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="#">Đĩa than</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Cassettes</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <!-- Banner -->
-        <div class="banner-section container">
-            <ImageSliderComponent :images="bannerImages" />
-        </div>
-
-    </div>
+    <HeaderComponent />
     <div class="body">
         <!-- Sản phẩm bán chạy -->
         <div class="best-seller container mt-5">
@@ -352,108 +253,112 @@
         </div>
 
     </div>
-    <div class="footer">
-        <div class="footer-top container">
-            <div class="footer-col">
-                <h4>📞 Call</h4>
-                <p>Call us from 8am to 12am ET.<br><strong>1-866-237-8289</strong></p>
-            </div>
-
-            <div class="footer-col">
-                <h4>✉️ Email</h4>
-                <p>Our response time is 1 to 3 business days.<br>
-                    <a href="#">Send a Message</a>
-                </p>
-            </div>
-
-            <div class="footer-col subscribe">
-                <h3>Let’s keep in touch</h3>
-                <p>Get recommendations, tips, updates, promotions and more.</p>
-            </div>
-        </div>
-
-        <div class="footer-middle container">
-            <div class="footer-brand">
-                <h2 class="footer-logo">Victory CDs<span>.</span></h2>
-                <p class="slogan">Best For Shopping</p>
-                <p class="desc">Sed do eiusmod tempor incididunt ut labore dolore magna.</p>
-                <div class="socials">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-
-            <div class="footer-links">
-                <div class="footer-list">
-                    <h4>Get to Know Us</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">News & Blog</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Investors</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-list">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">FAQ’s</a></li>
-                        <li><a href="#">Accessibility</a></li>
-                        <li><a href="#">Feedback</a></li>
-                        <li><a href="#">Size Guide</a></li>
-                        <li><a href="#">Payment Method</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-list">
-                    <h4>Orders & Return</h4>
-                    <ul>
-                        <li><a href="#">Track Order</a></li>
-                        <li><a href="#">Shipping & Delivery</a></li>
-                        <li><a href="#">Return & Exchange</a></li>
-                        <li><a href="#">Price Match Guarantee</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom container">
-            <ul class="footer-policy">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Use</a></li>
-                <li><a href="#">Legal</a></li>
-                <li><a href="#">Site Map</a></li>
-            </ul>
-            <div class="footer-payments">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Mastercard-logo.png" alt="Mastercard">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/PayPal.svg" alt="PayPal">
-            </div>
-        </div>
-
-        <p class="footer-copy">© 2025 Victory, All rights reserved.</p>
-    </div>
+    <FooterComponent />
 
 </template>
 
-<!-- Script for sliders -->
-<script setup>
-import ImageSliderComponent from '@/components/ImageSliderComponent.vue'
 
-const bannerImages = [
-    new URL('../assets/banner1.jpg', import.meta.url).href,
-    new URL('../assets/banner2.jpg', import.meta.url).href,
-    new URL('../assets/banner3.jpg', import.meta.url).href
-]
-</script>
 
 <script>
+/**
+ * Vue.js code in here!
+ */
+// import Vue from 'vue'
+import axios from 'axios'
+import HeaderComponent from '../components/HeaderComponent.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
 
+
+export default {
+    /***********************************************************************************************************
+     ******************************* Pass data to child component **********************************************
+        **********************************************************************************************************/
+    // prop: [variable1, variable2],
+    components: { HeaderComponent, FooterComponent },
+
+    data() {
+        /***********************************************************************************************************
+         ******************************* Initialize global variables ***********************************************
+            **********************************************************************************************************/
+        return {
+
+        }
+    },
+    created() {
+        /***********************************************************************************************************
+         *********************** Initialize data when this component is used. **************************************
+            **********************************************************************************************************/
+
+    },
+    mounted() {
+        /***********************************************************************************************************
+         ******************** Once created, the interface is displayed and calls mounted. **************************
+            **********************************************************************************************************/
+        // Code JS chay o trong nay hoac dung cac thu vien khac nhu jQuery o day
+        // jQuery code
+        // window.handleCredentialResponse = (response) => {
+        //     console.log("Google JWT Token: ", response.credential);
+        //     this.decodeToken(response.credential);
+        // };
+    },
+    watch: {
+        /***********************************************************************************************************
+         ********************************* Methods change value for a variable *************************************
+            **********************************************************************************************************/
+
+    },
+    computed: {
+
+    },
+    methods: {
+        /***********************************************************************************************************
+         ******************************* Default functions that handle local data **********************************
+            **********************************************************************************************************/
+
+
+        /**
+         * Example default function not using param
+         */
+        defaultFunction() {
+            this.msg = "Replace message here!";
+        },
+
+        /**
+         * Example default function using param
+         *
+         * @param int pageNum number of page
+         * @return boolean
+         */
+        defaultFunctionUsingParam(pageNum) {
+            console.log(pageNum);
+            return false;
+        },
+
+        /***********************************************************************************************************
+         ******* Async and await functions for manipulating server-side data through internal API protocols ********
+            **********************************************************************************************************/
+
+
+        /**
+         * Call API sample
+         */
+        async callAPI() {
+            try {
+                const callAPI = await axios.get('/apiendpoint', {
+                    /************ Attach param for request here ***************/
+                }).then(function (response) {
+                    console.log(response);
+                }).catch(function (errors) {
+                    console.log(errors);
+                });
+                console.log(callAPI.data);
+            } catch (err) {
+                console.log(err);
+            }
+        },
+
+    },
+}
 </script>
 
 <style scoped>
