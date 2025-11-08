@@ -1,5 +1,6 @@
 <script setup>
 import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
+import { apiHelper } from '@/helpers/axios';
 </script>
 
 <template>
@@ -13,12 +14,7 @@ import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
             <form class="form">
                 <div class="input-group">
                     <label>Tên người dùng</label>
-                    <input
-                        type="text"
-                        v-model="username"
-                        placeholder="Nhập tên người dùng"
-                        required
-                    />
+                    <input type="text" v-model="username" placeholder="Nhập tên người dùng" required />
                 </div>
 
                 <div class="input-group">
@@ -28,25 +24,15 @@ import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
 
                 <div class="input-group">
                     <label>Mật khẩu</label>
-                    <input
-                        type="password"
-                        v-model="password"
-                        placeholder="Nhập mật khẩu"
-                        required
-                    />
+                    <input type="password" v-model="password" placeholder="Nhập mật khẩu" required />
                 </div>
 
                 <div class="input-group">
                     <label>Xác nhận mật khẩu</label>
-                    <input
-                        type="password"
-                        v-model="passwordConfirm"
-                        placeholder="Nhập lại mật khẩu"
-                        required
-                    />
+                    <input type="password" v-model="passwordConfirm" placeholder="Nhập lại mật khẩu" required />
                 </div>
 
-                <button type="submit" class="btn-primary" :disabled="loading">
+                <button v-on:click="signup()" type="submit" class="btn-primary" :disabled="loading">
                     <span v-if="loading">Đang tạo tài khoản...</span>
                     <span v-else>Đăng ký</span>
                 </button>
@@ -81,6 +67,31 @@ export default {
         navigateToLogin() {
             this.$router.push('/login')
         },
+
+        signup() {
+            this.loading = true;
+            try {
+                const formData = new FormData();
+                formData.append('name', this.username);
+                formData.append('email', this.email);
+                formData.append('password', this.password);
+                formData.append('password_confirmation', this.passwordConfirm);
+                apiHelper.post('/signup', formData).then((res) => {
+                    console.log(res);
+                    if (res.status == 200) {
+                        sessionStorage.setItem('token', res.data.data.token);
+                        alert("Đăng ký thành công! Bạn có thể đăng nhập để thưởng thức âm nhạc")
+                        this.$router.push('/login');
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    this.loading = false;
+                });
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
     },
 }
 </script>
