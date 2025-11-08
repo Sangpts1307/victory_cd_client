@@ -1,5 +1,7 @@
 <script setup>
 import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
+import { apiHelper } from '@/helpers/axios';
+import HomeView from './HomeView.vue';
 </script>
 
 <template>
@@ -18,15 +20,10 @@ import GoogleLoginComponent from '@/components/GoogleLoginComponent.vue'
 
                 <div class="input-group">
                     <label>Mật khẩu</label>
-                    <input
-                        type="password"
-                        v-model="password"
-                        placeholder="Nhập mật khẩu"
-                        required
-                    />
+                    <input type="password" v-model="password" placeholder="Nhập mật khẩu" required />
                 </div>
 
-                <button type="submit" class="btn-primary" :disabled="loading">
+                <button v-on:click="login()" type="submit" class="btn-primary" :disabled="loading">
                     <span v-if="loading">Đang đăng nhập...</span>
                     <span v-else>Đăng nhập</span>
                 </button>
@@ -59,6 +56,27 @@ export default {
         navigateToSignup() {
             this.$router.push('/signup')
         },
+
+        login() {
+            try {
+                this.loading = true;
+                const formData = new FormData();
+                formData.append('email', this.email);
+                formData.append('password', this.password);
+                apiHelper.post('/login', formData).then((res) => {
+                    // console.log(res);
+                    if (res.status == 200) {
+                        sessionStorage.setItem('token', res.data.data.token);
+                        this.$router.push('/home');
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    this.loading = false;
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
     },
 }
 </script>
