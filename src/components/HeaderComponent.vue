@@ -64,31 +64,15 @@
 
                 <nav class="menu-nav">
                     <ul class="nav">
-                        <li class="nav-item has-dropdown">
-                            <a class="nav-link" href="#">CD nhạc Việt</a>
+                        <li v-for="category in categories" :key="category.id" class="nav-item has-dropdown">
+
+                            <a v-if="category.parent_id === 0" class="nav-link" href="#">{{ category.title }}</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">CD Nhạc Trẻ</a></li>
-                                <li><a href="#">CD Trữ Tình</a></li>
-                                <li><a href="#">CD Cổ Điển</a></li>
+                                <li v-for="child in category.children" :key="category.id">
+                                    <a href="#">{{ child.title }}</a>
+                                </li>
                             </ul>
                         </li>
-                        <li class="nav-item has-dropdown">
-                            <a class="nav-link" href="#">CD nhạc Quốc tế</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Rock</a></li>
-                                <li><a href="#">Jazz</a></li>
-                                <li><a href="#">Pop</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-dropdown">
-                            <a class="nav-link" href="#">CD Hải ngoại</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Bolero</a></li>
-                                <li><a href="#">Trữ tình xưa</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="#">Đĩa than</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Cassettes</a></li>
                     </ul>
                 </nav>
             </div>
@@ -103,12 +87,67 @@
 <!-- Script for sliders -->
 <script setup>
 import ImageSliderComponent from '@/components/ImageSliderComponent.vue'
+import { apiHelper } from '@/helpers/axios';
 
 const bannerImages = [
     new URL('../assets/banner1.jpg', import.meta.url).href,
     new URL('../assets/banner2.jpg', import.meta.url).href,
     new URL('../assets/banner3.jpg', import.meta.url).href
 ]
+</script>
+
+<script>
+export default {
+
+    data() {
+        return {
+            categories: [],
+        }
+    },
+    created() {
+
+    },
+    mounted() {
+        this.listCategory();
+    },
+    watch: {
+
+    },
+    computed: {
+
+    },
+    methods: {
+        /*************  ✨ Windsurf Command 🌟  *************/
+        /**
+         * List all categories
+         * @return {Promise<void>}
+         */
+        listCategory() {
+            try {
+                /**
+                 * Make a GET request to the API to list all categories
+                 * @return {Promise<AxiosResponse>}
+                 */
+                apiHelper.get('/list-category').then((res) => {
+                    // console.log(res);
+                    if (res.status == 200) {
+                        /**
+                         * Set the categories data to the component's data
+                         * @param {Object[]} categories - The categories data
+                         */
+                        this.categories = res.data.data.categories;
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+    },
+    /*******  36081e40-73b1-470e-a66b-e43fa183e34a  *******/
+}
 </script>
 
 <style scoped>

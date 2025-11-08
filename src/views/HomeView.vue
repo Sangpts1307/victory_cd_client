@@ -9,51 +9,18 @@
             </div>
 
             <div class="row g-4">
-                <div class="col-md-3 col-sm-6">
-                    <div class="best-seller-item" style="background-color:#d8f3dc;">
+                <div v-for="(product, index) in best_products" :key="product.id" class="col-md-3 col-sm-6">
+                    <div class="best-seller-item" :style="{ backgroundColor: bgColors[index % bgColors.length] }">
                         <div>
-                            <h5>Small Appliances </h5>
-                            <p>⭐⭐⭐⭐⭐</p>
+                            <h5>{{ product.name }}</h5>
+                            <p>
+                                <span v-for="i in product.score" :key="i">⭐</span>
+                            </p>
                             <p>Up to 40% off Kitchen Products.</p>
+                            <p>{{ product.description }}</p>
                             <a href="#">Shop Now</a>
                         </div>
-                        <img src="../assets/headphone.png" alt="Small Appliances">
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-sm-6">
-                    <div class="best-seller-item" style="background-color:#ffe0ef;">
-                        <div>
-                            <h5>Premium Beauty</h5>
-                            <p>⭐⭐⭐⭐⭐</p>
-                            <p>Up to 25% off Hair Care Products.</p>
-                            <a href="#">Shop Now</a>
-                        </div>
-                        <img src="../assets/cd2.png" alt="Premium Beauty">
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-sm-6">
-                    <div class="best-seller-item" style="background-color:#dce9f5;">
-                        <div>
-                            <h5>Indoor Furniture</h5>
-                            <p>⭐⭐⭐⭐⭐</p>
-                            <p>Save 30% Today, Even on Furniture.</p>
-                            <a href="#">Shop Now</a>
-                        </div>
-                        <img src="../assets/cd3.png" alt="Indoor Furniture">
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-sm-6">
-                    <div class="best-seller-item" style="background-color:#f8e7db;">
-                        <div>
-                            <h5>Cell Phones & Smartphones</h5>
-                            <p>⭐⭐⭐⭐⭐</p>
-                            <p>Up to 15% off Cell Phones Products.</p>
-                            <a href="#">Shop Now</a>
-                        </div>
-                        <img src="../assets/cd4.png" alt="Smartphones">
+                        <img :src="product.thumbnail_url" :onerror="'../assets/cd1.png'" alt="Small Appliances">
                     </div>
                 </div>
             </div>
@@ -68,14 +35,22 @@
             </div>
 
             <div class="row g-4">
-                <!-- Lặp 5 sản phẩm -->
-                <div class="col-md-2_4 col-sm-6">
+                <div v-for="product in list_products" :key="product.id" class="col-md-2_4 col-sm-6">
                     <div class="product-card text-center p-3 rounded-3 position-relative">
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd1.png" alt="NFL Ball" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">NFL _The Duke_ Replica Football</h6>
-                        <p>⭐⭐⭐⭐⭐</p>
-                        <p class="text-dark fw-bold mb-2">29.00₫</p>
+                        <img :src="product.thumbnail_url" :onerror="'../assets/cd1.png'" alt="NFL Ball"
+                            class="img-fluid mb-3">
+                        <h6 class="fw-semibold product-name">{{ product.name }}</h6>
+                        <p class="text-warning mb-2">
+                            <span v-for="i in product.score" :key="i">⭐</span>
+                        </p>
+
+                        <p class="text-dark fw-bold mb-2">
+                            {{ new Intl.NumberFormat('vi-VN', {
+                                style: 'currency', currency: 'VND'
+                            }).format(product.price) }}
+                        </p>
+
 
                         <!-- Hover buttons -->
                         <div class="product-actions">
@@ -84,165 +59,21 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd2.png" alt="Soft Spot Lamp" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Soft Spot Solar Lamp 24.5cm</h6>
-                        <p>⭐⭐⭐⭐⭐</p>
-                        <p class="text-dark fw-bold mb-2">100.00₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd3.png" alt="Kettlebell" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Kettlebell Connect 2.0</h6>
-                        <p class="text-dark fw-bold mb-2">115.00₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd4.png" alt="Lamp" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Lex Black Dome USB Desk Lamp</h6>
-                        <p class="text-dark fw-bold mb-2">24.35₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd5.png" alt="Carrie Lamp" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Carrie Table Lamp</h6>
-                        <p class="text-dark fw-bold mb-2">200.00₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd1.png" alt="NFL Ball" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">NFL _The Duke_ Replica Football</h6>
-                        <p>⭐⭐⭐⭐⭐</p>
-                        <p class="text-dark fw-bold mb-2">29.00₫</p>
-
-                        <!-- Hover buttons -->
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd2.png" alt="Soft Spot Lamp" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Soft Spot Solar Lamp 24.5cm</h6>
-                        <p>⭐⭐⭐⭐⭐</p>
-                        <p class="text-dark fw-bold mb-2">100.00₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd3.png" alt="Kettlebell" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Kettlebell Connect 2.0</h6>
-                        <p class="text-dark fw-bold mb-2">115.00₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd4.png" alt="Lamp" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Lex Black Dome USB Desk Lamp</h6>
-                        <p class="text-dark fw-bold mb-2">24.35₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img src="../assets/cd5.png" alt="Carrie Lamp" class="img-fluid mb-3">
-                        <h6 class="fw-semibold product-name">Carrie Table Lamp</h6>
-                        <p class="text-dark fw-bold mb-2">200.00₫</p>
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
         <!-- Categories -->
         <div class="categories container mt-5 mb-5">
-            <h4 class="fw-bold mb-4">Categories</h4>
+            <h4 class="fw-bold mb-4">Danh mục</h4>
             <div class="row text-center g-4 justify-content-center">
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                <div v-for="category in categories" :key="category.id" class="col-lg-2 col-md-3 col-sm-4 col-6">
                     <div class="category-item">
-                        <img src="../assets/cassete.png" alt="Furniture" class="rounded-circle img-fluid mb-2">
-                        <p style="font-weight: bold;">Furniture</p>
+                        <img :src="category.thumbnail_url" :onerror="'../assets/cd1.png'" :alt="category.title"
+                            class="rounded-circle img-fluid mb-2" />
+                        <p style="font-weight: bold;">{{ category.title }}</p>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                    <div class="category-item">
-                        <img src="../assets/banner2.jpg" alt="Shoes" class="rounded-circle img-fluid mb-2">
-                        <p style="font-weight: bold;">Furniture</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                    <div class="category-item">
-                        <img src="../assets/headphone.png" alt="Smartphones" class="rounded-circle img-fluid mb-2">
-                        <p style="font-weight: bold;">Furniture</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                    <div class="category-item">
-                        <img src="../assets/cd5.png" alt="Air Purifiers" class="rounded-circle img-fluid mb-2">
-                        <p style="font-weight: bold;">Furniture</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                    <div class="category-item">
-                        <img src="../assets/banner3.jpg" alt="Toys" class="rounded-circle img-fluid mb-2">
-                        <p style="font-weight: bold;">Furniture</p>
-                    </div>
-                </div>
+                <!-- Giữ nguyên category cuối -->
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6">
                     <div class="category-item">
                         <img src="../assets/chamcham.png" alt="Headphones" class="rounded-circle img-fluid mb-2">
@@ -267,95 +98,109 @@
 import axios from 'axios'
 import HeaderComponent from '../components/HeaderComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
+import { apiHelper } from '@/helpers/axios';
 
 
 export default {
-    /***********************************************************************************************************
-     ******************************* Pass data to child component **********************************************
-        **********************************************************************************************************/
-    // prop: [variable1, variable2],
-    components: { HeaderComponent, FooterComponent },
 
     data() {
-        /***********************************************************************************************************
-         ******************************* Initialize global variables ***********************************************
-            **********************************************************************************************************/
         return {
-
+            list_products: [],
+            best_products: [],
+            bgColors: ["#d8f3dc", "#ffe0ef", "#dce9f5", "#f8e7db"], // 4 màu nền xoay vòng,
+            categories: [],
         }
     },
     created() {
-        /***********************************************************************************************************
-         *********************** Initialize data when this component is used. **************************************
-            **********************************************************************************************************/
 
     },
     mounted() {
-        /***********************************************************************************************************
-         ******************** Once created, the interface is displayed and calls mounted. **************************
-            **********************************************************************************************************/
-        // Code JS chay o trong nay hoac dung cac thu vien khac nhu jQuery o day
-        // jQuery code
-        // window.handleCredentialResponse = (response) => {
-        //     console.log("Google JWT Token: ", response.credential);
-        //     this.decodeToken(response.credential);
-        // };
+        this.listProduct();
+        this.bestProducts();
+        this.listCategory();
     },
     watch: {
-        /***********************************************************************************************************
-         ********************************* Methods change value for a variable *************************************
-            **********************************************************************************************************/
 
     },
     computed: {
 
     },
     methods: {
-        /***********************************************************************************************************
-         ******************************* Default functions that handle local data **********************************
-            **********************************************************************************************************/
-
-
+        /*************  ✨ Windsurf Command 🌟  *************/
         /**
-         * Example default function not using param
+         * List all categories
+         * @return {Promise<void>}
          */
-        defaultFunction() {
-            this.msg = "Replace message here!";
-        },
-
-        /**
-         * Example default function using param
-         *
-         * @param int pageNum number of page
-         * @return boolean
-         */
-        defaultFunctionUsingParam(pageNum) {
-            console.log(pageNum);
-            return false;
-        },
-
-        /***********************************************************************************************************
-         ******* Async and await functions for manipulating server-side data through internal API protocols ********
-            **********************************************************************************************************/
-
-
-        /**
-         * Call API sample
-         */
-        async callAPI() {
+        listProduct() {
             try {
-                const callAPI = await axios.get('/apiendpoint', {
-                    /************ Attach param for request here ***************/
-                }).then(function (response) {
-                    console.log(response);
-                }).catch(function (errors) {
-                    console.log(errors);
+                /**
+                 * Make a GET request to the API to list all products
+                 * @return {Promise<AxiosResponse>}
+                 */
+                apiHelper.get('/list-product').then((res) => {
+                    // console.log(res);
+                    if (res.status == 200) {
+                        /**
+                         * Set the products data to the component's data
+                         * @param {Object[]} products - The products data
+                         */
+                        this.list_products = res.data.data.list_products;
+                        // console.log(this.list_products);
+                    }
+                }).catch((error) => {
+                    console.log(error);
                 });
-                console.log(callAPI.data);
-            } catch (err) {
-                console.log(err);
+            } catch (error) {
+                console.log(error);
             }
         },
+
+        bestProducts() {
+            try {
+                /**
+                 * Make a GET request to the API to list 4 best products
+                 * @return {Promise<AxiosResponse>}
+                 */
+                apiHelper.get('/best-products').then((res) => {
+                    // console.log(res);
+                    if (res.status == 200) {
+                        /**
+                         * Set the products data to the component's data
+                         * @param {Object[]} products - The best 4 products data
+                         */
+                        this.best_products = res.data.data.best_products;
+                        // console.log(this.best_products);
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        listCategory() {
+            try {
+                /**
+                 * Make a GET request to the API to list all categories
+                 * @return {Promise<AxiosResponse>}
+                 */
+                apiHelper.get('/list-category').then((res) => {
+                    // console.log(res);
+                    if (res.status == 200) {
+                        /**
+                         * Set the categories data to the component's data
+                         * @param {Object[]} categories - The categories data
+                         */
+                        this.categories = res.data.data.categories;
+                        console.log(this.categories);
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
     },
 }
@@ -936,7 +781,7 @@ body {
 .product-card .product-name {
     font-size: 15px;
     font-weight: 500;
-    height: 40px;
+    height: 35px;
     overflow: hidden;
     margin: 10px 0 6px;
 }
