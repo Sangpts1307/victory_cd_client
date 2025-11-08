@@ -111,7 +111,8 @@
                 <div class="col-md-3 col-sm-6">
                     <div class="best-seller-item" style="background-color:#d8f3dc;">
                         <div>
-                            <h5>Small Appliances</h5>
+                            <h5>Small Appliances </h5>
+                            <p>⭐⭐⭐⭐⭐</p>
                             <p>Up to 40% off Kitchen Products.</p>
                             <a href="#">Shop Now</a>
                         </div>
@@ -123,6 +124,7 @@
                     <div class="best-seller-item" style="background-color:#ffe0ef;">
                         <div>
                             <h5>Premium Beauty</h5>
+                            <p>⭐⭐⭐⭐⭐</p>
                             <p>Up to 25% off Hair Care Products.</p>
                             <a href="#">Shop Now</a>
                         </div>
@@ -134,6 +136,7 @@
                     <div class="best-seller-item" style="background-color:#dce9f5;">
                         <div>
                             <h5>Indoor Furniture</h5>
+                            <p>⭐⭐⭐⭐⭐</p>
                             <p>Save 30% Today, Even on Furniture.</p>
                             <a href="#">Shop Now</a>
                         </div>
@@ -145,6 +148,7 @@
                     <div class="best-seller-item" style="background-color:#f8e7db;">
                         <div>
                             <h5>Cell Phones & Smartphones</h5>
+                            <p>⭐⭐⭐⭐⭐</p>
                             <p>Up to 15% off Cell Phones Products.</p>
                             <a href="#">Shop Now</a>
                         </div>
@@ -169,6 +173,7 @@
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
                         <img src="../assets/cd1.png" alt="NFL Ball" class="img-fluid mb-3">
                         <h6 class="fw-semibold product-name">NFL _The Duke_ Replica Football</h6>
+                        <p>⭐⭐⭐⭐⭐</p>
                         <p class="text-dark fw-bold mb-2">29.00₫</p>
 
                         <!-- Hover buttons -->
@@ -184,6 +189,7 @@
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
                         <img src="../assets/cd2.png" alt="Soft Spot Lamp" class="img-fluid mb-3">
                         <h6 class="fw-semibold product-name">Soft Spot Solar Lamp 24.5cm</h6>
+                        <p>⭐⭐⭐⭐⭐</p>
                         <p class="text-dark fw-bold mb-2">100.00₫</p>
                         <div class="product-actions">
                             <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
@@ -235,6 +241,7 @@
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
                         <img src="../assets/cd1.png" alt="NFL Ball" class="img-fluid mb-3">
                         <h6 class="fw-semibold product-name">NFL _The Duke_ Replica Football</h6>
+                        <p>⭐⭐⭐⭐⭐</p>
                         <p class="text-dark fw-bold mb-2">29.00₫</p>
 
                         <!-- Hover buttons -->
@@ -250,6 +257,7 @@
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
                         <img src="../assets/cd2.png" alt="Soft Spot Lamp" class="img-fluid mb-3">
                         <h6 class="fw-semibold product-name">Soft Spot Solar Lamp 24.5cm</h6>
+                        <p>⭐⭐⭐⭐⭐</p>
                         <p class="text-dark fw-bold mb-2">100.00₫</p>
                         <div class="product-actions">
                             <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
@@ -903,7 +911,7 @@ body {
     text-align: left;
     padding: 35px 28px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 450px;
+    height: 480px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
