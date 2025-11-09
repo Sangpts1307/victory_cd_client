@@ -42,10 +42,9 @@
                     <div class="product-card text-center p-3 rounded-3 position-relative">
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
                         <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
-                            @error="product.thumbnail_url = null" :alt="product.title || 'NFL Ball'"
+                            @error="product.thumbnail_url = null" :alt="product.title || 'Small Appliances'"
                             class="img-fluid" />
                         <img v-else src="@/assets/cd1.png" alt="Default Image" class="img-fluid" />
-                        class="img-fluid mb-3">
                         <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                         <p class="text-warning mb-2">
                             <span v-for="i in product.score" :key="i">⭐</span>
