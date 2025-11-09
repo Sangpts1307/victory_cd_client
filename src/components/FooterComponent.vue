@@ -23,7 +23,6 @@
             <div class="footer-brand">
                 <h2 class="footer-logo">Victory Store<span>.</span></h2>
                 <p class="slogan">Lựa chọn mua đĩa nhạc tốt nhất</p>
-                <p class="desc">Sed do eiusmod tempor incididunt ut labore dolore magna.</p>
                 <div class="socials">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
