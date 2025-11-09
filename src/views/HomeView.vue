@@ -89,17 +89,16 @@
 </template>
 
 
-
-<script>
-/**
- * Vue.js code in here!
- */
-// import Vue from 'vue'
+<script setup>
 import axios from 'axios'
 import HeaderComponent from '../components/HeaderComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import { apiHelper } from '@/helpers/axios';
-
+</script>
+<script>
+/**
+ * Vue.js code in here!
+ */
 
 export default {
 
