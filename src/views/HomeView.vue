@@ -18,7 +18,7 @@
                             </p>
                             <p>Up to 40% off Kitchen Products. (chờ để sửa description)</p>
                             <p>{{ product.description }}</p>
-                            <a href="#">Shop Now</a>
+                            <a href="#">Mua ngay</a>
                         </div>
                         <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
                             @error="product.thumbnail_url = null" :alt="product.title || 'Small Appliances'"

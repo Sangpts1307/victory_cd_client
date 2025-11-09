@@ -7,7 +7,7 @@
         <div class="main-header">
             <div class="container-custom d-flex align-items-center justify-content-between">
                 <a href="#" class="navbar-brand text-decoration-none text-dark">
-                    Motta <small>Best For Shopping</small>
+                    Victory Store <small>CDs</small>
                 </a>
 
                 <div class="search-wrap">
