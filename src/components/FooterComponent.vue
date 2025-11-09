@@ -2,27 +2,27 @@
     <footer class="footer">
         <div class="footer-top container">
             <div class="footer-col">
-                <h4>📞 Call</h4>
-                <p>Call us from 8am to 12am ET.<br><strong>1-866-237-8289</strong></p>
+                <h4>📞 Liên hệ</h4>
+                <p>Liên hệ cho chúng tôi từ 8:00 AM to 6:00 PM<br><strong>01 234 567</strong></p>
             </div>
 
             <div class="footer-col">
                 <h4>✉️ Email</h4>
-                <p>Our response time is 1 to 3 business days.<br>
-                    <a href="#">Send a Message</a>
+                <p>Chúng tôi sẽ phản hồi sau 1-3 ngày làm việc<br>
+                    <a href="#">Gửi tin nhắn</a>
                 </p>
             </div>
 
             <div class="footer-col subscribe">
-                <h3>Let’s keep in touch</h3>
-                <p>Get recommendations, tips, updates, promotions and more.</p>
+                <h3>Hãy bắt đầu tìm hiểu</h3>
+                <p>Hãy nhận xét, tips, cập nhật, thúc đẩy và nhiều hơn nữa.</p>
             </div>
         </div>
 
         <div class="footer-middle container">
             <div class="footer-brand">
-                <h2 class="footer-logo">Victory CDs<span>.</span></h2>
-                <p class="slogan">Best For Shopping</p>
+                <h2 class="footer-logo">Victory Store<span>.</span></h2>
+                <p class="slogan">Lựa chọn mua đĩa nhạc tốt nhất</p>
                 <p class="desc">Sed do eiusmod tempor incididunt ut labore dolore magna.</p>
                 <div class="socials">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -35,35 +35,34 @@
 
             <div class="footer-links">
                 <div class="footer-list">
-                    <h4>Get to Know Us</h4>
+                    <h4>Tìm hiểu về chúng tôi</h4>
                     <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">News & Blog</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Investors</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Tin tức và bài viết</a></li>
+                        <li><a href="#">Sự nghiệp</a></li>
+                        <li><a href="#">Đầu tư</a></li>
+                        <li><a href="#">Liên hệ</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-list">
-                    <h4>Customer Service</h4>
+                    <h4>Chăm sóc khách hàng</h4>
                     <ul>
-                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Trung tâm hỗ trợ</a></li>
                         <li><a href="#">FAQ’s</a></li>
-                        <li><a href="#">Accessibility</a></li>
-                        <li><a href="#">Feedback</a></li>
-                        <li><a href="#">Size Guide</a></li>
-                        <li><a href="#">Payment Method</a></li>
+                        <li><a href="#">Linh hoạt</a></li>
+                        <li><a href="#">Đánh giá</a></li>
+                        <li><a href="#">Phương thức thanh toán</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-list">
-                    <h4>Orders & Return</h4>
+                    <h4>Đơn hàng & Thanh toán</h4>
                     <ul>
-                        <li><a href="#">Track Order</a></li>
-                        <li><a href="#">Shipping & Delivery</a></li>
-                        <li><a href="#">Return & Exchange</a></li>
-                        <li><a href="#">Price Match Guarantee</a></li>
+                        <li><a href="#">Đặt hàng nhanh</a></li>
+                        <li><a href="#">Giao hàng và vận chuyển</a></li>
+                        <li><a href="#">Trả hàng và thay đổi</a></li>
+                        <li><a href="#">Giá cả phù hợp</a></li>
                     </ul>
                 </div>
             </div>
@@ -71,10 +70,10 @@
 
         <div class="footer-bottom container">
             <ul class="footer-policy">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Use</a></li>
-                <li><a href="#">Legal</a></li>
-                <li><a href="#">Site Map</a></li>
+                <li><a href="#">Chính sách</a></li>
+                <li><a href="#">Điều khoản</a></li>
+                <li><a href="#">Pháp lý</a></li>
+                <li><a href="#">Sơ đồ website</a></li>
             </ul>
             <div class="footer-payments">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
