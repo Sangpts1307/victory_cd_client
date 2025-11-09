@@ -16,11 +16,14 @@
                             <p>
                                 <span v-for="i in product.score" :key="i">⭐</span>
                             </p>
-                            <p>Up to 40% off Kitchen Products.</p>
+                            <p>Up to 40% off Kitchen Products. (chờ để sửa description)</p>
                             <p>{{ product.description }}</p>
                             <a href="#">Shop Now</a>
                         </div>
-                        <img :src="product.thumbnail_url" :onerror="'../assets/cd1.png'" alt="Small Appliances">
+                        <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
+                            @error="product.thumbnail_url = null" :alt="product.title || 'Small Appliances'"
+                            class="img-fluid" />
+                        <img v-else src="@/assets/cd1.png" alt="Default Image" class="img-fluid" />
                     </div>
                 </div>
             </div>
@@ -38,8 +41,11 @@
                 <div v-for="product in list_products" :key="product.id" class="col-md-2_4 col-sm-6">
                     <div class="product-card text-center p-3 rounded-3 position-relative">
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img :src="product.thumbnail_url" :onerror="'../assets/cd1.png'" alt="NFL Ball"
-                            class="img-fluid mb-3">
+                        <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
+                            @error="product.thumbnail_url = null" :alt="product.title || 'NFL Ball'"
+                            class="img-fluid" />
+                        <img v-else src="@/assets/cd1.png" alt="Default Image" class="img-fluid" />
+                        class="img-fluid mb-3">
                         <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                         <p class="text-warning mb-2">
                             <span v-for="i in product.score" :key="i">⭐</span>
@@ -68,8 +74,11 @@
             <div class="row text-center g-4 justify-content-center">
                 <div v-for="category in categories" :key="category.id" class="col-lg-2 col-md-3 col-sm-4 col-6">
                     <div class="category-item">
-                        <img :src="category.thumbnail_url" :onerror="'../assets/cd1.png'" :alt="category.title"
+                        <img v-if="category.thumbnail_url" :src="category.thumbnail_url"
+                            @error="category.thumbnail_url = null" :alt="category.title"
                             class="rounded-circle img-fluid mb-2" />
+                        <img v-else src="@/assets/cd1.png" alt="default image" class="rounded-circle img-fluid mb-2" />
+
                         <p style="font-weight: bold;">{{ category.title }}</p>
                     </div>
                 </div>
