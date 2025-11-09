@@ -30,8 +30,16 @@
                         <div class="dropdown-menu-account">
                             <a href="#">Thông tin cá nhân</a>
                             <a href="#">Lịch sử mua hàng</a>
-                            <a href="#">
+                            <a v-if="token !== null" href="#" @click="logout()">
                                 Đăng xuất
+                                <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
+                                    viewBox="0 0 32 32">
+                                    <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                    <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
+                                </svg>
+                            </a>
+                            <a v-else href="#" @click="redirectLogin()">
+                                Đăng nhập
                                 <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
                                     viewBox="0 0 32 32">
                                     <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
@@ -101,6 +109,7 @@ export default {
 
     data() {
         return {
+            token: sessionStorage.getItem('token'),
             categories: [],
         }
     },
@@ -143,6 +152,28 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        logout() {
+            try {
+                apiHelper.get('/logout', {
+                    headers: {
+                        Authorization: 'Bearer ' + this.token,
+                    }
+                }).then((res) => {
+                    if (res.status == 200) {
+                        sessionStorage.removeItem('token');
+                        this.$router.push('/login');
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+
+            }
+        },
+
+        redirectLogin() {
+            this.$router.push('login');
         }
 
     },
