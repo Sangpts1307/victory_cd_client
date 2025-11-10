@@ -11,24 +11,27 @@
             <div class="row g-4">
                 <div v-for="(product, index) in best_products" :key="product.id" class="col-md-3 col-sm-6">
                     <div class="best-seller-item" :style="{ backgroundColor: bgColors[index % bgColors.length] }">
-                        <div>
-                            <h5>{{ product.name }}</h5>
+                        <div class="content">
+                            <h5 class="clamp-2">{{ product.name }}</h5>
                             <p>
-                                <span v-for="i in product.score" :key="i">⭐</span>
+                                <span v-for="i in product.score" :key="i">★</span>
                             </p>
-                            <p>Up to 40% off Kitchen Products. (chờ để sửa description)</p>
-                            <p>{{ product.description }}</p>
+                            <!-- <p class="small-desc">{{ product.description }}</p> -->
+                            <div class="best-seller-description">
+                                <p class="clamp-2">{{ product.description }}</p>
+                            </div>
                             <a href="#">Mua ngay</a>
                         </div>
-                        <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
-                            @error="product.thumbnail_url = null" :alt="product.title || 'Small Appliances'"
-                            class="img-fluid" />
-                        <img v-else src="@/assets/cd1.png" alt="Default Image" class="img-fluid" />
+                        <div class="best-product-thumbnail">
+                            <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
+                                style="object-fit: cover; border-radius: 2%;" @error="product.thumbnail_url = null"
+                                :alt="product.title || 'Small Appliances'" />
+                            <img v-else src="@/assets/cd1.png" alt="Default Image" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <!-- Sản phẩm -->
         <div class="product-section container mt-5">
@@ -46,8 +49,8 @@
                             class="img-fluid" />
                         <img v-else src="@/assets/cd1.png" alt="Default Image" class="img-fluid" />
                         <h6 class="fw-semibold product-name">{{ product.name }}</h6>
-                        <p class="text-warning mb-2">
-                            <span v-for="i in product.score" :key="i">⭐</span>
+                        <p class="text-warning">
+                            <span v-for="i in product.score" :key="i">★</span>
                         </p>
 
                         <p class="text-dark fw-bold mb-2">
@@ -109,6 +112,9 @@ import { apiHelper } from '@/helpers/axios';
  */
 
 export default {
+    props: {
+        product: Object
+    },
 
     data() {
         return {
@@ -663,95 +669,62 @@ body {
 /* Body */
 /* sản phẩm bán chạy */
 .best-seller-item {
-    position: relative;
-    overflow: hidden;
-    text-align: left;
-    padding: 35px 28px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 480px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: left;
+    padding: 16px;
+    background: #fff;
+    height: 100%;
+}
+
+.best-seller-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 8px;
 }
 
 .best-seller-item h5 {
+    font-size: 16px;
     font-weight: 700;
-    font-size: 24px;
-    margin-bottom: 12px;
+    margin: 0 0 4px 0;
+    line-height: 1.25;
+    height: calc(1.25em * 2);
+    /* giữ max 2 dòng nếu tên dài */
+    overflow: hidden;
 }
 
-.best-seller-item p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    line-height: 1.5;
+.best-seller-item .small-desc {
+    font-size: 14px;
+    line-height: 1.25;
+    height: calc(1.25em * 2);
+    /* chính xác 2 dòng */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Safari/Chrome */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    margin: 0 0 8px 0;
 }
 
 .best-seller-item a {
+    display: block;
+    text-align: center;
     font-weight: 600;
-    text-decoration: underline;
-    font-size: 16px;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 6px 0;
+    border-radius: 4px;
+    text-decoration: none;
 }
-
-/* Màu chữ theo từng nền */
-.best-seller-item[style*="#d8f3dc"] {
-    background-color: #b7e4c7 !important;
-    /* xanh đậm hơn tí */
-}
-
-.best-seller-item[style*="#d8f3dc"] h5,
-.best-seller-item[style*="#d8f3dc"] p,
-.best-seller-item[style*="#d8f3dc"] a {
-    color: #1b4332;
-}
-
-.best-seller-item[style*="#ffe0ef"] {
-    background-color: #ffb6d5 !important;
-    /* hồng đậm hơn */
-}
-
-.best-seller-item[style*="#ffe0ef"] h5,
-.best-seller-item[style*="#ffe0ef"] p,
-.best-seller-item[style*="#ffe0ef"] a {
-    color: #6d214f;
-}
-
-.best-seller-item[style*="#dce9f5"] {
-    background-color: #a8cbe8 !important;
-    /* xanh dương đậm hơn */
-}
-
-.best-seller-item[style*="#dce9f5"] h5,
-.best-seller-item[style*="#dce9f5"] p,
-.best-seller-item[style*="#dce9f5"] a {
-    color: #103f6e;
-}
-
-.best-seller-item[style*="#f8e7db"] h5,
-.best-seller-item[style*="#f8e7db"] p,
-.best-seller-item[style*="#f8e7db"] a {
-    color: #7a4a1a;
-}
-
-/* Ảnh và hiệu ứng hover */
-.best-seller-item img {
-    width: 100%;
-    max-height: 200px;
-    /* ảnh to hơn */
-    object-fit: contain;
-    margin-top: 15px;
-    transition: transform 0.4s ease;
-}
-
-.best-seller-item:hover img {
-    transform: scale(1.1);
-    /* phóng to hơn chút cho hiệu ứng rõ */
-}
-
-
-
 
 /* sản phẩm + cate */
-/* ==== PRODUCT CARD (expand overlay) ==== */
 .col-md-2_4 {
     flex: 0 0 20%;
     max-width: 20%;
@@ -1024,7 +997,6 @@ body {
     padding-bottom: 20px;
 }
 
-/* === Responsive === */
 @media (max-width: 991px) {
     .footer-middle {
         grid-template-columns: 1fr;
@@ -1053,5 +1025,108 @@ body {
     .footer-copy {
         font-size: 12px;
     }
+}
+
+@media (prefers-color-scheme: dark) {
+
+    html,
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    span,
+    a,
+    li,
+    label,
+    input,
+    select,
+    button,
+    small,
+    .fw-bold,
+    .fw-semibold,
+    .text-dark,
+    .text-muted,
+    .nav-link,
+    .dropdown-item,
+    .footer a,
+    .footer p {
+        color: #111 !important;
+    }
+
+    .text-muted {
+        color: #555 !important;
+    }
+
+    svg path {
+        fill: #111 !important;
+        stroke: #111 !important;
+    }
+
+    .btn-outline-dark {
+        color: #111 !important;
+        border-color: #111 !important;
+    }
+
+    .btn-outline-dark:hover {
+        background-color: #111 !important;
+        color: #fff !important;
+    }
+
+    .btn-primary {
+        color: #fff !important;
+    }
+
+    .badge.bg-warning {
+        color: #000 !important;
+    }
+}
+
+/* Giới hạn 2 dòng, hiển thị ... nếu quá dài */
+/* Giới hạn 2 dòng thực sự, cắt hẳn phần dư */
+.clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* ẩn phần dư */
+    text-overflow: ellipsis;
+    /* ... nếu quá dài */
+    word-break: break-word;
+    /* tránh tràn chữ dài */
+}
+
+/* Thêm khoảng cách giữa content và ảnh */
+.best-seller-item img {
+    margin-top: 8px;
+    /* giảm từ 12px xuống 8px để gần nội dung hơn */
+}
+
+/* Giảm khoảng cách trên và dưới description */
+.best-seller-item .small-desc {
+    margin: 2px 0 4px;
+    /* top 2px, bottom 4px */
+    font-size: 13px;
+    color: #555;
+}
+
+/* Đồng bộ line-height h5 và description */
+.best-seller-item h5,
+.best-seller-item p.clamp-2 {
+    line-height: 1.25;
+    /* giảm chút để gọn hơn */
+}
+
+.best-seller-description {
+    height: 60px;
+}
+
+.best-product-thumbnail {
+    overflow: hidden;
+    border-radius: 2%;
 }
 </style>
