@@ -7,7 +7,7 @@
         <div class="main-header">
             <div class="container-custom d-flex align-items-center justify-content-between">
                 <a href="#" class="navbar-brand text-decoration-none text-dark">
-                    Victory Store <small>CDs</small>
+                    Victory Store <small>technology</small>
                 </a>
 
                 <div class="search-wrap">

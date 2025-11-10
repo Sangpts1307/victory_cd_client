@@ -9,7 +9,7 @@
             <div class="footer-col">
                 <h4>✉️ Email</h4>
                 <p>Chúng tôi sẽ phản hồi sau 1-3 ngày làm việc<br>
-                    <a href="#">Gửi tin nhắn</a>
+                <p>nguyengoc0315@gmail.com</p>
                 </p>
             </div>
 

@@ -24,9 +24,9 @@
                         </div>
                         <div class="best-product-thumbnail">
                             <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
-                                style="object-fit: cover; border-radius: 2%;" @error="product.thumbnail_url = null"
+                                style="object-fit: contain; border-radius: 2%;" @error="product.thumbnail_url = null"
                                 :alt="product.title || 'Small Appliances'" />
-                            <img v-else src="@/assets/cd1.png" alt="Default Image" />
+                            <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" />
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                         <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
                             @error="product.thumbnail_url = null" :alt="product.title || 'Small Appliances'"
                             class="img-fluid" />
-                        <img v-else src="@/assets/cd1.png" alt="Default Image" class="img-fluid" />
+                        <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
                         <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                         <p class="text-warning">
                             <span v-for="i in product.score" :key="i">★</span>
@@ -79,7 +79,8 @@
                         <img v-if="category.thumbnail_url" :src="category.thumbnail_url"
                             @error="category.thumbnail_url = null" :alt="category.title"
                             class="rounded-circle img-fluid mb-2" />
-                        <img v-else src="@/assets/cd1.png" alt="default image" class="rounded-circle img-fluid mb-2" />
+                        <img v-else src="@/assets/default_thumbnail.jpg" alt="default image"
+                            class="rounded-circle img-fluid mb-2" />
 
                         <p style="font-weight: bold;">{{ category.title }}</p>
                     </div>
