@@ -34,11 +34,12 @@
                 </div>
 
                 <div class="d-flex gap-3 mb-3 flex-wrap">
-                    <button class="btn btn-primary px-4 flex-fill">
+                    <button class="btn btn-primary px-4 py-3 flex-fill">
                         <i class="bi bi-cart-plus me-2"></i> Add to cart
                     </button>
-                    <button class="btn btn-outline-dark px-4 flex-fill">Buy Now</button>
+                    <button class="btn btn-outline-dark px-4 py-3 flex-fill">Buy Now</button>
                 </div>
+
 
                 <!-- Thông tin thêm -->
                 <ul class="list-unstyled small text-muted mt-4">
@@ -74,12 +75,113 @@
                         most advanced mobile device.
                     </p>
                 </div>
-                <div class="tab-pane fade" id="review" role="tabpanel">
-                    <p>⭐⭐⭐⭐⭐ - Excellent product!</p>
+                <!-- Tab Reviews -->
+                <div class="tab-pane fade show" id="review" role="tabpanel">
+                    <div class="row g-4">
+                        <!-- Ratings tổng hợp -->
+                        <div class="col-md-4">
+                            <div class="border p-4 rounded-3 h-100">
+                                <h5 class="fw-bold mb-3">Ratings</h5>
+
+                                <div class="text-center mb-3">
+                                    <h1 class="fw-bold mb-0">5.0</h1>
+                                    <div class="text-warning fs-5">★★★★★</div>
+                                    <p class="text-muted small">1 Product Rating</p>
+                                </div>
+
+                                <div class="rating-bars">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <span class="me-2 small">5 ★</span>
+                                        <div class="flex-grow-1 bg-light rounded-pill">
+                                            <div class="bg-warning rounded-pill" style="height: 6px; width: 100%;">
+                                            </div>
+                                        </div>
+                                        <span class="ms-2 small">1</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-1" v-for="i in 4" :key="i">
+                                        <span class="me-2 small">{{ 5 - i }} ★</span>
+                                        <div class="flex-grow-1 bg-light rounded-pill">
+                                            <div class="bg-warning rounded-pill" style="height: 6px; width: 0%;"></div>
+                                        </div>
+                                        <span class="ms-2 small">0</span>
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="mt-3">
+                                    <h6 class="fw-semibold">Review this product</h6>
+                                    <p class="text-muted small mb-3">
+                                        Share your thoughts with other customers
+                                    </p>
+                                    <button class="btn btn-dark w-100 py-2">Write a review</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Customer reviews -->
+                        <div class="col-md-8">
+                            <h5 class="fw-bold mb-3">Customer Reviews (1)</h5>
+                            <div class="border-top pt-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://ui-avatars.com/api/?name=U+X" alt="Avatar"
+                                            class="rounded-circle me-3" width="48" height="48" />
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">uixstore</h6>
+                                            <small class="text-muted">September 9, 2022</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-warning">★★★★★</div>
+                                </div>
+
+                                <p class="mt-3 mb-0">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                    culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
+                                    omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+                                    rem aperiam.
+                                </p>
+                            </div>
+                            <div class="border-top pt-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://ui-avatars.com/api/?name=U+X" alt="Avatar"
+                                            class="rounded-circle me-3" width="48" height="48" />
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">uixstore</h6>
+                                            <small class="text-muted">September 9, 2022</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-warning">★★★★★</div>
+                                </div>
+
+                                <p class="mt-3 mb-0">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                    culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
+                                    omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+                                    rem aperiam.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
+    <!-- Sản phẩm -->
+    <div class="product-section mt-5">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold">Sản phẩm liên quan</h4>
+            <router-link to="/product" class="text-muted">
+                Tất cả sản phẩm
+            </router-link>
+        </div>
+    </div>
+    <ProductComponent />
 
     <FooterComponent />
 </template>
@@ -99,7 +201,12 @@ body {
 .product-description {
     max-width: 1200px;
     margin: auto;
-    padding: 20px 0 0 0;
+}
+
+.product-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px 0 20px;
 }
 </style>
 
@@ -108,6 +215,7 @@ import axios from 'axios'
 import HeaderComponent from '../components/HeaderComponent.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import BannerComponent from '@/components/BannerComponent.vue'
+import ProductComponent from '@/components/ProductComponent.vue'
 import { apiHelper } from '@/helpers/axios'
 import { mapStores } from 'pinia'
 import { useCategoriesStore } from '@/stores/categories'

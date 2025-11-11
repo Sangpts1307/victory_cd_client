@@ -11,7 +11,7 @@
                 </router-link>
             </div>
 
-            <<div class="row g-4">
+            <div class="row g-4">
                 <div v-for="(product, index) in best_products" :key="product.id" class="col-md-3 col-sm-6">
                     <div class="best-seller-item" :style="{ backgroundColor: bgColors[index % bgColors.length] }">
                         <div class="content">
@@ -33,45 +33,45 @@
                         </div>
                     </div>
                 </div>
-        </div>>
-    </div>
-
-    <!-- Sản phẩm -->
-    <div class="product-section container mt-5">
-        <div class="section-header d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold">Sản phẩm</h4>
-            <router-link to="/product" class="text-muted">
-                Tất cả sản phẩm
-            </router-link>
-        </div>
-    </div>
-    <ProductComponent />
-
-    <!-- Categories -->
-    <div class="categories container mt-5 mb-5">
-        <h4 class="fw-bold mb-4">Danh mục</h4>
-        <div class="row text-center g-4 justify-content-center">
-            <div v-for="category in categoriesStore.listCategory" :key="category.id"
-                class="col-lg-2 col-md-3 col-sm-4 col-6">
-                <div class="category-item">
-                    <img v-if="category.thumbnail_url" :src="category.thumbnail_url"
-                        @error="category.thumbnail_url = null" :alt="category.title"
-                        class="rounded-circle img-fluid mb-2" />
-                    <img v-else src="@/assets/default_thumbnail.jpg" alt="default image"
-                        class="rounded-circle img-fluid mb-2" />
-
-                    <p style="font-weight: bold">{{ category.title }}</p>
-                </div>
-            </div>
-            <!-- Giữ nguyên category cuối -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                <div class="category-item">
-                    <img src="../assets/chamcham.png" alt="Headphones" class="rounded-circle img-fluid mb-2" />
-                    <p style="font-weight: bold">More</p>
-                </div>
             </div>
         </div>
-    </div>
+
+        <!-- Sản phẩm -->
+        <div class="product-section container mt-5">
+            <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold">Sản phẩm</h4>
+                <router-link to="/product" class="text-muted">
+                    Tất cả sản phẩm
+                </router-link>
+            </div>
+        </div>
+        <ProductComponent />
+
+        <!-- Categories -->
+        <div class="categories container mt-5 mb-5">
+            <h4 class="fw-bold mb-4">Danh mục</h4>
+            <div class="row text-center g-4 justify-content-center">
+                <div v-for="category in categoriesStore.listCategory" :key="category.id"
+                    class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="category-item">
+                        <img v-if="category.thumbnail_url" :src="category.thumbnail_url"
+                            @error="category.thumbnail_url = null" :alt="category.title"
+                            class="rounded-circle img-fluid mb-2" />
+                        <img v-else src="@/assets/default_thumbnail.jpg" alt="default image"
+                            class="rounded-circle img-fluid mb-2" />
+
+                        <p style="font-weight: bold">{{ category.title }}</p>
+                    </div>
+                </div>
+                <!-- Giữ nguyên category cuối -->
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                    <div class="category-item">
+                        <img src="../assets/chamcham.png" alt="Headphones" class="rounded-circle img-fluid mb-2" />
+                        <p style="font-weight: bold">More</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <FooterComponent />
 </template>
