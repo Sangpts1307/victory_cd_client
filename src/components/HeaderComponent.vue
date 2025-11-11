@@ -88,6 +88,10 @@
     </div>
 </template>
 
+<script setup>
+import { apiHelper } from '@/helpers/axios';
+</script>
+
 <script>
 export default {
 
@@ -324,6 +328,7 @@ body {
 .menu-nav {
     flex: 1;
     position: relative;
+    margin-left: 10px;
 }
 
 .menu-nav .nav {
