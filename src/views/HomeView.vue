@@ -6,19 +6,14 @@
         <div class="best-seller container mt-5">
             <div class="section-header d-flex justify-content-between align-items-center mb-4">
                 <h4 class="fw-bold">Sản phẩm bán chạy</h4>
-                <a href="#" class="text-muted">Tất cả sản phẩm</a>
+                <router-link to="/product" class="text-muted">
+                    Tất cả sản phẩm
+                </router-link>
             </div>
 
-            <div class="row g-4">
-                <div
-                    v-for="(product, index) in best_products"
-                    :key="product.id"
-                    class="col-md-3 col-sm-6"
-                >
-                    <div
-                        class="best-seller-item"
-                        :style="{ backgroundColor: bgColors[index % bgColors.length] }"
-                    >
+            <<div class="row g-4">
+                <div v-for="(product, index) in best_products" :key="product.id" class="col-md-3 col-sm-6">
+                    <div class="best-seller-item" :style="{ backgroundColor: bgColors[index % bgColors.length] }">
                         <div class="content">
                             <h5 class="clamp-2">{{ product.name }}</h5>
                             <p>
@@ -31,110 +26,52 @@
                             <a href="#">Mua ngay</a>
                         </div>
                         <div class="best-product-thumbnail">
-                            <img
-                                v-if="product.thumbnail_url"
-                                :src="product.thumbnail_url"
-                                style="object-fit: contain; border-radius: 2%"
-                                @error="product.thumbnail_url = null"
-                                :alt="product.title || 'Small Appliances'"
-                            />
+                            <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
+                                style="object-fit: contain; border-radius: 2%" @error="product.thumbnail_url = null"
+                                :alt="product.title || 'Small Appliances'" />
                             <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" />
                         </div>
                     </div>
                 </div>
-            </div>
+        </div>>
+    </div>
+
+    <!-- Sản phẩm -->
+    <div class="product-section container mt-5">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold">Sản phẩm</h4>
+            <router-link to="/product" class="text-muted">
+                Tất cả sản phẩm
+            </router-link>
         </div>
+    </div>
+    <ProductComponent />
 
-        <!-- Sản phẩm -->
-        <div class="product-section container mt-5">
-            <div class="section-header d-flex justify-content-between align-items-center mb-4">
-                <h4 class="fw-bold">Sản phẩm</h4>
-                <a href="#" class="text-muted">Tất cả sản phẩm</a>
+    <!-- Categories -->
+    <div class="categories container mt-5 mb-5">
+        <h4 class="fw-bold mb-4">Danh mục</h4>
+        <div class="row text-center g-4 justify-content-center">
+            <div v-for="category in categoriesStore.listCategory" :key="category.id"
+                class="col-lg-2 col-md-3 col-sm-4 col-6">
+                <div class="category-item">
+                    <img v-if="category.thumbnail_url" :src="category.thumbnail_url"
+                        @error="category.thumbnail_url = null" :alt="category.title"
+                        class="rounded-circle img-fluid mb-2" />
+                    <img v-else src="@/assets/default_thumbnail.jpg" alt="default image"
+                        class="rounded-circle img-fluid mb-2" />
+
+                    <p style="font-weight: bold">{{ category.title }}</p>
+                </div>
             </div>
-
-            <div class="row g-4">
-                <div v-for="product in list_products" :key="product.id" class="col-md-2_4 col-sm-6">
-                    <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2"
-                            >Hot</span
-                        >
-                        <img
-                            v-if="product.thumbnail_url"
-                            :src="product.thumbnail_url"
-                            @error="product.thumbnail_url = null"
-                            :alt="product.title || 'Small Appliances'"
-                            class="img-fluid"
-                        />
-                        <img
-                            v-else
-                            src="@/assets/default_thumbnail.jpg"
-                            alt="Default Image"
-                            class="img-fluid"
-                        />
-                        <h6 class="fw-semibold product-name">{{ product.name }}</h6>
-                        <p class="text-warning">
-                            <span v-for="i in product.score" :key="i">★</span>
-                        </p>
-
-                        <p class="text-dark fw-bold mb-2">
-                            {{
-                                new Intl.NumberFormat('vi-VN', {
-                                    style: 'currency',
-                                    currency: 'VND',
-                                }).format(product.price)
-                            }}
-                        </p>
-
-                        <!-- Hover buttons -->
-                        <div class="product-actions">
-                            <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                            <button class="btn btn-outline-dark w-100">Mua ngay</button>
-                        </div>
-                    </div>
+            <!-- Giữ nguyên category cuối -->
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+                <div class="category-item">
+                    <img src="../assets/chamcham.png" alt="Headphones" class="rounded-circle img-fluid mb-2" />
+                    <p style="font-weight: bold">More</p>
                 </div>
             </div>
         </div>
-
-        <!-- Categories -->
-        <div class="categories container mt-5 mb-5">
-            <h4 class="fw-bold mb-4">Danh mục</h4>
-            <div class="row text-center g-4 justify-content-center">
-                <div
-                    v-for="category in categoriesStore.listCategory"
-                    :key="category.id"
-                    class="col-lg-2 col-md-3 col-sm-4 col-6"
-                >
-                    <div class="category-item">
-                        <img
-                            v-if="category.thumbnail_url"
-                            :src="category.thumbnail_url"
-                            @error="category.thumbnail_url = null"
-                            :alt="category.title"
-                            class="rounded-circle img-fluid mb-2"
-                        />
-                        <img
-                            v-else
-                            src="@/assets/default_thumbnail.jpg"
-                            alt="default image"
-                            class="rounded-circle img-fluid mb-2"
-                        />
-
-                        <p style="font-weight: bold">{{ category.title }}</p>
-                    </div>
-                </div>
-                <!-- Giữ nguyên category cuối -->
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                    <div class="category-item">
-                        <img
-                            src="../assets/chamcham.png"
-                            alt="Headphones"
-                            class="rounded-circle img-fluid mb-2"
-                        />
-                        <p style="font-weight: bold">More</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
     </div>
     <FooterComponent />
 </template>
@@ -147,6 +84,7 @@ import BannerComponent from '@/components/BannerComponent.vue'
 import { apiHelper } from '@/helpers/axios'
 import { mapStores } from 'pinia'
 import { useCategoriesStore } from '@/stores/categories'
+import ProductComponent from '@/components/ProductComponent.vue'
 </script>
 
 <script>
@@ -163,7 +101,7 @@ export default {
             // categories: [],
         }
     },
-    created() {},
+    created() { },
     mounted() {
         this.listProduct()
         this.bestProducts()
@@ -455,7 +393,7 @@ body {
 }
 
 /* Hiện dropdown khi hover */
-.nav-item.has-dropdown:hover > .dropdown-menu {
+.nav-item.has-dropdown:hover>.dropdown-menu {
     display: block;
     opacity: 1;
     visibility: visible;
@@ -581,7 +519,7 @@ body {
     background: #f9f9f9;
 }
 
-#toggle-account:checked ~ .dropdown-menu-account {
+#toggle-account:checked~.dropdown-menu-account {
     display: block;
 }
 
@@ -1036,6 +974,7 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
+
     html,
     body,
     h1,
