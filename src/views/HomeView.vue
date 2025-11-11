@@ -10,8 +10,15 @@
             </div>
 
             <div class="row g-4">
-                <div v-for="(product, index) in best_products" :key="product.id" class="col-md-3 col-sm-6">
-                    <div class="best-seller-item" :style="{ backgroundColor: bgColors[index % bgColors.length] }">
+                <div
+                    v-for="(product, index) in best_products"
+                    :key="product.id"
+                    class="col-md-3 col-sm-6"
+                >
+                    <div
+                        class="best-seller-item"
+                        :style="{ backgroundColor: bgColors[index % bgColors.length] }"
+                    >
                         <div class="content">
                             <h5 class="clamp-2">{{ product.name }}</h5>
                             <p>
@@ -24,9 +31,13 @@
                             <a href="#">Mua ngay</a>
                         </div>
                         <div class="best-product-thumbnail">
-                            <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
-                                style="object-fit: contain; border-radius: 2%;" @error="product.thumbnail_url = null"
-                                :alt="product.title || 'Small Appliances'" />
+                            <img
+                                v-if="product.thumbnail_url"
+                                :src="product.thumbnail_url"
+                                style="object-fit: contain; border-radius: 2%"
+                                @error="product.thumbnail_url = null"
+                                :alt="product.title || 'Small Appliances'"
+                            />
                             <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" />
                         </div>
                     </div>
@@ -44,22 +55,35 @@
             <div class="row g-4">
                 <div v-for="product in list_products" :key="product.id" class="col-md-2_4 col-sm-6">
                     <div class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                        <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
-                            @error="product.thumbnail_url = null" :alt="product.title || 'Small Appliances'"
-                            class="img-fluid" />
-                        <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
+                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2"
+                            >Hot</span
+                        >
+                        <img
+                            v-if="product.thumbnail_url"
+                            :src="product.thumbnail_url"
+                            @error="product.thumbnail_url = null"
+                            :alt="product.title || 'Small Appliances'"
+                            class="img-fluid"
+                        />
+                        <img
+                            v-else
+                            src="@/assets/default_thumbnail.jpg"
+                            alt="Default Image"
+                            class="img-fluid"
+                        />
                         <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                         <p class="text-warning">
                             <span v-for="i in product.score" :key="i">★</span>
                         </p>
 
                         <p class="text-dark fw-bold mb-2">
-                            {{ new Intl.NumberFormat('vi-VN', {
-                                style: 'currency', currency: 'VND'
-                            }).format(product.price) }}
+                            {{
+                                new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND',
+                                }).format(product.price)
+                            }}
                         </p>
-
 
                         <!-- Hover buttons -->
                         <div class="product-actions">
@@ -75,71 +99,79 @@
         <div class="categories container mt-5 mb-5">
             <h4 class="fw-bold mb-4">Danh mục</h4>
             <div class="row text-center g-4 justify-content-center">
-                <div v-for="category in categories" :key="category.id" class="col-lg-2 col-md-3 col-sm-4 col-6">
+                <div
+                    v-for="category in categoriesStore.listCategory"
+                    :key="category.id"
+                    class="col-lg-2 col-md-3 col-sm-4 col-6"
+                >
                     <div class="category-item">
-                        <img v-if="category.thumbnail_url" :src="category.thumbnail_url"
-                            @error="category.thumbnail_url = null" :alt="category.title"
-                            class="rounded-circle img-fluid mb-2" />
-                        <img v-else src="@/assets/default_thumbnail.jpg" alt="default image"
-                            class="rounded-circle img-fluid mb-2" />
+                        <img
+                            v-if="category.thumbnail_url"
+                            :src="category.thumbnail_url"
+                            @error="category.thumbnail_url = null"
+                            :alt="category.title"
+                            class="rounded-circle img-fluid mb-2"
+                        />
+                        <img
+                            v-else
+                            src="@/assets/default_thumbnail.jpg"
+                            alt="default image"
+                            class="rounded-circle img-fluid mb-2"
+                        />
 
-                        <p style="font-weight: bold;">{{ category.title }}</p>
+                        <p style="font-weight: bold">{{ category.title }}</p>
                     </div>
                 </div>
                 <!-- Giữ nguyên category cuối -->
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6">
                     <div class="category-item">
-                        <img src="../assets/chamcham.png" alt="Headphones" class="rounded-circle img-fluid mb-2">
-                        <p style="font-weight: bold;">More</p>
+                        <img
+                            src="../assets/chamcham.png"
+                            alt="Headphones"
+                            class="rounded-circle img-fluid mb-2"
+                        />
+                        <p style="font-weight: bold">More</p>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <FooterComponent />
-
 </template>
-
 
 <script setup>
 import axios from 'axios'
-import HeaderComponent from '../components/HeaderComponent.vue';
-import FooterComponent from '@/components/FooterComponent.vue';
-import BannerComponent from '@/components/BannerComponent.vue';
-import { apiHelper } from '@/helpers/axios';
+import HeaderComponent from '../components/HeaderComponent.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
+import BannerComponent from '@/components/BannerComponent.vue'
+import { apiHelper } from '@/helpers/axios'
+import { mapStores } from 'pinia'
+import { useCategoriesStore } from '@/stores/categories'
 </script>
-<script>
-/**
- * Vue.js code in here!
- */
 
+<script>
 export default {
     props: {
-        product: Object
+        product: Object,
     },
 
     data() {
         return {
             list_products: [],
             best_products: [],
-            bgColors: ["#d8f3dc", "#ffe0ef", "#dce9f5", "#f8e7db"], // 4 màu nền xoay vòng,
-            categories: [],
+            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
+            // categories: [],
         }
     },
-    created() {
-
-    },
+    created() {},
     mounted() {
-        this.listProduct();
-        this.bestProducts();
-        this.listCategory();
+        this.listProduct()
+        this.bestProducts()
+        this.categoriesStore.fetchListCategory()
     },
-    watch: {
-
-    },
+    watch: {},
     computed: {
-
+        ...mapStores(useCategoriesStore),
     },
     methods: {
         /*************  ✨ Windsurf Command 🌟  *************/
@@ -153,71 +185,52 @@ export default {
                  * Make a GET request to the API to list all products
                  * @return {Promise<AxiosResponse>}
                  */
-                apiHelper.get('/list-product').then((res) => {
-                    // console.log(res);
-                    if (res.status == 200) {
-                        /**
-                         * Set the products data to the component's data
-                         * @param {Object[]} products - The products data
-                         */
-                        this.list_products = res.data.data.list_products;
-                        // console.log(this.list_products);
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                });
+                apiHelper
+                    .get('/list-product')
+                    .then((res) => {
+                        // console.log(res);
+                        if (res.status == 200) {
+                            /**
+                             * Set the products data to the component's data
+                             * @param {Object[]} products - The products data
+                             */
+                            this.list_products = res.data.data.list_products
+                            // console.log(this.list_products);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
         },
-
         bestProducts() {
             try {
                 /**
                  * Make a GET request to the API to list 4 best products
                  * @return {Promise<AxiosResponse>}
                  */
-                apiHelper.get('/best-products').then((res) => {
-                    // console.log(res);
-                    if (res.status == 200) {
-                        /**
-                         * Set the products data to the component's data
-                         * @param {Object[]} products - The best 4 products data
-                         */
-                        this.best_products = res.data.data.best_products;
-                        // console.log(this.best_products);
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                });
+                apiHelper
+                    .get('/best-products')
+                    .then((res) => {
+                        // console.log(res);
+                        if (res.status == 200) {
+                            /**
+                             * Set the products data to the component's data
+                             * @param {Object[]} products - The best 4 products data
+                             */
+                            this.best_products = res.data.data.best_products
+                            // console.log(this.best_products);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
             } catch (error) {
-                console.log(error);
+                console.log(error)
             }
         },
-        listCategory() {
-            try {
-                /**
-                 * Make a GET request to the API to list all categories
-                 * @return {Promise<AxiosResponse>}
-                 */
-                apiHelper.get('/list-category').then((res) => {
-                    // console.log(res);
-                    if (res.status == 200) {
-                        /**
-                         * Set the categories data to the component's data
-                         * @param {Object[]} categories - The categories data
-                         */
-                        this.categories = res.data.data.categories;
-                        console.log(this.categories);
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
     },
 }
 </script>
@@ -228,13 +241,12 @@ export default {
 }
 
 body {
-    font-family: "Outfit", Arial, sans-serif;
+    font-family: 'Outfit', Arial, sans-serif;
     background: #fff;
 }
 
 .header-top {
     background-image: url('../assets/campain-bar-1.jpg');
-    ;
     text-align: center;
     padding: 13px 0;
     font-size: 13px;
@@ -256,7 +268,6 @@ body {
     max-width: 1250px;
     margin: 0 auto;
     padding: 0 50px;
-
 }
 
 .navbar-brand {
@@ -410,7 +421,7 @@ body {
 
 /* Giữ hiệu ứng gạch chân động cho menu cha */
 .menu-nav .nav-link::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: 0;
@@ -444,7 +455,7 @@ body {
 }
 
 /* Hiện dropdown khi hover */
-.nav-item.has-dropdown:hover>.dropdown-menu {
+.nav-item.has-dropdown:hover > .dropdown-menu {
     display: block;
     opacity: 1;
     visibility: visible;
@@ -467,7 +478,7 @@ body {
 }
 
 .dropdown-menu li a::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: 4px;
@@ -480,7 +491,6 @@ body {
 .dropdown-menu li a:hover::after {
     width: 100%;
 }
-
 
 /* Tài khoản + Giỏ hàng */
 .header-actions {
@@ -571,13 +581,12 @@ body {
     background: #f9f9f9;
 }
 
-
-#toggle-account:checked~.dropdown-menu-account {
+#toggle-account:checked ~ .dropdown-menu-account {
     display: block;
 }
 
 .dropdown-menu-account::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -8px;
     left: 25px;
@@ -585,7 +594,6 @@ body {
     border-style: solid;
     border-color: transparent transparent #fff transparent;
 }
-
 
 /* Banner */
 .banner-section {
@@ -667,7 +675,6 @@ body {
     background: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
-
 
 /* Body */
 /* sản phẩm bán chạy */
@@ -825,7 +832,6 @@ body {
     }
 }
 
-
 /* ==== CATEGORIES ==== */
 .category-item {
     transition: all 0.3s ease;
@@ -854,12 +860,11 @@ body {
     font-size: 15px;
 }
 
-
 /* Footer */
 .footer {
     background: #fff;
     color: #222;
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
     border-top: 1px solid #eaeaea;
 }
 
@@ -1031,7 +1036,6 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-
     html,
     body,
     h1,

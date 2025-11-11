@@ -21,9 +21,11 @@
 
                 <div class="header-actions">
                     <div class="account-dropdown">
-                        <input type="checkbox" id="toggle-account">
-                        <label for="toggle-account"
-                            class="account-toggle d-flex align-items-center text-decoration-none">
+                        <input type="checkbox" id="toggle-account" />
+                        <label
+                            for="toggle-account"
+                            class="account-toggle d-flex align-items-center text-decoration-none"
+                        >
                             <i class="bi bi-person"></i> Tài khoản
                         </label>
 
@@ -32,17 +34,33 @@
                             <a href="#">Lịch sử mua hàng</a>
                             <a v-if="token !== null" href="#" @click="logout()">
                                 Đăng xuất
-                                <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
-                                    viewBox="0 0 32 32">
-                                    <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                <svg
+                                    width="20"
+                                    height="20"
+                                    aria-hidden="true"
+                                    role="img"
+                                    focusable="false"
+                                    viewBox="0 0 32 32"
+                                >
+                                    <path
+                                        d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"
+                                    ></path>
                                     <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
                                 </svg>
                             </a>
                             <a v-else href="#" @click="redirectLogin()">
                                 Đăng nhập
-                                <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
-                                    viewBox="0 0 32 32">
-                                    <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
+                                <svg
+                                    width="20"
+                                    height="20"
+                                    aria-hidden="true"
+                                    role="img"
+                                    focusable="false"
+                                    viewBox="0 0 32 32"
+                                >
+                                    <path
+                                        d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"
+                                    ></path>
                                     <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
                                 </svg>
                             </a>
@@ -56,8 +74,6 @@
                         <span class="badge">4</span>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
@@ -72,9 +88,14 @@
 
                 <nav class="menu-nav">
                     <ul class="nav">
-                        <li v-for="category in categories" :key="category.id" class="nav-item has-dropdown">
-
-                            <a v-if="category.parent_id === 0" class="nav-link" href="#">{{ category.title }}</a>
+                        <li
+                            v-for="category in categoriesStore.listCategory"
+                            :key="category.id"
+                            class="nav-item has-dropdown"
+                        >
+                            <a v-if="category.parent_id === 0" class="nav-link" href="#">{{
+                                category.title
+                            }}</a>
                             <ul class="dropdown-menu">
                                 <li v-for="child in category.children" :key="category.id">
                                     <a href="#">{{ child.title }}</a>
@@ -89,81 +110,48 @@
 </template>
 
 <script setup>
-import { apiHelper } from '@/helpers/axios';
+import { apiHelper } from '@/helpers/axios'
+import { useCategoriesStore } from '@/stores/categories'
+import { mapStores } from 'pinia'
 </script>
 
 <script>
 export default {
-
     data() {
         return {
             token: sessionStorage.getItem('token'),
-            categories: [],
         }
     },
-    created() {
-
-    },
-    mounted() {
-        this.listCategory();
-    },
-    watch: {
-
-    },
+    created() {},
+    mounted() {},
+    watch: {},
     computed: {
-
+        ...mapStores(useCategoriesStore),
     },
     methods: {
         /*************  ✨ Windsurf Command 🌟  *************/
-        /**
-         * List all categories
-         * @return {Promise<void>}
-         */
-        listCategory() {
-            try {
-                /**
-                 * Make a GET request to the API to list all categories
-                 * @return {Promise<AxiosResponse>}
-                 */
-                apiHelper.get('/list-category').then((res) => {
-                    // console.log(res);
-                    if (res.status == 200) {
-                        /**
-                         * Set the categories data to the component's data
-                         * @param {Object[]} categories - The categories data
-                         */
-                        this.categories = res.data.data.categories;
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
         logout() {
             try {
-                apiHelper.get('/logout', {
-                    headers: {
-                        Authorization: 'Bearer ' + this.token,
-                    }
-                }).then((res) => {
-                    if (res.status == 200) {
-                        sessionStorage.removeItem('token');
-                        this.$router.push('/login');
-                    }
-                });
+                apiHelper
+                    .get('/logout', {
+                        headers: {
+                            Authorization: 'Bearer ' + this.token,
+                        },
+                    })
+                    .then((res) => {
+                        if (res.status == 200) {
+                            sessionStorage.removeItem('token')
+                            this.$router.push('/login')
+                        }
+                    })
             } catch (error) {
-                console.log(error);
-
+                console.log(error)
             }
         },
 
         redirectLogin() {
-            this.$router.push('login');
-        }
-
+            this.$router.push('login')
+        },
     },
     /*******  36081e40-73b1-470e-a66b-e43fa183e34a  *******/
 }
@@ -175,13 +163,12 @@ export default {
 }
 
 body {
-    font-family: "Outfit", Arial, sans-serif;
+    font-family: 'Outfit', Arial, sans-serif;
     background: #fff;
 }
 
 .header-top {
     background-image: url('../assets/campain-bar-1.jpg');
-    ;
     text-align: center;
     padding: 13px 0;
     font-size: 13px;
@@ -203,7 +190,6 @@ body {
     max-width: 1250px;
     margin: 0 auto;
     padding: 0 50px;
-
 }
 
 .navbar-brand {
@@ -358,7 +344,7 @@ body {
 
 /* Giữ hiệu ứng gạch chân động cho menu cha */
 .menu-nav .nav-link::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: 0;
@@ -392,7 +378,7 @@ body {
 }
 
 /* Hiện dropdown khi hover */
-.nav-item.has-dropdown:hover>.dropdown-menu {
+.nav-item.has-dropdown:hover > .dropdown-menu {
     display: block;
     opacity: 1;
     visibility: visible;
@@ -415,7 +401,7 @@ body {
 }
 
 .dropdown-menu li a::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: 4px;
@@ -428,7 +414,6 @@ body {
 .dropdown-menu li a:hover::after {
     width: 100%;
 }
-
 
 /* Tài khoản + Giỏ hàng */
 .header-actions {
@@ -519,13 +504,12 @@ body {
     background: #f9f9f9;
 }
 
-
-#toggle-account:checked~.dropdown-menu-account {
+#toggle-account:checked ~ .dropdown-menu-account {
     display: block;
 }
 
 .dropdown-menu-account::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -8px;
     left: 25px;
@@ -533,7 +517,6 @@ body {
     border-style: solid;
     border-color: transparent transparent #fff transparent;
 }
-
 
 /* Banner */
 .banner-section {
