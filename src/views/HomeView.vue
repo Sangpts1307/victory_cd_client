@@ -1,5 +1,6 @@
 <template>
     <HeaderComponent />
+    <BannerComponent />
     <div class="body">
         <!-- Sản phẩm bán chạy -->
         <div class="best-seller container mt-5">
@@ -105,6 +106,7 @@
 import axios from 'axios'
 import HeaderComponent from '../components/HeaderComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
+import BannerComponent from '@/components/BannerComponent.vue';
 import { apiHelper } from '@/helpers/axios';
 </script>
 <script>

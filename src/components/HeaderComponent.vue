@@ -85,24 +85,8 @@
                 </nav>
             </div>
         </div>
-        <!-- Banner -->
-        <div class="banner-section container">
-            <ImageSliderComponent :images="bannerImages" />
-        </div>
-
     </div>
 </template>
-<!-- Script for sliders -->
-<script setup>
-import ImageSliderComponent from '@/components/ImageSliderComponent.vue'
-import { apiHelper } from '@/helpers/axios';
-
-const bannerImages = [
-    new URL('../assets/banner1.jpg', import.meta.url).href,
-    new URL('../assets/banner2.jpg', import.meta.url).href,
-    new URL('../assets/banner3.jpg', import.meta.url).href
-]
-</script>
 
 <script>
 export default {
