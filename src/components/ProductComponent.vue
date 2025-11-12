@@ -30,6 +30,11 @@
                 </div>
             </div>
         </div>
+
+        <div v-if="showSeeMore" class="seemore-container">
+            <p v-on:click="listProduct()" class="btn-seemore">Xem thêm</p>
+        </div>
+
     </div>
 </template>
 
@@ -43,6 +48,10 @@ import { mapStores } from 'pinia'
 export default {
     props: {
         product: Object,
+        showSeeMore: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data() {
@@ -83,7 +92,9 @@ export default {
                              * Set the products data to the component's data
                              * @param {Object[]} products - The products data
                              */
-                            this.list_products = res.data.data.list_products
+                            res.data.data.list_products.forEach(product => {
+                                this.list_products.push(product);
+                            });
                             // console.log(this.list_products);
                             this.offset = this.offset + 10;
                         }
@@ -265,5 +276,25 @@ export default {
     .badge.bg-warning {
         color: #000 !important;
     }
+}
+
+.seemore-container {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.btn-seemore {
+    display: inline-block;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-seemore:hover {
+    font-weight: bolder;
 }
 </style>

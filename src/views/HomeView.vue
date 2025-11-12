@@ -45,7 +45,7 @@
                 </router-link>
             </div>
         </div>
-        <ProductComponent />
+        <ProductComponent :showSeeMore="false" />
 
         <!-- Categories -->
         <div class="categories container mt-5 mb-5">

@@ -5,7 +5,7 @@
             <h4 class="fw-bold text-dark">Khám phá sản phẩm</h4>
         </div>
     </div>
-    <ProductComponent />
+    <ProductComponent :showSeeMore="true" />
     <div style="height: 100px;"></div>
     <FooterComponent />
 </template>
