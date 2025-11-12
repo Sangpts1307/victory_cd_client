@@ -48,8 +48,8 @@ export default {
     data() {
         return {
             list_products: [],
-            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
-            // categories: [],
+            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'],
+            offset: 0,
         }
     },
     created() { },
@@ -71,7 +71,11 @@ export default {
                  * @return {Promise<AxiosResponse>}
                  */
                 apiHelper
-                    .get('/list-product')
+                    .get('/list-product', {
+                        params: {
+                            offset: this.offset,
+                        }
+                    })
                     .then((res) => {
                         // console.log(res);
                         if (res.status == 200) {
@@ -81,6 +85,7 @@ export default {
                              */
                             this.list_products = res.data.data.list_products
                             // console.log(this.list_products);
+                            this.offset = this.offset + 10;
                         }
                     })
                     .catch((error) => {
