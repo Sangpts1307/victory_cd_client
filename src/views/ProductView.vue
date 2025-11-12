@@ -2,10 +2,11 @@
     <HeaderComponent />
     <div class="best-seller container mt-5">
         <div class="section-header d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold text-dark">Khám phá sản phẩm</h4>
+            <!-- <h4 class="fw-bold text-dark">Khám phá sản phẩm</h4> -->
         </div>
+
+        <ProductComponent :showSeeMore="true" />
     </div>
-    <ProductComponent :showSeeMore="true" />
     <div style="height: 100px;"></div>
     <FooterComponent />
 </template>

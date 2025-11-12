@@ -1,5 +1,20 @@
 <template>
-    <div class="product-section container mt-5">
+    <div class="product-section">
+        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+            <h4 v-if="showTitle" class="fw-bold">Khám phá sản phẩm</h4>
+            <div v-if="showSortType" class="sort-container">
+                <label for="sort" class="me-2 fw-semibold">Sắp xếp theo:</label>
+                <select id="sort" v-model="selectedSort" @change="handleSortChange"
+                    class="form-select form-select-sm d-inline-block w-auto">
+                    <option value="default">Mặc định</option>
+                    <option value="newest">Mới nhất</option>
+                    <option value="featured">Nổi bật nhất</option>
+                    <option value="price_asc">Giá thấp đến cao</option>
+                    <option value="price_desc">Giá cao đến thấp</option>
+                </select>
+            </div>
+        </div>
+
         <div class="row g-4">
             <div v-for="product in list_products" :key="product.id" class="col-md-2_4 col-sm-6">
                 <div class="product-card text-center p-3 rounded-3 position-relative">
@@ -22,7 +37,6 @@
                     </p>
                     <h6 class="fw-light product-name fst-italic text-muted">{{ product.total_sold }} lượt mua</h6>
 
-                    <!-- Hover buttons -->
                     <div class="product-actions">
                         <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
                         <button class="btn btn-outline-dark w-100">Mua ngay</button>
@@ -32,19 +46,14 @@
         </div>
 
         <div v-if="showSeeMore" class="seemore-container">
-            <p v-on:click="listProduct()" class="btn-seemore">Xem thêm</p>
+            <p @click="listProduct()" class="btn-seemore">Xem thêm</p>
         </div>
-
     </div>
 </template>
 
-<script setup>
-import axios from 'axios'
-import { apiHelper } from '@/helpers/axios'
-import { mapStores } from 'pinia'
-</script>
-
 <script>
+import { apiHelper } from '@/helpers/axios'
+
 export default {
     props: {
         product: Object,
@@ -52,59 +61,51 @@ export default {
             type: Boolean,
             default: true,
         },
+        showSortType: {
+            type: Boolean,
+            default: true,
+        },
+        showTitle: {
+            type: Boolean,
+            default: true,
+        }
     },
-
     data() {
         return {
             list_products: [],
-            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'],
             offset: 0,
+            selectedSort: 'default',
         }
     },
-    created() { },
     mounted() {
         this.listProduct()
     },
-    computed: {
-    },
     methods: {
-        /*************  ✨ Windsurf Command 🌟  *************/
-        /**
-         * List all categories
-         * @return {Promise<void>}
-         */
-        listProduct() {
-            try {
-                /**
-                 * Make a GET request to the API to list all products
-                 * @return {Promise<AxiosResponse>}
-                 */
-                apiHelper
-                    .get('/list-product', {
-                        params: {
-                            offset: this.offset,
-                        }
-                    })
-                    .then((res) => {
-                        // console.log(res);
-                        if (res.status == 200) {
-                            /**
-                             * Set the products data to the component's data
-                             * @param {Object[]} products - The products data
-                             */
-                            res.data.data.list_products.forEach(product => {
-                                this.list_products.push(product);
-                            });
-                            // console.log(this.list_products);
-                            this.offset = this.offset + 10;
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-            } catch (error) {
-                console.log(error)
+        listProduct(reset = false) {
+            if (reset) {
+                this.offset = 0
+                this.list_products = []
             }
+
+            apiHelper
+                .get('/list-product', {
+                    params: {
+                        offset: this.offset,
+                        sort_type: this.selectedSort,
+                    },
+                })
+                .then((res) => {
+                    if (res.status === 200) {
+                        const newProducts = res.data.data.list_products || []
+                        this.list_products.push(...newProducts)
+                        this.offset += newProducts.length
+                    }
+                })
+                .catch((err) => console.log(err))
+        },
+
+        handleSortChange() {
+            this.listProduct(true)
         },
     },
 }
@@ -296,5 +297,30 @@ export default {
 
 .btn-seemore:hover {
     font-weight: bolder;
+}
+
+.sort-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.sort-container label {
+    font-size: 14px;
+    color: #555;
+}
+
+.sort-container select {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 4px 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.sort-container select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 3px var(--primary);
 }
 </style>

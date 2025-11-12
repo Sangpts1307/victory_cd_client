@@ -44,8 +44,8 @@
                     Tất cả sản phẩm
                 </router-link>
             </div>
+            <ProductComponent :showSeeMore="false" :showSortType="false" :showTitle="false" />
         </div>
-        <ProductComponent :showSeeMore="false" />
 
         <!-- Categories -->
         <div class="categories container mt-5 mb-5">
