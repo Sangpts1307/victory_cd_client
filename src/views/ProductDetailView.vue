@@ -13,16 +13,16 @@
             <div class="col-md-6">
                 <span class="badge bg-warning text-dark mb-2">Hot</span>
                 <h3 class="fw-bold">Gaming Console 5 Digital Edition</h3>
-                <p class="text-muted mb-1">in Uncategorized</p>
+                <p class="text-muted mb-1">trong Phụ kiện</p>
 
                 <div class="mb-3">
                     <span class="text-warning">★★★★★</span>
-                    <span class="text-muted">(1 Review)</span>
+                    <span class="text-muted">(1 Đánh giá)</span>
                 </div>
 
-                <h4 class="fw-bold text-primary mb-3">399.00₩</h4>
+                <h4 class="fw-bold text-primary mb-3">399.00 vnđ</h4>
 
-                <p class="text-success fw-semibold mb-3">Available in stock</p>
+                <p class="text-success fw-semibold mb-3">Còn hàng</p>
 
                 <!-- Nút hành động -->
                 <div class="d-flex align-items-center mb-4">
@@ -35,16 +35,16 @@
 
                 <div class="d-flex gap-3 mb-3 flex-wrap">
                     <button class="btn btn-primary px-4 py-3 flex-fill">
-                        <i class="bi bi-cart-plus me-2"></i> Add to cart
+                        <i class="bi bi-cart-plus me-2"></i> Thêm vào giỏ
                     </button>
-                    <button class="btn btn-outline-dark px-4 py-3 flex-fill">Buy Now</button>
+                    <button class="btn btn-outline-dark px-4 py-3 flex-fill">Mua ngay</button>
                 </div>
 
 
                 <!-- Thông tin thêm -->
                 <ul class="list-unstyled small text-muted mt-4">
-                    <li>🚚 Free Shipping & Returns on this item</li>
-                    <li>📦 Delivery within 3–5 working days</li>
+                    <li>🚚 Miễn phí giao hàng & hoàn hàng </li>
+                    <li>📦 Vận chuyển đến tay trong 3-5 ngày làm việc</li>
                 </ul>
             </div>
         </div>
@@ -55,13 +55,13 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc"
                         type="button" role="tab">
-                        Description
+                        Mô tả
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button"
                         role="tab">
-                        Reviews (1)
+                        Đánh giá (1)
                     </button>
                 </li>
             </ul>
@@ -80,48 +80,30 @@
                     <div class="row g-4">
                         <!-- Ratings tổng hợp -->
                         <div class="col-md-4">
-                            <div class="border p-4 rounded-3 h-100">
-                                <h5 class="fw-bold mb-3">Ratings</h5>
+                            <div class="border p-4 rounded-3">
+                                <h5 class="fw-bold mb-3">Đánh giá</h5>
 
                                 <div class="text-center mb-3">
-                                    <h1 class="fw-bold mb-0">5.0</h1>
-                                    <div class="text-warning fs-5">★★★★★</div>
-                                    <p class="text-muted small">1 Product Rating</p>
-                                </div>
+                                    <h1 class="fw-bold mb-0">5.0
+                                        <span class="text-warning mb-0">★</span>
+                                    </h1>
 
-                                <div class="rating-bars">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <span class="me-2 small">5 ★</span>
-                                        <div class="flex-grow-1 bg-light rounded-pill">
-                                            <div class="bg-warning rounded-pill" style="height: 6px; width: 100%;">
-                                            </div>
-                                        </div>
-                                        <span class="ms-2 small">1</span>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-1" v-for="i in 4" :key="i">
-                                        <span class="me-2 small">{{ 5 - i }} ★</span>
-                                        <div class="flex-grow-1 bg-light rounded-pill">
-                                            <div class="bg-warning rounded-pill" style="height: 6px; width: 0%;"></div>
-                                        </div>
-                                        <span class="ms-2 small">0</span>
-                                    </div>
+                                    <p class="text-muted small">1 lượt đánh giá</p>
                                 </div>
-
                                 <hr />
-
                                 <div class="mt-3">
-                                    <h6 class="fw-semibold">Review this product</h6>
+                                    <h6 class="fw-semibold">Đánh giá về sản phẩm</h6>
                                     <p class="text-muted small mb-3">
-                                        Share your thoughts with other customers
+                                        Chia sẻ cảm nghĩ của bạn cho khách hàng khác
                                     </p>
-                                    <button class="btn btn-dark w-100 py-2">Write a review</button>
+                                    <button class="btn btn-dark w-100 py-2">Viết đánh giá</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Customer reviews -->
                         <div class="col-md-8">
-                            <h5 class="fw-bold mb-3">Customer Reviews (1)</h5>
+                            <h5 class="fw-bold mb-3">Khách hàng đánh giá (1)</h5>
                             <div class="border-top pt-3">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="d-flex align-items-center">
@@ -129,7 +111,7 @@
                                             class="rounded-circle me-3" width="48" height="48" />
                                         <div>
                                             <h6 class="mb-0 fw-semibold">uixstore</h6>
-                                            <small class="text-muted">September 9, 2022</small>
+                                            <small class="text-muted">Tháng 9, 2022</small>
                                         </div>
                                     </div>
                                     <div class="text-warning">★★★★★</div>
@@ -150,7 +132,7 @@
                                             class="rounded-circle me-3" width="48" height="48" />
                                         <div>
                                             <h6 class="mb-0 fw-semibold">uixstore</h6>
-                                            <small class="text-muted">September 9, 2022</small>
+                                            <small class="text-muted">Tháng 9, 2022</small>
                                         </div>
                                     </div>
                                     <div class="text-warning">★★★★★</div>
