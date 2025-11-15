@@ -25,7 +25,8 @@
                     <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
                     <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                     <p class="text-warning">
-                        <span v-for="i in product.score" :key="i">★</span>
+                        <span>{{ "★".repeat(product.score) }}{{ "☆".repeat(5 - product.score) }}</span>
+                        <!-- <span v-for="i in product.score" :key="i">★</span> -->
                     </p>
 
                     <p class="text-dark fw-bold mb-2">

@@ -5,9 +5,10 @@
         <div class="row g-5">
             <!-- Cột trái: ảnh sản phẩm -->
             <div class="col-md-6 text-center">
-                <img :src="product_detail.thumbnail_url" class="img-fluid rounded" :alt="product_detail.name"
-                    style="max-height: 500px; object-fit: contain;" />
+                <img :src="product_detail.thumbnail_url" class="img-fluid rounded zoom-on-hover"
+                    :alt="product_detail.name" style="max-height: 500px; object-fit: contain;" />
             </div>
+
 
             <!-- Cột phải: thông tin sản phẩm -->
             <div class="col-md-6">
@@ -20,7 +21,7 @@
                         {{ Number(product_detail.score).toFixed(2) }}
                     </span>
                     <span class="text-warning" style="color: #ffc107; margin: 0 5px;">
-                        ★★★★★
+                        {{ "★".repeat(product_detail.score) }}{{ "☆".repeat(5 - product_detail.score) }}
                     </span>
                     <span style="font-size: 16px; color: #6c757d; font-weight: semi-bold; margin-left: 5px;">
                         | Đã bán {{ product_detail.total_sold }} sản phẩm
@@ -40,11 +41,13 @@
                 <!-- Nút hành động -->
                 <div class="d-flex align-items-center mb-4">
                     <div class="input-group" style="width: 120px;">
-                        <button class="btn btn-outline-secondary">-</button>
-                        <input type="number" class="form-control text-center" value="1" />
-                        <button class="btn btn-outline-secondary">+</button>
+                        <button class="btn btn-outline-secondary" @click="minus">-</button>
+                        <input type="number" class="form-control text-center no-spinner" v-model="quantity" />
+                        <button class="btn btn-outline-secondary" @click="plus">+</button>
                     </div>
                 </div>
+
+
 
                 <div class="d-flex gap-3 mb-3 flex-wrap">
                     <button class="btn px-4 py-3 flex-fill btn-add-cart">
@@ -99,7 +102,7 @@
                                         <span class="text-warning mb-0">★</span>
                                     </h1>
 
-                                    <p class="text-muted small">1 lượt đánh giá</p>
+                                    <p class="text-muted small">{{ feedback_count }} lượt đánh giá</p>
                                 </div>
                                 <hr />
                                 <div class="mt-3">
@@ -113,50 +116,28 @@
 
                         <!-- Customer reviews -->
                         <div class="col-md-8">
-                            <h5 class="fw-bold mb-3">Khách hàng đánh giá (1)</h5>
-                            <div class="border-top pt-3">
+                            <h5 class="fw-bold mb-3">Khách hàng đánh giá ({{ feedback_count }})</h5>
+                            <div v-for="fb in product_feedbacks" :key="fb.id" class="border-top pt-3">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="d-flex align-items-center">
-                                        <img src="https://ui-avatars.com/api/?name=U+X" alt="Avatar"
-                                            class="rounded-circle me-3" width="48" height="48" />
+                                        <img :src="fb.user_avatar ? fb.user_avatar : 'https://ui-avatars.com/api/?name=' + fb.user_name"
+                                            alt="Avatar" class="rounded-circle me-3" width="48" height="48" />
                                         <div>
-                                            <h6 class="mb-0 fw-semibold">uixstore</h6>
-                                            <small class="text-muted">Tháng 9, 2022</small>
+                                            <h6 class="mb-0 fw-semibold">{{ fb.user_name }}</h6>
+                                            <small class="text-muted">{{ new
+                                                Date(fb.created_at).toLocaleDateString('vi-VN') }}
+                                            </small>
                                         </div>
                                     </div>
-                                    <div class="text-warning">★★★★★</div>
+                                    <div class="text-warning">
+                                        {{ "★".repeat(fb.score) }}{{ "☆".repeat(5 - fb.score) }}
+                                    </div>
                                 </div>
 
                                 <p class="mt-3 mb-0">
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                    culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
-                                    omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-                                    rem aperiam.
+                                    {{ fb.comment }}
                                 </p>
                             </div>
-                            <div class="border-top pt-3">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://ui-avatars.com/api/?name=U+X" alt="Avatar"
-                                            class="rounded-circle me-3" width="48" height="48" />
-                                        <div>
-                                            <h6 class="mb-0 fw-semibold">uixstore</h6>
-                                            <small class="text-muted">Tháng 9, 2022</small>
-                                        </div>
-                                    </div>
-                                    <div class="text-warning">★★★★★</div>
-                                </div>
-
-                                <p class="mt-3 mb-0">
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                    culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
-                                    omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-                                    rem aperiam.
-                                </p>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -177,6 +158,139 @@
 
     <FooterComponent />
 </template>
+
+<script setup>
+import axios from 'axios'
+import HeaderComponent from '../components/HeaderComponent.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
+import BannerComponent from '@/components/BannerComponent.vue'
+import ProductComponent from '@/components/ProductComponent.vue'
+import { apiHelper } from '@/helpers/axios'
+import { mapStores } from 'pinia'
+import { useCategoriesStore } from '@/stores/categories'
+import { ref } from "vue";
+
+const quantity = ref(1);
+
+const plus = () => quantity.value++;
+const minus = () => {
+    if (quantity.value > 1) quantity.value--;
+};
+</script>
+
+<script>
+export default {
+    props: {
+        product: Object,
+    },
+
+    data() {
+        return {
+            product_detail: '',
+            product_feedback: '',
+            list_products: [],
+            best_products: [],
+            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
+            // categories: [],
+        }
+    },
+    created() { },
+    mounted() {
+        this.getDetail()
+        this.listProduct()
+        this.bestProducts()
+        this.categoriesStore.fetchListCategory()
+    },
+    watch: {},
+    computed: {
+        ...mapStores(useCategoriesStore),
+    },
+    methods: {
+        formatPrice(value) {
+            if (!value) return '0 đ';
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
+        },
+        getDetail() {
+            let id = this.$route.params.id;
+            try {
+                apiHelper
+                    .get('/product-detail', {
+                        params: {
+                            'product_id': id,
+                        },
+                    })
+                    .then((res) => {
+                        if (res.status == 200) {
+                            console.log(res.data.data);
+                            this.product_detail = res.data.data.product;
+                            this.product_feedbacks = res.data.data.product_feedbacks;
+                            this.feedback_count = res.data.data.feedback_count;
+                        }
+                    })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        /*************  ✨ Windsurf Command 🌟  *************/
+        /**
+         * List all categories
+         * @return {Promise<void>}
+         */
+        listProduct() {
+            try {
+                /**
+                 * Make a GET request to the API to list all products
+                 * @return {Promise<AxiosResponse>}
+                 */
+                apiHelper
+                    .get('/list-product')
+                    .then((res) => {
+                        // console.log(res);
+                        if (res.status == 200) {
+                            /**
+                             * Set the products data to the component's data
+                             * @param {Object[]} products - The products data
+                             */
+                            this.list_products = res.data.data.list_products
+                            // console.log(this.list_products);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        bestProducts() {
+            try {
+                /**
+                 * Make a GET request to the API to list 4 best products
+                 * @return {Promise<AxiosResponse>}
+                 */
+                apiHelper
+                    .get('/best-products')
+                    .then((res) => {
+                        // console.log(res);
+                        if (res.status == 200) {
+                            /**
+                             * Set the products data to the component's data
+                             * @param {Object[]} products - The best 4 products data
+                             */
+                            this.best_products = res.data.data.best_products
+                            // console.log(this.best_products);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+    },
+}
+</script>
 
 <style scoped>
 body {
@@ -266,128 +380,29 @@ body {
     /* xanh siêu nhạt */
     color: #3449ca !important;
 }
-</style>
 
-<script setup>
-import axios from 'axios'
-import HeaderComponent from '../components/HeaderComponent.vue'
-import FooterComponent from '@/components/FooterComponent.vue'
-import BannerComponent from '@/components/BannerComponent.vue'
-import ProductComponent from '@/components/ProductComponent.vue'
-import { apiHelper } from '@/helpers/axios'
-import { mapStores } from 'pinia'
-import { useCategoriesStore } from '@/stores/categories'
-</script>
-
-<script>
-export default {
-    props: {
-        product: Object,
-    },
-
-    data() {
-        return {
-            product_detail: '',
-            product_feedback: '',
-            list_products: [],
-            best_products: [],
-            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
-            // categories: [],
-        }
-    },
-    created() { },
-    mounted() {
-        this.getDetail()
-        this.listProduct()
-        this.bestProducts()
-        this.categoriesStore.fetchListCategory()
-    },
-    watch: {},
-    computed: {
-        ...mapStores(useCategoriesStore),
-    },
-    methods: {
-        formatPrice(value) {
-            if (!value) return '0 đ';
-            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
-        },
-        getDetail() {
-            let id = this.$route.params.id;
-            try {
-                apiHelper
-                    .get('/product-detail', {
-                        params: {
-                            'product_id': id,
-                        },
-                    })
-                    .then((res) => {
-                        if (res.status == 200) {
-                            console.log(res.data.data);
-                            this.product_detail = res.data.data.product;
-                            this.product_feedback = res.data.data.product_feedback;
-                        }
-                    })
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        /*************  ✨ Windsurf Command 🌟  *************/
-        /**
-         * List all categories
-         * @return {Promise<void>}
-         */
-        listProduct() {
-            try {
-                /**
-                 * Make a GET request to the API to list all products
-                 * @return {Promise<AxiosResponse>}
-                 */
-                apiHelper
-                    .get('/list-product')
-                    .then((res) => {
-                        // console.log(res);
-                        if (res.status == 200) {
-                            /**
-                             * Set the products data to the component's data
-                             * @param {Object[]} products - The products data
-                             */
-                            this.list_products = res.data.data.list_products
-                            // console.log(this.list_products);
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        bestProducts() {
-            try {
-                /**
-                 * Make a GET request to the API to list 4 best products
-                 * @return {Promise<AxiosResponse>}
-                 */
-                apiHelper
-                    .get('/best-products')
-                    .then((res) => {
-                        // console.log(res);
-                        if (res.status == 200) {
-                            /**
-                             * Set the products data to the component's data
-                             * @param {Object[]} products - The best 4 products data
-                             */
-                            this.best_products = res.data.data.best_products
-                            // console.log(this.best_products);
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-            } catch (error) {
-                console.log(error)
-            }
-        },
-    },
+.zoom-on-hover {
+    transition: transform 0.3s ease;
+    /* mượt */
+    cursor: pointer;
+    /* optional, thấy tương tác */
 }
-</script>
+
+.zoom-on-hover:hover {
+    transform: scale(1.3);
+    /* phóng to 10% */
+}
+
+/* Ẩn nút tăng/giảm mặc định của input number trên mọi trình duyệt */
+input[type=number] {
+    -moz-appearance: textfield;
+    /* Firefox */
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    /* Chrome, Safari, Edge */
+    margin: 0;
+}
+</style>

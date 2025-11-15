@@ -672,6 +672,17 @@ body {
     text-decoration: none;
 }
 
+.best-product-thumbnail img {
+    transition: transform 0.3s ease;
+    /* mượt */
+}
+
+.best-product-thumbnail:hover img {
+    transform: scale(1.1);
+    /* phóng to 10% */
+}
+
+
 /* sản phẩm + cate */
 .col-md-2_4 {
     flex: 0 0 20%;

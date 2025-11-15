@@ -6,9 +6,10 @@
 
         <div class="main-header">
             <div class="container-custom d-flex align-items-center justify-content-between">
-                <a href="#" class="navbar-brand text-decoration-none text-dark">
+                <div v-on:click="goToHome()" class=" navbar-brand text-decoration-none text-dark"
+                    style="cursor: pointer;">
                     Victory Store <small>technology</small>
-                </a>
+                </div>
 
                 <div class="search-wrap">
                     <div class="search-box">
@@ -74,7 +75,7 @@
                             class="nav-item has-dropdown">
                             <a v-if="category.parent_id === 0" class="nav-link" href="#">{{
                                 category.title
-                            }}</a>
+                                }}</a>
                             <ul class="dropdown-menu">
                                 <li v-for="child in category.children" :key="category.id">
                                     <a href="#">{{ child.title }}</a>
@@ -129,6 +130,9 @@ export default {
 
         redirectLogin() {
             this.$router.push('login')
+        },
+        goToHome() {
+            this.$router.push('/');
         },
     },
     /*******  36081e40-73b1-470e-a66b-e43fa183e34a  *******/
