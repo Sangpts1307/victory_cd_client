@@ -5,8 +5,8 @@
         <div class="row g-5">
             <!-- Cột trái: ảnh sản phẩm -->
             <div class="col-md-6 text-center">
-                <img :src="product_detail.thumbnail_url" class="img-fluid rounded"
-                    alt="Gaming Console 5 Digital Edition" style="max-height: 500px; object-fit: contain;" />
+                <img :src="product_detail.thumbnail_url" class="img-fluid rounded" :alt="product_detail.name"
+                    style="max-height: 500px; object-fit: contain;" />
             </div>
 
             <!-- Cột phải: thông tin sản phẩm -->
@@ -158,7 +158,7 @@
             </router-link>
         </div>
     </div>
-    <ProductComponent />
+    <ProductComponent :showSeeMore="false" :showSortType="false" :showTitle="false" />
 
     <FooterComponent />
 </template>
