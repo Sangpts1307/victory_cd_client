@@ -39,8 +39,8 @@
                     <h6 class="fw-light product-name fst-italic text-muted">{{ product.total_sold }} lượt mua</h6>
 
                     <div class="product-actions">
-                        <button class="btn btn-primary w-100 mb-2">Thêm vào giỏ</button>
-                        <button class="btn btn-outline-dark w-100">Mua ngay</button>
+                        <button class="btn btn-add-cart w-100 mb-2">Thêm vào giỏ</button>
+                        <button class="btn btn-buy-now w-100">Mua ngay</button>
                     </div>
                 </div>
             </div>
@@ -327,5 +327,34 @@ export default {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 3px var(--primary);
+}
+
+/* Nút thêm vào giỏ */
+.product-actions .btn-add-cart,
+.btn-add-cart {
+    background-color: #3449ca !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.product-actions .btn-add-cart i,
+.btn-add-cart i {
+    color: #fff !important;
+}
+
+/* Nút mua ngay */
+.product-actions .btn-buy-now,
+.btn-buy-now {
+    border: 2px solid #3449ca !important;
+    color: #3449ca !important;
+    background: #fff !important;
+}
+
+/* Hover của nút mua ngay */
+.product-actions .btn-buy-now:hover,
+.btn-buy-now:hover {
+    background-color: #e7e9fd !important;
+    /* xanh nhạt */
+    color: #3449ca !important;
 }
 </style>

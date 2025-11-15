@@ -16,13 +16,26 @@
                 <p class="text-muted mb-1">trong {{ product_detail.category_title }}</p>
 
                 <div class="mb-3">
-                    <span class="text-warning">★★★★★</span>
-                    <span class="text-muted">(Đã bán {{ product_detail.total_sold }})</span>
+                    <span style="font-size: 20px; font-weight: bold; color: #ffc107;">
+                        {{ Number(product_detail.score).toFixed(2) }}
+                    </span>
+                    <span class="text-warning" style="color: #ffc107; margin: 0 5px;">
+                        ★★★★★
+                    </span>
+                    <span style="font-size: 16px; color: #6c757d; font-weight: semi-bold; margin-left: 5px;">
+                        | Đã bán {{ product_detail.total_sold }} sản phẩm
+                    </span>
                 </div>
 
-                <h4 class="fw-bold text-primary mb-3">{{ product_detail.price }} vnđ</h4>
 
-                <p class="text-success fw-semibold mb-3">Còn {{ product_detail.quantity }} sản phẩm</p>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold text-dark m-0">
+                        {{ formatPrice(product_detail.price) }}
+                    </h4>
+                    <p class="text-success fw-semibold m-0">
+                        Còn {{ product_detail.quantity }} sản phẩm
+                    </p>
+                </div>
 
                 <!-- Nút hành động -->
                 <div class="d-flex align-items-center mb-4">
@@ -34,12 +47,14 @@
                 </div>
 
                 <div class="d-flex gap-3 mb-3 flex-wrap">
-                    <button class="btn btn-primary px-4 py-3 flex-fill">
+                    <button class="btn px-4 py-3 flex-fill btn-add-cart">
                         <i class="bi bi-cart-plus me-2"></i> Thêm vào giỏ
                     </button>
-                    <button class="btn btn-outline-dark px-4 py-3 flex-fill">Mua ngay</button>
-                </div>
 
+                    <button class="btn px-4 py-3 flex-fill btn-buy-now">
+                        Mua ngay
+                    </button>
+                </div>
 
                 <!-- Thông tin thêm -->
                 <ul class="list-unstyled small text-muted mt-4">
@@ -228,6 +243,29 @@ body {
 .bg-warning {
     color: #212529 !important;
 }
+
+/* Nút thêm vào giỏ */
+.btn-add-cart {
+    background-color: #3449ca !important;
+    color: #fff !important;
+}
+
+.btn-add-cart i {
+    color: #fff !important;
+}
+
+/* Nút mua ngay */
+.btn-buy-now {
+    border: 2px solid #3449ca !important;
+    color: #3449ca !important;
+}
+
+/* Hover nền xanh nhạt */
+.btn-buy-now:hover {
+    background-color: #e7e9fd !important;
+    /* xanh siêu nhạt */
+    color: #3449ca !important;
+}
 </style>
 
 <script setup>
@@ -269,6 +307,10 @@ export default {
         ...mapStores(useCategoriesStore),
     },
     methods: {
+        formatPrice(value) {
+            if (!value) return '0 đ';
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
+        },
         getDetail() {
             let id = this.$route.params.id;
             try {
