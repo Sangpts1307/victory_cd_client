@@ -5,24 +5,24 @@
         <div class="row g-5">
             <!-- Cột trái: ảnh sản phẩm -->
             <div class="col-md-6 text-center">
-                <img src="../assets/headphone.png" class="img-fluid rounded" alt="Gaming Console 5 Digital Edition"
-                    style="max-height: 500px; object-fit: contain;" />
+                <img :src="product_detail.thumbnail_url" class="img-fluid rounded"
+                    alt="Gaming Console 5 Digital Edition" style="max-height: 500px; object-fit: contain;" />
             </div>
 
             <!-- Cột phải: thông tin sản phẩm -->
             <div class="col-md-6">
                 <span class="badge bg-warning text-dark mb-2">Hot</span>
-                <h3 class="fw-bold">Gaming Console 5 Digital Edition</h3>
-                <p class="text-muted mb-1">trong Phụ kiện</p>
+                <h3 class="fw-bold">{{ product_detail.name }}</h3>
+                <p class="text-muted mb-1">trong {{ product_detail.category_title }}</p>
 
                 <div class="mb-3">
                     <span class="text-warning">★★★★★</span>
-                    <span class="text-muted">(1 Đánh giá)</span>
+                    <span class="text-muted">(Đã bán {{ product_detail.total_sold }})</span>
                 </div>
 
-                <h4 class="fw-bold text-primary mb-3">399.00 vnđ</h4>
+                <h4 class="fw-bold text-primary mb-3">{{ product_detail.price }} vnđ</h4>
 
-                <p class="text-success fw-semibold mb-3">Còn hàng</p>
+                <p class="text-success fw-semibold mb-3">Còn {{ product_detail.quantity }} sản phẩm</p>
 
                 <!-- Nút hành động -->
                 <div class="d-flex align-items-center mb-4">
@@ -61,19 +61,15 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button"
                         role="tab">
-                        Đánh giá (1)
+                        Đánh giá
                     </button>
                 </li>
             </ul>
 
             <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
                 <div class="tab-pane fade show active" id="desc" role="tabpanel">
-                    <h5 class="fw-bold mb-3">iPad Pro</h5>
-                    <p>
-                        The iPad Pro is a magical piece of glass. It has pro cameras that can transform reality. It’s
-                        faster than most PC laptops. And with Apple Pencil, Magic Keyboard, and iPadOS, it’s the world’s
-                        most advanced mobile device.
-                    </p>
+                    <h5 class="fw-bold mb-3">{{ product_detail.name }}</h5>
+                    <p>{{ product_detail.description }}</p>
                 </div>
                 <!-- Tab Reviews -->
                 <div class="tab-pane fade show" id="review" role="tabpanel">
@@ -84,7 +80,7 @@
                                 <h5 class="fw-bold mb-3">Đánh giá</h5>
 
                                 <div class="text-center mb-3">
-                                    <h1 class="fw-bold mb-0">5.0
+                                    <h1 class="fw-bold mb-0">{{ product_detail.score }}
                                         <span class="text-warning mb-0">★</span>
                                     </h1>
 
@@ -96,7 +92,6 @@
                                     <p class="text-muted small mb-3">
                                         Chia sẻ cảm nghĩ của bạn cho khách hàng khác
                                     </p>
-                                    <button class="btn btn-dark w-100 py-2">Viết đánh giá</button>
                                 </div>
                             </div>
                         </div>
@@ -190,6 +185,49 @@ body {
     margin: auto;
     padding: 0 20px 0 20px;
 }
+
+/* Toàn bộ text chuyển về màu tối */
+* {
+    color: #212529 !important;
+}
+
+/* Giữ màu vàng của sao */
+.text-warning,
+.text-warning * {
+    color: #ffc107 !important;
+}
+
+/* Giữ màu nút Thêm vào giỏ và icon bên trong */
+.btn-primary,
+.btn-primary * {
+    color: #fff !important;
+    /* chữ và icon đều trắng */
+}
+
+/* Giữ màu nút Mua ngay */
+.btn-outline-dark {
+    color: #212529 !important;
+}
+
+/* Giữ màu xanh cho text-success */
+.text-success {
+    color: #198754 !important;
+}
+
+/* Giữ màu xanh dương cho text-primary */
+.text-primary {
+    color: #0d6efd !important;
+}
+
+/* Giữ màu xám cho text-muted */
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Giữ màu badge Hot */
+.bg-warning {
+    color: #212529 !important;
+}
 </style>
 
 <script setup>
@@ -211,6 +249,8 @@ export default {
 
     data() {
         return {
+            product_detail: '',
+            product_feedback: '',
             list_products: [],
             best_products: [],
             bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
@@ -219,6 +259,7 @@ export default {
     },
     created() { },
     mounted() {
+        this.getDetail()
         this.listProduct()
         this.bestProducts()
         this.categoriesStore.fetchListCategory()
@@ -228,6 +269,26 @@ export default {
         ...mapStores(useCategoriesStore),
     },
     methods: {
+        getDetail() {
+            let id = this.$route.params.id;
+            try {
+                apiHelper
+                    .get('/product-detail', {
+                        params: {
+                            'product_id': id,
+                        },
+                    })
+                    .then((res) => {
+                        if (res.status == 200) {
+                            console.log(res.data.data);
+                            this.product_detail = res.data.data.product;
+                            this.product_feedback = res.data.data.product_feedback;
+                        }
+                    })
+            } catch (error) {
+                console.log(error)
+            }
+        },
         /*************  ✨ Windsurf Command 🌟  *************/
         /**
          * List all categories

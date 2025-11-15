@@ -17,7 +17,8 @@
 
         <div class="row g-4">
             <div v-for="product in list_products" :key="product.id" class="col-md-2_4 col-sm-6">
-                <div class="product-card text-center p-3 rounded-3 position-relative">
+                <div v-on:click="goToDetail(product.id)"
+                    class="product-card text-center p-3 rounded-3 position-relative">
                     <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
                     <img v-if="product.thumbnail_url" :src="product.thumbnail_url" @error="product.thumbnail_url = null"
                         :alt="product.title || 'Small Appliances'" class="img-fluid" />
@@ -106,6 +107,10 @@ export default {
 
         handleSortChange() {
             this.listProduct(true)
+        },
+
+        goToDetail(id) {
+            this.$router.push('/product-detail/' + id);
         },
     },
 }

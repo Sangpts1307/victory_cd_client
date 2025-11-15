@@ -74,7 +74,7 @@
                             class="nav-item has-dropdown">
                             <a v-if="category.parent_id === 0" class="nav-link" href="#">{{
                                 category.title
-                                }}</a>
+                            }}</a>
                             <ul class="dropdown-menu">
                                 <li v-for="child in category.children" :key="category.id">
                                     <a href="#">{{ child.title }}</a>
@@ -108,7 +108,6 @@ export default {
         ...mapStores(useCategoriesStore),
     },
     methods: {
-        /*************  ✨ Windsurf Command 🌟  *************/
         logout() {
             try {
                 apiHelper

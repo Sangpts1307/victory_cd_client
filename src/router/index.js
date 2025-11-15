@@ -3,10 +3,15 @@ import SignupView from '@/views/SignupView.vue'
 import HomeView from '@/views/HomeView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import ProductView from '@/views/ProductView.vue'
-import ProductDetailView from '@/views/ProductDetailView.vue'      
+import ProductDetailView from '@/views/ProductDetailView.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
+    scrollBehavior(to, from, savedPosition) {
+        return {
+            top: 0,
+        }
+    },
     routes: [
         {
             path: '/',
@@ -33,10 +38,10 @@ const router = createRouter({
             component: ProductView,
         },
         {
-            path: '/product-detail',
+            path: '/product-detail/:id',
             name: 'ProductDetail',
-            component: ProductDetailView
-        }
+            component: ProductDetailView,
+        },
     ],
 })
 
