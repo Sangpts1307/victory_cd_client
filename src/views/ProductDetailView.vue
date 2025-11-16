@@ -321,6 +321,8 @@ export default {
                             this.product_feedbacks = res.data.data.product_feedbacks
                             this.feedback_count = res.data.data.feedback_count
                             this.similar_products = res.data.data.similar_products
+
+                            window.scrollTo(0, 0)
                         }
                     })
             } catch (error) {
