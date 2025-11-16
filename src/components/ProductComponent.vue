@@ -2,10 +2,11 @@
     <div class="product-section">
         <div class="section-header d-flex justify-content-between align-items-center mb-4">
             <h4 v-if="showTitle" class="fw-bold">Khám phá sản phẩm</h4>
+
             <div v-if="showSortType" class="sort-container">
                 <label for="sort" class="me-2 fw-semibold">Sắp xếp theo:</label>
-                <select id="sort" v-model="selectedSort" @change="handleSortChange"
-                    class="form-select form-select-sm d-inline-block w-auto">
+
+                <select id="sort" v-model="localSelectedSort" class="form-select form-select-sm d-inline-block w-auto">
                     <option value="default">Mặc định</option>
                     <option value="newest">Mới nhất</option>
                     <option value="featured">Nổi bật nhất</option>
@@ -20,41 +21,45 @@
                 <div v-on:click="goToDetail(product.id)"
                     class="product-card text-center p-3 rounded-3 position-relative">
                     <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
+
                     <img v-if="product.thumbnail_url" :src="product.thumbnail_url" @error="product.thumbnail_url = null"
-                        :alt="product.title || 'Small Appliances'" class="img-fluid" />
+                        :alt="product.name" class="img-fluid" />
                     <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
+
                     <h6 class="fw-semibold product-name">{{ product.name }}</h6>
+
                     <p class="text-warning">
                         <span>{{ "★".repeat(product.score) }}{{ "☆".repeat(5 - product.score) }}</span>
-                        <!-- <span v-for="i in product.score" :key="i">★</span> -->
                     </p>
 
                     <p class="text-dark fw-bold mb-2">
                         {{
-                            new Intl.NumberFormat('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND',
+                            new Intl.NumberFormat("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
                             }).format(product.price)
                         }}
                     </p>
                     <h6 class="fw-light product-name fst-italic text-muted">{{ product.total_sold }} lượt mua</h6>
 
                     <div class="product-actions">
-                        <button class="btn btn-add-cart w-100 mb-2">Thêm vào giỏ</button>
+                        <button v-on:click="addToCart(product.id)" class="btn btn-add-cart w-100 mb-2">Thêm vào
+                            giỏ</button>
                         <button class="btn btn-buy-now w-100">Mua ngay</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div v-if="showSeeMore" class="seemore-container">
-            <p @click="listProduct()" class="btn-seemore">Xem thêm</p>
+        <div v-if="showSeeMore && canLoadMore" class="seemore-container">
+            <p @click="loadMore" class="btn-seemore">Xem thêm</p>
         </div>
     </div>
 </template>
 
 <script>
-import { apiHelper } from '@/helpers/axios'
+import { useProductStore } from "@/stores/products";
+import { mapState } from "pinia";
 
 export default {
     props: {
@@ -70,51 +75,66 @@ export default {
         showTitle: {
             type: Boolean,
             default: true,
-        }
+        },
     },
-    data() {
-        return {
-            list_products: [],
-            offset: 0,
-            selectedSort: 'default',
-        }
+
+    computed: {
+        ...mapState(useProductStore, ["list", "selectedSort", "selectedCategory", "loading", "lastFetchCount"]),
+
+        list_products() {
+            return this.list;
+        },
+
+        localSelectedSort: {
+            get() {
+                const store = useProductStore();
+                return store.selectedSort;
+            },
+            set(val) {
+                const store = useProductStore();
+                store.setSort(val);
+            },
+        },
+
+        canLoadMore() {
+            return this.lastFetchCount > 0;
+        },
     },
-    mounted() {
-        this.listProduct()
-    },
+
     methods: {
-        listProduct(reset = false) {
-            if (reset) {
-                this.offset = 0
-                this.list_products = []
-            }
-
-            apiHelper
-                .get('/list-product', {
-                    params: {
-                        offset: this.offset,
-                        sort_type: this.selectedSort,
-                    },
-                })
-                .then((res) => {
-                    if (res.status === 200) {
-                        const newProducts = res.data.data.list_products || []
-                        this.list_products.push(...newProducts)
-                        this.offset += newProducts.length
-                    }
-                })
-                .catch((err) => console.log(err))
-        },
-
-        handleSortChange() {
-            this.listProduct(true)
-        },
-
         goToDetail(id) {
-            this.$router.push('/product-detail/' + id);
+            this.$router.push("/product-detail/" + id);
+        },
+
+        loadMore() {
+            const store = useProductStore();
+            store.loadMore();
+        },
+
+        addToCart(id) {
+            // TODO add to session storage
+        }
+    },
+
+    mounted() {
+        if (this.$route.path !== "/product") {
+            const store = useProductStore();
+            // nếu chưa có dữ liệu thì load
+            if (!store.list.length) {
+                store.fetchProducts(true);
+            }
+        }
+    },
+
+    watch: {
+        "$route.query.category"(newCategory) {
+            if (this.$route.path === "/product") {
+                const store = useProductStore();
+                store.setCategory(newCategory || null);
+            }
         },
     },
-}
+};
 </script>
 
 <style scoped>

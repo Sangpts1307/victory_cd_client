@@ -6,11 +6,8 @@
 
         <div class="main-header">
             <div class="container-custom d-flex align-items-center justify-content-between">
-                <div
-                    v-on:click="goToHome()"
-                    class="navbar-brand text-decoration-none text-dark"
-                    style="cursor: pointer"
-                >
+                <div v-on:click="goToHome()" class="navbar-brand text-decoration-none text-dark"
+                    style="cursor: pointer">
                     Victory Store <small>technology</small>
                 </div>
 
@@ -26,10 +23,8 @@
                 <div class="header-actions">
                     <div class="account-dropdown">
                         <input type="checkbox" id="toggle-account" />
-                        <label
-                            for="toggle-account"
-                            class="account-toggle d-flex align-items-center text-decoration-none"
-                        >
+                        <label for="toggle-account"
+                            class="account-toggle d-flex align-items-center text-decoration-none">
                             <i class="bi bi-person"></i> Tài khoản
                         </label>
 
@@ -38,33 +33,17 @@
                             <a href="#">Lịch sử mua hàng</a>
                             <a v-if="token !== null" href="#" @click="logout()">
                                 Đăng xuất
-                                <svg
-                                    width="20"
-                                    height="20"
-                                    aria-hidden="true"
-                                    role="img"
-                                    focusable="false"
-                                    viewBox="0 0 32 32"
-                                >
-                                    <path
-                                        d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"
-                                    ></path>
+                                <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
+                                    viewBox="0 0 32 32">
+                                    <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
                                     <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
                                 </svg>
                             </a>
                             <a v-else href="#" @click="redirectLogin()">
                                 Đăng nhập
-                                <svg
-                                    width="20"
-                                    height="20"
-                                    aria-hidden="true"
-                                    role="img"
-                                    focusable="false"
-                                    viewBox="0 0 32 32"
-                                >
-                                    <path
-                                        d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"
-                                    ></path>
+                                <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
+                                    viewBox="0 0 32 32">
+                                    <path d="M16 25.6h-9.6v-19.2h9.6v3.2h3.2v-6.4h-16v25.6h16v-6.4h-3.2z"></path>
                                     <path d="M28.8 16l-6.4-5.6v4h-11.2v3.2h11.2v4z"></path>
                                 </svg>
                             </a>
@@ -92,17 +71,17 @@
 
                 <nav class="menu-nav">
                     <ul class="nav">
-                        <li
-                            v-for="category in categoriesStore.listCategory"
-                            :key="category.id"
-                            class="nav-item has-dropdown"
-                        >
-                            <a v-if="category.parent_id === 0" class="nav-link" href="#">{{
-                                category.title
-                            }}</a>
+                        <li v-for="category in categoriesStore.listCategory" :key="category.id"
+                            class="nav-item has-dropdown">
+                            <a v-if="category.parent_id === 0" class="nav-link"
+                                @click.prevent="$router.push('/product?category=' + category.id)">
+                                {{ category.title }}
+                            </a>
+
                             <ul class="dropdown-menu">
-                                <li v-for="child in category.children" :key="category.id">
-                                    <a href="#">{{ child.title }}</a>
+                                <li v-for="child in category.children" :key="child.id">
+                                    <a @click.prevent="$router.push('/product?category=' + child.id)">{{ child.title
+                                    }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -126,8 +105,8 @@ export default {
             token: sessionStorage.getItem('token'),
         }
     },
-    created() {},
-    mounted() {},
+    created() { },
+    mounted() { },
     watch: {},
     computed: {
         ...mapStores(useCategoriesStore),
@@ -385,7 +364,7 @@ body {
 }
 
 /* Hiện dropdown khi hover */
-.nav-item.has-dropdown:hover > .dropdown-menu {
+.nav-item.has-dropdown:hover>.dropdown-menu {
     display: block;
     opacity: 1;
     visibility: visible;
@@ -511,7 +490,7 @@ body {
     background: #f9f9f9;
 }
 
-#toggle-account:checked ~ .dropdown-menu-account {
+#toggle-account:checked~.dropdown-menu-account {
     display: block;
 }
 

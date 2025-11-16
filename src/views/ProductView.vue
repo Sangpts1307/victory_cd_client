@@ -2,7 +2,6 @@
     <HeaderComponent />
     <div class="best-seller container mt-5">
         <div class="section-header d-flex justify-content-between align-items-center mb-4">
-            <!-- <h4 class="fw-bold text-dark">Khám phá sản phẩm</h4> -->
         </div>
 
         <ProductComponent :showSeeMore="true" />
@@ -12,9 +11,27 @@
 </template>
 
 <script setup>
-import FooterComponent from '@/components/FooterComponent.vue';
-import HeaderComponent from '@/components/HeaderComponent.vue';
-import ProductComponent from '@/components/ProductComponent.vue';
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
+import ProductComponent from "@/components/ProductComponent.vue";
+import { useProductStore } from "@/stores/products";
+import { onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
+
+const store = useProductStore();
+const route = useRoute();
+
+onMounted(() => {
+    const cat = route.query.category || null;
+    store.setCategory(cat);
+});
+
+watch(
+    () => route.query.category,
+    (newVal) => {
+        store.setCategory(newVal || null);
+    }
+);
 </script>
 
 <style scoped>
