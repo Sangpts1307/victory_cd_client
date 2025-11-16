@@ -5,10 +5,13 @@
         <div class="row g-5">
             <!-- Cột trái: ảnh sản phẩm -->
             <div class="col-md-6 text-center">
-                <img :src="product_detail.thumbnail_url" class="img-fluid rounded zoom-on-hover"
-                    :alt="product_detail.name" style="max-height: 500px; object-fit: contain;" />
+                <img
+                    :src="product_detail.thumbnail_url"
+                    class="img-fluid rounded zoom-on-hover"
+                    :alt="product_detail.name"
+                    style="max-height: 500px; object-fit: contain"
+                />
             </div>
-
 
             <!-- Cột phải: thông tin sản phẩm -->
             <div class="col-md-6">
@@ -17,17 +20,24 @@
                 <p class="text-muted mb-1">trong {{ product_detail.category_title }}</p>
 
                 <div class="mb-3">
-                    <span style="font-size: 20px; font-weight: bold; color: #ffc107;">
+                    <span style="font-size: 20px; font-weight: bold; color: #ffc107">
                         {{ Number(product_detail.score).toFixed(2) }}
                     </span>
-                    <span class="text-warning" style="color: #ffc107; margin: 0 5px;">
-                        {{ "★".repeat(product_detail.score) }}{{ "☆".repeat(5 - product_detail.score) }}
+                    <span class="text-warning" style="color: #ffc107; margin: 0 5px">
+                        {{ '★'.repeat(product_detail.score)
+                        }}{{ '☆'.repeat(5 - product_detail.score) }}
                     </span>
-                    <span style="font-size: 16px; color: #6c757d; font-weight: semi-bold; margin-left: 5px;">
+                    <span
+                        style="
+                            font-size: 16px;
+                            color: #6c757d;
+                            font-weight: semi-bold;
+                            margin-left: 5px;
+                        "
+                    >
                         | Đã bán {{ product_detail.total_sold }} sản phẩm
                     </span>
                 </div>
-
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="fw-bold text-dark m-0">
@@ -40,28 +50,28 @@
 
                 <!-- Nút hành động -->
                 <div class="d-flex align-items-center mb-4">
-                    <div class="input-group" style="width: 120px;">
+                    <div class="input-group" style="width: 120px">
                         <button class="btn btn-outline-secondary" @click="minus">-</button>
-                        <input type="number" class="form-control text-center no-spinner" v-model="quantity" />
+                        <input
+                            type="number"
+                            class="form-control text-center no-spinner"
+                            v-model="quantity"
+                        />
                         <button class="btn btn-outline-secondary" @click="plus">+</button>
                     </div>
                 </div>
-
-
 
                 <div class="d-flex gap-3 mb-3 flex-wrap">
                     <button class="btn px-4 py-3 flex-fill btn-add-cart">
                         <i class="bi bi-cart-plus me-2"></i> Thêm vào giỏ
                     </button>
 
-                    <button class="btn px-4 py-3 flex-fill btn-buy-now">
-                        Mua ngay
-                    </button>
+                    <button class="btn px-4 py-3 flex-fill btn-buy-now">Mua ngay</button>
                 </div>
 
                 <!-- Thông tin thêm -->
                 <ul class="list-unstyled small text-muted mt-4">
-                    <li>🚚 Miễn phí giao hàng & hoàn hàng </li>
+                    <li>🚚 Miễn phí giao hàng & hoàn hàng</li>
                     <li>📦 Vận chuyển đến tay trong 3-5 ngày làm việc</li>
                 </ul>
             </div>
@@ -71,14 +81,26 @@
         <div class="product-description mt-5">
             <ul class="nav nav-tabs" id="productTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc"
-                        type="button" role="tab">
+                    <button
+                        class="nav-link active"
+                        id="desc-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#desc"
+                        type="button"
+                        role="tab"
+                    >
                         Mô tả
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button"
-                        role="tab">
+                    <button
+                        class="nav-link"
+                        id="review-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#review"
+                        type="button"
+                        role="tab"
+                    >
                         Đánh giá
                     </button>
                 </li>
@@ -98,11 +120,14 @@
                                 <h5 class="fw-bold mb-3">Đánh giá</h5>
 
                                 <div class="text-center mb-3">
-                                    <h1 class="fw-bold mb-0">{{ product_detail.score }}
+                                    <h1 class="fw-bold mb-0">
+                                        {{ product_detail.score }}
                                         <span class="text-warning mb-0">★</span>
                                     </h1>
 
-                                    <p class="text-muted small">{{ feedback_count }} lượt đánh giá</p>
+                                    <p class="text-muted small">
+                                        {{ feedback_count }} lượt đánh giá
+                                    </p>
                                 </div>
                                 <hr />
                                 <div class="mt-3">
@@ -117,20 +142,38 @@
                         <!-- Customer reviews -->
                         <div class="col-md-8">
                             <h5 class="fw-bold mb-3">Khách hàng đánh giá ({{ feedback_count }})</h5>
-                            <div v-for="fb in product_feedbacks" :key="fb.id" class="border-top pt-3">
+                            <div
+                                v-for="fb in product_feedbacks"
+                                :key="fb.id"
+                                class="border-top pt-3"
+                            >
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="d-flex align-items-center">
-                                        <img :src="fb.user_avatar ? fb.user_avatar : 'https://ui-avatars.com/api/?name=' + fb.user_name"
-                                            alt="Avatar" class="rounded-circle me-3" width="48" height="48" />
+                                        <img
+                                            :src="
+                                                fb.user_avatar
+                                                    ? fb.user_avatar
+                                                    : 'https://ui-avatars.com/api/?name=' +
+                                                      fb.user_name
+                                            "
+                                            alt="Avatar"
+                                            class="rounded-circle me-3"
+                                            width="48"
+                                            height="48"
+                                        />
                                         <div>
                                             <h6 class="mb-0 fw-semibold">{{ fb.user_name }}</h6>
-                                            <small class="text-muted">{{ new
-                                                Date(fb.created_at).toLocaleDateString('vi-VN') }}
+                                            <small class="text-muted"
+                                                >{{
+                                                    new Date(fb.created_at).toLocaleDateString(
+                                                        'vi-VN',
+                                                    )
+                                                }}
                                             </small>
                                         </div>
                                     </div>
                                     <div class="text-warning">
-                                        {{ "★".repeat(fb.score) }}{{ "☆".repeat(5 - fb.score) }}
+                                        {{ '★'.repeat(fb.score) }}{{ '☆'.repeat(5 - fb.score) }}
                                     </div>
                                 </div>
 
@@ -141,7 +184,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -152,15 +194,32 @@
         </div>
         <div class="row g-4">
             <div v-for="product in similar_products" :key="product.id" class="col-md-2_4 col-sm-6">
-                <div v-on:click="goToDetail(product.id)"
-                    class="product-card text-center p-3 rounded-3 position-relative">
-                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                    <img v-if="product.thumbnail_url" :src="product.thumbnail_url" @error="product.thumbnail_url = null"
-                        :alt="product.title || 'Small Appliances'" class="img-fluid" />
-                    <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
+                <div
+                    v-on:click="getDetail(product.id)"
+                    class="product-card text-center p-3 rounded-3 position-relative"
+                >
+                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2"
+                        >Hot</span
+                    >
+                    <img
+                        v-if="product.thumbnail_url"
+                        :src="product.thumbnail_url"
+                        @error="product.thumbnail_url = null"
+                        :alt="product.title || 'Small Appliances'"
+                        class="img-fluid"
+                    />
+                    <img
+                        v-else
+                        src="@/assets/default_thumbnail.jpg"
+                        alt="Default Image"
+                        class="img-fluid"
+                    />
                     <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                     <p class="text-warning">
-                        <span>{{ "★".repeat(product.score) }}{{ "☆".repeat(5 - product.score) }}</span>
+                        <span
+                            >{{ '★'.repeat(product.score)
+                            }}{{ '☆'.repeat(5 - product.score) }}</span
+                        >
                         <!-- <span v-for="i in product.score" :key="i">★</span> -->
                     </p>
 
@@ -172,7 +231,9 @@
                             }).format(product.price)
                         }}
                     </p>
-                    <h6 class="fw-light product-name fst-italic text-muted">{{ product.total_sold }} lượt mua</h6>
+                    <h6 class="fw-light product-name fst-italic text-muted">
+                        {{ product.total_sold }} lượt mua
+                    </h6>
 
                     <div class="product-actions">
                         <button class="btn btn-add-cart w-100 mb-2">Thêm vào giỏ</button>
@@ -181,7 +242,6 @@
                 </div>
             </div>
         </div>
-
 
         <div v-if="showSeeMore" class="seemore-container">
             <p @click="listProduct()" class="btn-seemore">Xem thêm</p>
@@ -200,14 +260,14 @@ import ProductComponent from '@/components/ProductComponent.vue'
 import { apiHelper } from '@/helpers/axios'
 import { mapStores } from 'pinia'
 import { useCategoriesStore } from '@/stores/categories'
-import { ref } from "vue";
+import { ref } from 'vue'
 
-const quantity = ref(1);
+const quantity = ref(1)
 
-const plus = () => quantity.value++;
+const plus = () => quantity.value++
 const minus = () => {
-    if (quantity.value > 1) quantity.value--;
-};
+    if (quantity.value > 1) quantity.value--
+}
 </script>
 
 <script>
@@ -227,7 +287,7 @@ export default {
             similar_products: [],
         }
     },
-    created() { },
+    created() {},
     mounted() {
         this.getDetail()
         this.listProduct()
@@ -240,25 +300,27 @@ export default {
     },
     methods: {
         formatPrice(value) {
-            if (!value) return '0 đ';
-            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
+            if (!value) return '0 đ'
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ'
         },
-        getDetail() {
-            let id = this.$route.params.id;
+        getDetail(id) {
+            if (id == null) {
+                id = this.$route.params.id
+            }
             try {
                 apiHelper
                     .get('/product-detail', {
                         params: {
-                            'product_id': id,
+                            product_id: id,
                         },
                     })
                     .then((res) => {
                         if (res.status == 200) {
-                            console.log(res.data.data);
-                            this.product_detail = res.data.data.product;
-                            this.product_feedbacks = res.data.data.product_feedbacks;
-                            this.feedback_count = res.data.data.feedback_count;
-                            this.similar_products = res.data.data.similar_products;
+                            console.log(res.data.data)
+                            this.product_detail = res.data.data.product
+                            this.product_feedbacks = res.data.data.product_feedbacks
+                            this.feedback_count = res.data.data.feedback_count
+                            this.similar_products = res.data.data.similar_products
                         }
                     })
             } catch (error) {
@@ -321,9 +383,6 @@ export default {
             } catch (error) {
                 console.log(error)
             }
-        },
-        goToDetail(id) {
-            this.$router.push('/product-detail/' + id);
         },
     },
 }
@@ -431,13 +490,13 @@ body {
 }
 
 /* Ẩn nút tăng/giảm mặc định của input number trên mọi trình duyệt */
-input[type=number] {
+input[type='number'] {
     -moz-appearance: textfield;
     /* Firefox */
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     /* Chrome, Safari, Edge */
     margin: 0;
@@ -553,7 +612,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 @media (prefers-color-scheme: dark) {
-
     html,
     body,
     h1,
