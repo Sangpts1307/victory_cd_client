@@ -21,4 +21,5 @@ export const useCategoriesStore = defineStore('categories', {
                 })
         },
     },
+    persist: true,
 })
