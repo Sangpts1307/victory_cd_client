@@ -126,6 +126,8 @@ export default {
     },
 
     mounted() {
+        const store = useProductStore();
+        store.fetchProducts(true);
         if (this.$route.path !== "/product") {
             const store = useProductStore();
             if (!store.list.length) {
@@ -141,6 +143,14 @@ export default {
                 store.setCategory(newCategory || null);
             }
         },
+        "$route.query.category"(newCategory) {
+            const store = useProductStore();
+            store.setCategory(newCategory || null);
+        },
+        "$route.query.search_key"(newKey) {
+            const store = useProductStore();
+            store.setSearchKey(newKey || null);
+        }
     },
 };
 </script>

@@ -13,7 +13,7 @@
 
                 <div class="search-wrap">
                     <div class="search-box">
-                        <input type="text" placeholder="Tìm kiếm..." />
+                        <input type="text" placeholder="Tìm kiếm..." v-model="searchKey" />
                     </div>
                     <button class="btn-search">
                         <i class="bi bi-search"></i>
@@ -81,7 +81,7 @@
                             <ul class="dropdown-menu">
                                 <li v-for="child in category.children" :key="child.id">
                                     <a @click.prevent="$router.push('/product?category=' + child.id)">{{ child.title
-                                    }}</a>
+                                        }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -96,6 +96,21 @@
 import { apiHelper } from '@/helpers/axios'
 import { useCategoriesStore } from '@/stores/categories'
 import { mapStores } from 'pinia'
+import { ref, watch } from 'vue'
+import { useProductStore } from '@/stores/products'
+
+const searchKey = ref('')
+const productStore = useProductStore()
+
+let debounceTimeout = null
+watch(searchKey, (newVal) => {
+    clearTimeout(debounceTimeout)
+    debounceTimeout = setTimeout(() => {
+        productStore.setSearchKey(newVal || null)
+        productStore.selectedCategory = null
+        window.history.replaceState(null, '', `/product?search_key=${encodeURIComponent(newVal)}`)
+    }, 300)
+})
 </script>
 
 <script>

@@ -8,6 +8,7 @@ export const useProductStore = defineStore('products', {
         offset: 0,
         selectedSort: 'default',
         selectedCategory: null,
+        searchKey: null,
         loading: false,
         lastFetchCount: 0,
     }),
@@ -27,6 +28,7 @@ export const useProductStore = defineStore('products', {
                     offset: this.offset,
                     sort_type: this.selectedSort,
                     category_id: this.selectedCategory,
+                    search_key: this.searchKey,
                 }
 
                 const res = await apiHelper.get('/list-product', { params })
@@ -42,6 +44,11 @@ export const useProductStore = defineStore('products', {
             } finally {
                 this.loading = false
             }
+        },
+
+        async setSearchKey(key) {
+            this.searchKey = key
+            await this.fetchProducts(true)
         },
 
         async setSort(sortValue) {
