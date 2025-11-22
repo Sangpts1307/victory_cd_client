@@ -9,9 +9,9 @@
 import ImageSliderComponent from '@/components/ImageSliderComponent.vue'
 
 const bannerImages = [
-    new URL('../assets/banner1.jpg', import.meta.url).href,
-    new URL('../assets/banner2.jpg', import.meta.url).href,
-    new URL('../assets/banner3.jpg', import.meta.url).href
+    new URL('../assets/ban2.png', import.meta.url).href,
+    new URL('../assets/ban1.png', import.meta.url).href,
+    new URL('../assets/ban3.png', import.meta.url).href
 ]
 </script>
 
