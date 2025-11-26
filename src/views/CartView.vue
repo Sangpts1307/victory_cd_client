@@ -9,51 +9,25 @@
                 <!-- LEFT: Cart Items -->
                 <div class="col-md-8">
 
-                    <!-- Product 1 -->
-                    <div class="row product-row align-items-center">
+                    <div class="row product-row align-items-center" v-for="(item, index) in products" :key="index">
+
                         <div class="col-3 col-md-2">
-                            <img src='../assets/headphone.png' class="product-img">
+                            <img src="../assets/headphone.png" class="product-img">
                         </div>
 
                         <div class="col-9 col-md-5">
-                            <div class="product-name">Tai nghe Bluetooth Sony</div>
-                            <div>100.00₫</div>
+                            <div class="product-name">{{ item.name }}</div>
+                            <div>{{ item.price }}₫</div>
 
                             <div class="d-flex align-items-center mt-2">
-                                <button class="qty-btn">-</button>
-                                <div class="qty-number">1</div>
-                                <button class="qty-btn">+</button>
+                                <button class="qty-btn" @click="decrease(index)">-</button>
+                                <div class="qty-number">{{ item.quantity }}</div>
+                                <button class="qty-btn" @click="increase(index)">+</button>
                             </div>
                         </div>
 
                         <div class="col-md-3 text-md-right mt-3 mt-md-1">
-                            <strong>100.00₫</strong>
-                        </div>
-
-                        <div class="col-md-2 text-md-right">
-                            <span class="trash-icon">&#128465;</span>
-                        </div>
-                    </div>
-
-                    <!-- Product 2 -->
-                    <div class="row product-row align-items-center">
-                        <div class="col-3 col-md-2">
-                            <img src='../assets/headphone.png' class="product-img">
-                        </div>
-
-                        <div class="col-9 col-md-5">
-                            <div class="product-name">Tai nghe Bluetooth Sony</div>
-                            <div>24.35₫</div>
-
-                            <div class="d-flex align-items-center mt-2">
-                                <button class="qty-btn">-</button>
-                                <div class="qty-number">1</div>
-                                <button class="qty-btn">+</button>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 text-md-right mt-3 mt-md-1">
-                            <strong>24.35₫</strong>
+                            <strong>{{ (item.price * item.quantity).toFixed(2) }}₫</strong>
                         </div>
 
                         <div class="col-md-2 text-md-right">
@@ -80,7 +54,7 @@
                             <strong>124.35₫</strong>
                         </div>
 
-                        <button class="checkout-btn">Proceed to Checkout</button>
+                        <button class="checkout-btn">Tiến hành thanh toán</button>
                     </div>
                 </div>
 
@@ -97,15 +71,21 @@ import axios from 'axios'
 import HeaderComponent from '../components/HeaderComponent.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import { apiHelper } from '@/helpers/axios'
-import { mapStores } from 'pinia'
-import { useCategoriesStore } from '@/stores/categories'
 import { ref } from 'vue'
 
-const quantity = ref(1)
+const products = ref([
+    { name: "Tai nghe Bluetooth Sony", price: 24.35, quantity: 1 },
+    { name: "Tai nghe Bluetooth Sony", price: 24.35, quantity: 1 },
+])
 
-const plus = () => quantity.value++
-const minus = () => {
-    if (quantity.value > 1) quantity.value--
+const increase = (index) => {
+    products.value[index].quantity++
+}
+
+const decrease = (index) => {
+    if (products.value[index].quantity > 1) {
+        products.value[index].quantity--
+    }
 }
 </script>
 
@@ -117,114 +97,22 @@ export default {
 
     data() {
         return {
-            product_detail: '',
-            product_feedback: '',
-            list_products: [],
-            best_products: [],
-            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
-            // categories: [],
-            similar_products: [],
+
         }
     },
     created() { },
     mounted() {
-        this.getDetail()
-        this.listProduct()
-        this.bestProducts()
-        this.categoriesStore.fetchListCategory()
     },
     watch: {},
     computed: {
-        ...mapStores(useCategoriesStore),
+
     },
     methods: {
         formatPrice(value) {
             if (!value) return '0 đ'
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ'
         },
-        getDetail(id) {
-            if (id == null) {
-                id = this.$route.params.id
-            }
-            try {
-                apiHelper
-                    .get('/product-detail', {
-                        params: {
-                            product_id: id,
-                        },
-                    })
-                    .then((res) => {
-                        if (res.status == 200) {
-                            console.log(res.data.data)
-                            this.product_detail = res.data.data.product
-                            this.product_feedbacks = res.data.data.product_feedbacks
-                            this.feedback_count = res.data.data.feedback_count
-                            this.similar_products = res.data.data.similar_products
 
-                            window.scrollTo(0, 0)
-                        }
-                    })
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        /*************  ✨ Windsurf Command 🌟  *************/
-        /**
-         * List all categories
-         * @return {Promise<void>}
-         */
-        listProduct() {
-            try {
-                /**
-                 * Make a GET request to the API to list all products
-                 * @return {Promise<AxiosResponse>}
-                 */
-                apiHelper
-                    .get('/list-product')
-                    .then((res) => {
-                        // console.log(res);
-                        if (res.status == 200) {
-                            /**
-                             * Set the products data to the component's data
-                             * @param {Object[]} products - The products data
-                             */
-                            this.list_products = res.data.data.list_products
-                            // console.log(this.list_products);
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-            } catch (error) {
-                console.log(error)
-            }
-        },
-        bestProducts() {
-            try {
-                /**
-                 * Make a GET request to the API to list 4 best products
-                 * @return {Promise<AxiosResponse>}
-                 */
-                apiHelper
-                    .get('/best-products')
-                    .then((res) => {
-                        // console.log(res);
-                        if (res.status == 200) {
-                            /**
-                             * Set the products data to the component's data
-                             * @param {Object[]} products - The best 4 products data
-                             */
-                            this.best_products = res.data.data.best_products
-                            // console.log(this.best_products);
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-            } catch (error) {
-                console.log(error)
-            }
-        },
     },
 }
 </script>
@@ -238,7 +126,7 @@ body {
 .container {
     max-width: 1200px;
     margin: auto;
-    padding: 20px 20px 0 20px;
+    padding: 0 20px 0 20px;
 }
 
 .cart-title {
@@ -275,14 +163,20 @@ body {
 }
 
 .trash-icon {
-    font-size: 20px;
+    font-size: 26px;
     cursor: pointer;
-    color: #777;
+    color: #e63946;
+    /* đỏ đậm */
+    transition: 0.2s ease;
 }
 
 .trash-icon:hover {
-    color: #333;
+    color: #b81c2a;
+    /* đỏ đậm hơn khi hover */
+    transform: scale(1.15);
+    /* hơi lớn hơn khi hover */
 }
+
 
 /* Right side */
 .cart-box {

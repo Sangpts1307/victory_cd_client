@@ -5,12 +5,8 @@
         <div class="row g-5">
             <!-- Cột trái: ảnh sản phẩm -->
             <div class="col-md-6 text-center">
-                <img
-                    :src="product_detail.thumbnail_url"
-                    class="img-fluid rounded zoom-on-hover"
-                    :alt="product_detail.name"
-                    style="max-height: 500px; object-fit: contain"
-                />
+                <img :src="product_detail.thumbnail_url" class="img-fluid rounded zoom-on-hover"
+                    :alt="product_detail.name" style="max-height: 500px; object-fit: contain" />
             </div>
 
             <!-- Cột phải: thông tin sản phẩm -->
@@ -27,14 +23,12 @@
                         {{ '★'.repeat(product_detail.score)
                         }}{{ '☆'.repeat(5 - product_detail.score) }}
                     </span>
-                    <span
-                        style="
+                    <span style="
                             font-size: 16px;
                             color: #6c757d;
                             font-weight: semi-bold;
                             margin-left: 5px;
-                        "
-                    >
+                        ">
                         | Đã bán {{ product_detail.total_sold }} sản phẩm
                     </span>
                 </div>
@@ -52,11 +46,7 @@
                 <div class="d-flex align-items-center mb-4">
                     <div class="input-group" style="width: 120px">
                         <button class="btn btn-outline-secondary" @click="minus">-</button>
-                        <input
-                            type="number"
-                            class="form-control text-center no-spinner"
-                            v-model="quantity"
-                        />
+                        <input type="number" class="form-control text-center no-spinner" v-model="quantity" />
                         <button class="btn btn-outline-secondary" @click="plus">+</button>
                     </div>
                 </div>
@@ -81,26 +71,14 @@
         <div class="product-description mt-5">
             <ul class="nav nav-tabs" id="productTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button
-                        class="nav-link active"
-                        id="desc-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#desc"
-                        type="button"
-                        role="tab"
-                    >
+                    <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc"
+                        type="button" role="tab">
                         Mô tả
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button
-                        class="nav-link"
-                        id="review-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#review"
-                        type="button"
-                        role="tab"
-                    >
+                    <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button"
+                        role="tab">
                         Đánh giá
                     </button>
                 </li>
@@ -142,33 +120,21 @@
                         <!-- Customer reviews -->
                         <div class="col-md-8">
                             <h5 class="fw-bold mb-3">Khách hàng đánh giá ({{ feedback_count }})</h5>
-                            <div
-                                v-for="fb in product_feedbacks"
-                                :key="fb.id"
-                                class="border-top pt-3"
-                            >
+                            <div v-for="fb in product_feedbacks" :key="fb.id" class="border-top pt-3">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="d-flex align-items-center">
-                                        <img
-                                            :src="
-                                                fb.user_avatar
-                                                    ? fb.user_avatar
-                                                    : 'https://ui-avatars.com/api/?name=' +
-                                                      fb.user_name
-                                            "
-                                            alt="Avatar"
-                                            class="rounded-circle me-3"
-                                            width="48"
-                                            height="48"
-                                        />
+                                        <img :src="fb.user_avatar
+                                                ? fb.user_avatar
+                                                : 'https://ui-avatars.com/api/?name=' +
+                                                fb.user_name
+                                            " alt="Avatar" class="rounded-circle me-3" width="48" height="48" />
                                         <div>
                                             <h6 class="mb-0 fw-semibold">{{ fb.user_name }}</h6>
-                                            <small class="text-muted"
-                                                >{{
-                                                    new Date(fb.created_at).toLocaleDateString(
-                                                        'vi-VN',
-                                                    )
-                                                }}
+                                            <small class="text-muted">{{
+                                                new Date(fb.created_at).toLocaleDateString(
+                                                    'vi-VN',
+                                                )
+                                            }}
                                             </small>
                                         </div>
                                     </div>
@@ -194,32 +160,16 @@
         </div>
         <div class="row g-4">
             <div v-for="product in similar_products" :key="product.id" class="col-md-2_4 col-sm-6">
-                <div
-                    v-on:click="getDetail(product.id)"
-                    class="product-card text-center p-3 rounded-3 position-relative"
-                >
-                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2"
-                        >Hot</span
-                    >
-                    <img
-                        v-if="product.thumbnail_url"
-                        :src="product.thumbnail_url"
-                        @error="product.thumbnail_url = null"
-                        :alt="product.title || 'Small Appliances'"
-                        class="img-fluid"
-                    />
-                    <img
-                        v-else
-                        src="@/assets/default_thumbnail.jpg"
-                        alt="Default Image"
-                        class="img-fluid"
-                    />
+                <div v-on:click="getDetail(product.id)"
+                    class="product-card text-center p-3 rounded-3 position-relative">
+                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
+                    <img v-if="product.thumbnail_url" :src="product.thumbnail_url" @error="product.thumbnail_url = null"
+                        :alt="product.title || 'Small Appliances'" class="img-fluid" />
+                    <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
                     <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                     <p class="text-warning">
-                        <span
-                            >{{ '★'.repeat(product.score)
-                            }}{{ '☆'.repeat(5 - product.score) }}</span
-                        >
+                        <span>{{ '★'.repeat(product.score)
+                        }}{{ '☆'.repeat(5 - product.score) }}</span>
                         <!-- <span v-for="i in product.score" :key="i">★</span> -->
                     </p>
 
@@ -287,7 +237,7 @@ export default {
             similar_products: [],
         }
     },
-    created() {},
+    created() { },
     mounted() {
         this.getDetail()
         this.listProduct()
@@ -614,6 +564,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 @media (prefers-color-scheme: dark) {
+
     html,
     body,
     h1,
