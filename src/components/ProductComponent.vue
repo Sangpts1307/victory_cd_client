@@ -69,6 +69,7 @@
 <script>
 import { useProductStore } from "@/stores/products";
 import { mapState } from "pinia";
+import { useCartStore } from "@/stores/cart";
 
 export default {
     props: {
@@ -121,7 +122,13 @@ export default {
         },
 
         addToCart(id) {
-            // TODO add to session storage
+            const product = this.list_products.find(p => p.id === id);
+            if (!product) return;
+
+            const cartStore = useCartStore();
+            cartStore.addToCart(product);
+
+            alert("Sản phẩm đã được thêm vào giỏ hàng của bạn");
         }
     },
 

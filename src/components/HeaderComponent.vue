@@ -50,11 +50,11 @@
                         </div>
                     </div>
 
-                    <div class="cart-badge">
+                    <div v-on:click="goToCart()" class="cart-badge">
                         <a href="#" class="d-flex align-items-center text-decoration-none">
                             <i class="bi bi-cart"></i> Giỏ hàng
                         </a>
-                        <span class="badge">4</span>
+                        <span class="badge">{{ cartCount }}</span>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                             <ul class="dropdown-menu">
                                 <li v-for="child in category.children" :key="child.id">
                                     <a @click.prevent="$router.push('/product?category=' + child.id)">{{ child.title
-                                        }}</a>
+                                    }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -118,6 +118,7 @@ export default {
     data() {
         return {
             token: sessionStorage.getItem('token'),
+            cartCount: JSON.parse(localStorage.getItem('cart') || '[]').length,
         }
     },
     created() { },
@@ -152,6 +153,9 @@ export default {
         goToHome() {
             this.$router.push('/')
         },
+        goToCart() {
+            this.$router.push('/cart');
+        }
     },
     /*******  36081e40-73b1-470e-a66b-e43fa183e34a  *******/
 }
