@@ -139,6 +139,7 @@ const goToCheckout = () => {
     if (!token) {
         alert("Bạn cần đăng nhập để mua hàng, đăng nhập ngay");
         router.push("/login");
+        return;
     }
     const selectedProducts = products.value.filter(item => item.selected);
 
