@@ -148,6 +148,8 @@ const goToCheckout = () => {
         return;
     }
 
+    localStorage.setItem("checkout_items", JSON.stringify(selectedProducts));
+
     router.push("/checkout");
 };
 </script>
