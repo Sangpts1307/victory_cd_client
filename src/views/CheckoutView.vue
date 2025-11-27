@@ -219,6 +219,7 @@ export default {
 .checkout-title {
     font-size: 40px;
     font-weight: 700;
+    color: #111;
 }
 
 .checkout-box {
@@ -226,17 +227,20 @@ export default {
     padding: 20px 25px;
     border: 1px solid #e2e2e2;
     border-radius: 6px;
+    color: #111;
 }
 
 .section-title {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 15px;
+    color: #111;
 }
 
 .label-input {
     font-size: 13px;
     font-weight: 600;
+    color: #111;
 }
 
 .form-control,
@@ -244,6 +248,12 @@ export default {
     border-radius: 4px !important;
     padding: 12px;
     font-size: 14px;
+    color: #111;
+}
+
+.form-control::placeholder,
+.form-select::placeholder {
+    color: #7b7a7a;
 }
 
 .summary-box {
@@ -251,6 +261,7 @@ export default {
     padding: 20px;
     border: 1px solid #eee;
     border-radius: 6px;
+    color: #111;
 }
 
 .summary-img {
@@ -262,6 +273,7 @@ export default {
     text-decoration: none;
     font-weight: bold;
     font-size: 17px;
+    color: #111 !important;
 }
 
 .place-order-btn {
@@ -270,7 +282,7 @@ export default {
     padding: 14px;
     border: none;
     border-radius: 3px;
-    color: #fff;
+    color: #fff !important;
     font-size: 15px;
     font-weight: 600;
 }
@@ -303,10 +315,28 @@ export default {
 
 .product-total {
     min-width: 70px;
+    color: #111;
 }
 
 .price-text {
     font-size: 14px;
-    color: #666;
+    color: #111;
+}
+
+/* radio + label */
+.form-check-label {
+    color: #111;
+}
+
+.alert-danger {
+    color: #111;
+}
+
+p,
+a,
+strong,
+span,
+div {
+    color: #111;
 }
 </style>
