@@ -1,217 +1,189 @@
 <template>
-    <HeaderComponent />
+    <div>
+        <HeaderComponent />
 
-    <div class="checkout-container container py-5">
-        <h1 class="checkout-title text-center mb-5">Thanh toán</h1>
+        <div class="checkout-container container py-5">
+            <h1 class="checkout-title text-center mb-5">Thanh toán</h1>
 
-        <div class="row">
+            <div class="row">
 
-            <!-- LEFT: Checkout Form -->
-            <div class="col-md-7">
-                <!-- Contact -->
-                <div class="checkout-box mb-4">
-                    <h5 class="section-title">Thông tin giao hàng</h5>
+                <!-- LEFT -->
+                <div class="col-md-7">
+                    <div class="checkout-box mb-4">
+                        <h5 class="section-title">Thông tin giao hàng</h5>
 
-                    <label class="label-input">Email</label>
-                    <input type="email" class="form-control mb-2" placeholder="Email" />
-                    <label class="label-input">Số điện thoại</label>
-                    <input type="phone_number" class="form-control mb-2" placeholder="Nhập số điện thoại" />
-                    <label class="label-input">Địa chỉ</label>
-                    <input type="address" class="form-control mb-2" placeholder="Địa chỉ nhận hàng" />
+                        <label class="label-input">Email</label>
+                        <input v-model="customer.email" type="email" class="form-control mb-2" placeholder="Email" />
 
-                </div>
+                        <label class="label-input">Số điện thoại</label>
+                        <input v-model="customer.phone" type="tel" class="form-control mb-2"
+                            placeholder="Nhập số điện thoại" />
 
-                <!-- Payment -->
-                <div class="checkout-box mb-4">
-                    <h5 class="section-title">Phương thức thanh toán</h5>
-
-                    <div class="form-group mt-3">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment" id="paymentOnline"
-                                value="online" v-model="paymentMethod">
-                            <label class="form-check-label" for="paymentOnline">
-                                Thanh toán Online (Chuyển khoản, ví điện tử...)
-                            </label>
-                        </div>
-
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment" id="paymentOffline"
-                                value="offline" v-model="paymentMethod">
-                            <label class="form-check-label" for="paymentOffline">
-                                Thanh toán Khi nhận hàng (COD)
-                            </label>
-                        </div>
+                        <label class="label-input">Địa chỉ</label>
+                        <input v-model="customer.address" type="text" class="form-control mb-2"
+                            placeholder="Địa chỉ nhận hàng" />
                     </div>
 
-                    <div v-if="!paymentMethod" class="alert alert-danger py-2 mt-3">
-                        Vui lòng chọn phương thức thanh toán để tiếp tục.
+                    <div class="checkout-box mb-4">
+                        <h5 class="section-title">Phương thức thanh toán</h5>
+
+                        <div class="form-group mt-3">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="payment" value="online"
+                                    v-model="paymentMethod">
+                                <label class="form-check-label">Thanh toán Online</label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="payment" value="offline"
+                                    v-model="paymentMethod">
+                                <label class="form-check-label">Thanh toán Khi nhận hàng (COD)</label>
+                            </div>
+                        </div>
+
+                        <div v-if="!paymentMethod" class="alert alert-danger py-2 mt-3">
+                            Vui lòng chọn phương thức thanh toán để tiếp tục.
+                        </div>
+
+                        <p class="mt-3 small">
+                            Bằng việc tiếp tục đặt hàng, bạn đồng ý với
+                            <a href="#" class="fw-semibold text-decoration-underline">Điều khoản và Điều kiện</a>
+                            và
+                            <a href="#" class="fw-semibold text-decoration-underline">Chính sách bảo mật</a>.
+                        </p>
                     </div>
 
-                    <!-- Điều khoản -->
-                    <p class="mt-3 text-muted small">
-                        Bằng việc tiếp tục đặt hàng, bạn đồng ý với
-                        <a href="#" class="fw-semibold text-decoration-underline">Điều khoản và Điều kiện</a>
-                        và
-                        <a href="#" class="fw-semibold text-decoration-underline">Chính sách bảo mật</a>
-                        của chúng tôi.
-                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-4 gap-3">
+                        <a href="/cart" class="btn-back-cart text-dark w-50 text-start">
+                            🔙 Trở về giỏ hàng
+                        </a>
+
+                        <button class="place-order-btn btn btn-primary w-50 py-3" @click="placeOrder()">
+                            Đặt hàng
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Nút điều hướng -->
-                <div class="d-flex justify-content-between align-items-center mt-4 gap-3">
+                <!-- RIGHT -->
+                <div class="col-md-5 mt-4 mt-md-0">
+                    <div class="summary-box">
+                        <h5 class="mb-4">Tóm tắt đơn hàng</h5>
 
-                    <a href="#" class="btn-back-cart text-dark w-50 text-start">
-                        🔙 Trở về giỏ hàng
-                    </a>
+                        <div v-for="item in checkoutItems" :key="item.id"
+                            class="d-flex align-items-center mb-3 position-relative product-summary-item">
 
-                    <button class="place-order-btn btn btn-primary w-50 py-3">
-                        Đặt hàng
-                    </button>
+                            <div class="product-img-wrapper">
+                                <img :src="item.thumbnail_url || defaultThumbnail" class="summary-img" />
+                                <span class="qty-badge">{{ item.quantity }}</span>
+                            </div>
 
+                            <div class="flex-grow-1 ms-4">
+                                <strong>{{ item.name }}</strong>
+                                <div class="price-text">{{ formatPrice(item.price) }}</div>
+                            </div>
+
+                            <div class="product-total text-end">
+                                <strong>{{ formatPrice(item.price * item.quantity) }}</strong>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong style="font-size: 24px;">Tổng giá trị</strong>
+                            <strong style="font-size: 24px;">{{ formatPrice(totalValue) }}</strong>
+                        </div>
+                    </div>
                 </div>
-
 
             </div>
-
-            <!-- RIGHT: Summary -->
-            <div class="col-md-5 mt-4 mt-md-0">
-                <div class="summary-box">
-                    <h5 class="mb-4">Tóm tắt đơn hàng</h5>
-
-                    <div class="d-flex align-items-center mb-3 position-relative product-summary-item">
-                        <!-- Product image + quantity badge -->
-                        <div class="product-img-wrapper">
-                            <img src="../assets/headphone.png" class="summary-img">
-                            <span class="qty-badge">1</span>
-                        </div>
-
-                        <!-- Product details -->
-                        <div class="flex-grow-1 ms-4">
-                            <strong>NFL Ball Replica</strong>
-                            <div class="price-text">29.00₫</div>
-                        </div>
-
-                        <!-- Total price of product -->
-                        <div class="product-total text-end">
-                            <strong>29.00₫</strong>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-3 position-relative product-summary-item">
-                        <!-- Product image + quantity badge -->
-                        <div class="product-img-wrapper">
-                            <img src="../assets/headphone.png" class="summary-img">
-                            <span class="qty-badge">1</span>
-                        </div>
-
-                        <!-- Product details -->
-                        <div class="flex-grow-1 ms-4">
-                            <strong>NFL Ball Replica</strong>
-                            <div class="price-text">29.00₫</div>
-                        </div>
-
-                        <!-- Total price of product -->
-                        <div class="product-total text-end">
-                            <strong>29.00₫</strong>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-3 position-relative product-summary-item">
-                        <!-- Product image + quantity badge -->
-                        <div class="product-img-wrapper">
-                            <img src="../assets/headphone.png" class="summary-img">
-                            <span class="qty-badge">1</span>
-                        </div>
-
-                        <!-- Product details -->
-                        <div class="flex-grow-1 ms-4">
-                            <strong>NFL Ball Replica</strong>
-                            <div class="price-text">29.00₫</div>
-                        </div>
-
-                        <!-- Total price of product -->
-                        <div class="product-total text-end">
-                            <strong>29.00₫</strong>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-3 position-relative product-summary-item">
-                        <!-- Product image + quantity badge -->
-                        <div class="product-img-wrapper">
-                            <img src="../assets/headphone.png" class="summary-img">
-                            <span class="qty-badge">1</span>
-                        </div>
-
-                        <!-- Product details -->
-                        <div class="flex-grow-1 ms-4">
-                            <strong>NFL Ball Replica</strong>
-                            <div class="price-text">29.00₫</div>
-                        </div>
-
-                        <!-- Total price of product -->
-                        <div class="product-total text-end">
-                            <strong>29.00₫</strong>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="d-flex justify-content-between mb-3">
-                        <strong style="font-size: 24px;">Tổng giá trị</strong>
-                        <strong style="font-size: 24px;">29.00₫</strong>
-                    </div>
-
-                </div>
-            </div>
-
-
         </div>
-    </div>
 
-    <FooterComponent />
+        <FooterComponent />
+    </div>
 </template>
 
-
-<script setup>
-import axios from 'axios'
-import HeaderComponent from '../components/HeaderComponent.vue'
-import FooterComponent from '@/components/FooterComponent.vue'
-import { apiHelper } from '@/helpers/axios'
-import { mapStores } from 'pinia'
-import { useCategoriesStore } from '@/stores/categories'
-import { ref } from 'vue'
-
-const quantity = ref(1)
-
-const plus = () => quantity.value++
-const minus = () => {
-    if (quantity.value > 1) quantity.value--
-}
-</script>
-
 <script>
+import HeaderComponent from "../components/HeaderComponent.vue"
+import FooterComponent from "../components/FooterComponent.vue"
+import defaultThumbnail from "../assets/default_thumbnail.jpg"
+
 export default {
-    props: {
-        product: Object,
-    },
+    name: "CheckoutView",
+    components: { HeaderComponent, FooterComponent },
 
     data() {
+        const savedUser = JSON.parse(localStorage.getItem("auth") || "{}")
+
         return {
+            defaultThumbnail,
+            checkoutItems: [],
+            paymentMethod: null,
+            customer: {
+                email: savedUser.email || "",
+                phone: "",
+                address: "",
+            }
         }
     },
-    created() { },
-    mounted() {
-    },
-    watch: {
 
+    created() {
+        const stored = JSON.parse(localStorage.getItem("checkout_items") || "[]")
+        this.checkoutItems = stored
     },
+
     computed: {
-
+        totalValue() {
+            return this.checkoutItems.reduce(
+                (s, i) => s + (Number(i.price) || 0) * (Number(i.quantity) || 0),
+                0
+            )
+        }
     },
+
     methods: {
         formatPrice(value) {
-            if (!value) return '0 đ'
-            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ'
+            if (!value) return "0 ₫"
+            return new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND"
+            }).format(value)
         },
 
-    },
+        placeOrder() {
+            if (!this.customer.email || !this.customer.phone || !this.customer.address) {
+                alert("Vui lòng điền đầy đủ thông tin giao hàng")
+                return
+            }
+            if (!this.paymentMethod) {
+                alert("Vui lòng chọn phương thức thanh toán")
+                return
+            }
+            try {
+                const formData = new FormData();
+                formData.append('email', this.customer.email);
+                formData.append('phone', this.customer.phone);
+                formData.append('address', this.customer.address);
+                apiHelper.post('/create-bill', {
+                    params: {
+                        token: sessionStorage.getItem('token'),
+                        payment_method: this.paymentMethod,
+                        items: this.checkoutItems,
+                        total_price: this.formatPrice(this.totalValue),
+                    }
+                }, formData).then((res) => {
+                    // console.log(res);
+                    if (res.status == 200) {
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    this.loading = false;
+                });
+            } catch (error) {
+
+            }
+        }
+    }
 }
 </script>
 
@@ -267,6 +239,7 @@ export default {
 .summary-img {
     width: 60px;
     border: 1px solid #ddd;
+    object-fit: cover;
 }
 
 .btn-back-cart {
@@ -323,7 +296,6 @@ export default {
     color: #111;
 }
 
-/* radio + label */
 .form-check-label {
     color: #111;
 }

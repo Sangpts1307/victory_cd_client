@@ -99,6 +99,7 @@ export default {
             best_products: [],
             bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
             // categories: [],
+            token: sessionStorage.getItem('token'),
         }
     },
     created() { },
@@ -106,6 +107,7 @@ export default {
         this.listProduct()
         this.bestProducts()
         this.categoriesStore.fetchListCategory()
+        this.userInfor()
     },
     watch: {},
     computed: {
@@ -169,6 +171,28 @@ export default {
                 console.log(error)
             }
         },
+        userInfor() {
+            if (sessionStorage.getItem('token') !== null) {
+                try {
+                    apiHelper
+                        .get('/user-infor', {
+                            headers: {
+                                Authorization: `Bearer ${this.token}`
+                            }
+                        })
+                        .then((res) => {
+                            if (res.status == 200) {
+                                localStorage.setItem("auth", JSON.stringify(res.data.data));
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }
     },
 }
 </script>
