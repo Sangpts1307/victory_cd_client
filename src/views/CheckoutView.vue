@@ -107,6 +107,7 @@
 import HeaderComponent from "../components/HeaderComponent.vue"
 import FooterComponent from "../components/FooterComponent.vue"
 import defaultThumbnail from "../assets/default_thumbnail.jpg"
+import { apiHelper } from "@/helpers/axios";
 
 export default {
     name: "CheckoutView",
@@ -159,29 +160,44 @@ export default {
                 alert("Vui lòng chọn phương thức thanh toán")
                 return
             }
-            try {
-                const formData = new FormData();
-                formData.append('email', this.customer.email);
-                formData.append('phone', this.customer.phone);
-                formData.append('address', this.customer.address);
-                apiHelper.post('/create-bill', {
-                    params: {
-                        token: sessionStorage.getItem('token'),
-                        payment_method: this.paymentMethod,
-                        items: this.checkoutItems,
-                        total_price: this.formatPrice(this.totalValue),
-                    }
-                }, formData).then((res) => {
-                    // console.log(res);
-                    if (res.status == 200) {
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                    this.loading = false;
-                });
-            } catch (error) {
 
-            }
+            const orderItems = this.checkoutItems.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: Number(item.price),
+                quantity: Number(item.quantity),
+                total_price: Number(item.price) * Number(item.quantity),
+                thumbnail_url: item.thumbnail_url
+            }))
+
+            apiHelper.post('/create-bill',
+                {
+                    email: this.customer.email,
+                    phone: this.customer.phone,
+                    address: this.customer.address,
+                    payment_method: this.paymentMethod,
+                    items: orderItems,
+                    total_price: this.totalValue
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                }
+            )
+                .then((res) => {
+                    if (res.status === 200 && this.paymentMethod == 'online') {
+                        console.log(res.data.data);
+                        window.location.href = res.data.data.checkout_url;
+                    }
+                    if (res.status === 200 && this.paymentMethod == 'offline') {
+                        alert('Đặt hàng thành công! cảm ơn bạn đã mua hàng');
+                        this.$router.push('/home');
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         }
     }
 }
