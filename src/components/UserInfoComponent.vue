@@ -101,8 +101,6 @@ const saveChanges = async () => {
 
         if (res.status === 200) {
             alert(res.data.message);
-            // emit user updated nếu muốn cập nhật parent
-            // emit trong script setup
             emit('updated-user', res.data.user);
         }
     } catch (error) {
