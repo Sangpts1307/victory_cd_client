@@ -12,256 +12,175 @@
 
         <!-- TAB 1 -->
         <div v-if="orderTab === 'preparing'">
-            <!-- Item 1 -->
-            <div class="order-wrapper p-3 border rounded mb-3">
+            <div v-for="(item, index) in orderPreparing" :key="index" class="order-wrapper p-3 border rounded mb-3">
 
                 <!-- HEADER -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
 
-                    <!-- LEFT: CATEGORY IMAGE + TITLE + BTN -->
+                    <!-- LEFT CATEGORY -->
                     <div class="d-flex align-items-center">
-                        <img src="../assets/cassete.png" class="category-thumb me-2" />
+                        <img :src="item.category_thumbnail" class="category-thumb me-2" />
+
                         <div class="me-3">
-                            <h5 class="mb-0">Điện thoại</h5>
+                            <h5 class="mb-0">{{ item.category_title }}</h5>
                         </div>
+
                         <button class="btn btn-outline-primary btn-sm">Xem danh mục</button>
                     </div>
 
-                    <!-- RIGHT: ORDER STATUS -->
-                    <span class="order-status status-direct">THANH TOÁN TRỰC TIẾP</span>
+                    <!-- RIGHT STATUS -->
+                    <span class="order-status" :class="item.bill_status === 3 ? 'status-direct' : 'paid'">
+                        {{ item.bill_status === 3 ? 'THANH TOÁN TRỰC TIẾP' : 'ĐÃ THANH TOÁN' }}
+                    </span>
                 </div>
 
-                <!-- ITEM -->
+                <!-- PRODUCT ITEM -->
                 <div class="order-item d-flex p-3 border rounded">
-                    <img src="../assets/avt_sangpt.jpg" class="image-rounded me-3" />
+                    <img :src="item.product_thumbnail" class="image-rounded me-3" />
 
                     <div class="flex-grow-1">
-                        <h6>Iphone 14 Pro Max</h6>
-                        <p class="text-muted">Phân loại hàng: 43</p>
-                        <p>x2</p>
+                        <h6>{{ item.product_name }}</h6>
+                        <p class="text-muted">Danh mục: {{ item.category_title }}</p>
+                        <p>x{{ item.detail_quantity }}</p>
                     </div>
 
                     <div class="text-end">
-                        <p class="text-danger fw-bold">340.400đ</p>
-                        <button class="btn btn-outline-primary btn-sm">Hủy đơn (Nếu là thanh toán trực tiếp)</button>
+                        <p class="text-danger fw-bold">
+                            {{ (item.product_price * item.detail_quantity).toLocaleString() }}đ
+                        </p>
                     </div>
                 </div>
-
-            </div>
-            <!-- Item 2 -->
-            <div class="order-wrapper p-3 border rounded mb-3">
-
-                <!-- HEADER -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-
-                    <!-- LEFT: CATEGORY IMAGE + TITLE + BTN -->
-                    <div class="d-flex align-items-center">
-                        <img src="../assets/cassete.png" class="category-thumb me-2" />
-                        <div class="me-3">
-                            <h5 class="mb-0">Tai nghe</h5>
-                        </div>
-                        <button class="btn btn-outline-primary btn-sm">Xem danh mục</button>
-                    </div>
-
-                    <!-- RIGHT: ORDER STATUS -->
-                    <span class="order-status status-direct">ĐÃ THANH TOÁN</span>
-                </div>
-
-                <!-- ITEM -->
-                <div class="order-item d-flex p-3 border rounded">
-                    <img src="../assets/avt_sangpt.jpg" class="image-rounded me-3" />
-
-                    <div class="flex-grow-1">
-                        <h6>Airpod 5 pro</h6>
-                        <p class="text-muted">Phân loại hàng: 43</p>
-                        <p>x1</p>
-                    </div>
-
-                    <div class="text-end">
-                        <p class="text-danger fw-bold">340.400đ</p>
-                        <button class="btn btn-outline-primary btn-sm"></button>
-                    </div>
-                </div>
-
             </div>
         </div>
 
         <!-- TAB 2 -->
         <div v-if="orderTab === 'shipping'">
-            <!-- Item 1 -->
-            <div class="order-wrapper p-3 border rounded mb-3">
+            <div v-for="(item, index) in orderShipping" :key="index" class="order-wrapper p-3 border rounded mb-3">
 
                 <!-- HEADER -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-
-                    <!-- LEFT: CATEGORY IMAGE + TITLE + BTN -->
                     <div class="d-flex align-items-center">
-                        <img src="../assets/cassete.png" class="category-thumb me-2" />
+                        <img :src="item.category_thumbnail" class="category-thumb me-2" />
                         <div class="me-3">
-                            <h5 class="mb-0">Phụ kiện</h5>
+                            <h5 class="mb-0">{{ item.category_title }}</h5>
                         </div>
                         <button class="btn btn-outline-primary btn-sm">Xem danh mục</button>
                     </div>
 
-                    <!-- RIGHT: ORDER STATUS -->
                     <span class="order-status status-shipping">ĐANG GIAO</span>
                 </div>
 
-                <!-- ITEM -->
+                <!-- PRODUCT ITEM -->
                 <div class="order-item d-flex p-3 border rounded">
-                    <img src="../assets/avt_sangpt.jpg" class="image-rounded me-3" />
+                    <img :src="item.product_thumbnail" class="image-rounded me-3" />
 
                     <div class="flex-grow-1">
-                        <h6>Robot hút bụi Panasonic</h6>
-                        <p class="text-muted">Phân loại hàng: 43</p>
-                        <p>x1</p>
+                        <h6>{{ item.product_name }}</h6>
+                        <p class="text-muted">Danh mục: {{ item.category_title }}</p>
+                        <p>x{{ item.detail_quantity }}</p>
                     </div>
 
                     <div class="text-end">
-                        <p class="text-danger fw-bold">340.400đ</p>
-                        <button class="btn btn-outline-primary btn-sm"></button>
+                        <p class="text-danger fw-bold">
+                            {{ (item.product_price * item.detail_quantity).toLocaleString() }}đ
+                        </p>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <!-- TAB 3 -->
         <div v-if="orderTab === 'completed'">
-
-            <!-- Item 1 -->
-            <div class="order-wrapper p-3 border rounded mb-3">
+            <div v-for="(item, index) in orderCompleted" :key="index" class="order-wrapper p-3 border rounded mb-3">
 
                 <!-- HEADER -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
-
-                    <!-- LEFT: CATEGORY IMAGE + TITLE + BTN -->
                     <div class="d-flex align-items-center">
-                        <img src="../assets/cassete.png" class="category-thumb me-2" />
+                        <img :src="item.category_thumbnail" class="category-thumb me-2" />
                         <div class="me-3">
-                            <h5 class="mb-0">Đồng hồ thông minh</h5>
+                            <h5 class="mb-0">{{ item.category_title }}</h5>
                         </div>
                         <button class="btn btn-outline-primary btn-sm">Xem danh mục</button>
                     </div>
 
-                    <!-- RIGHT: ORDER STATUS -->
                     <span class="order-status paid">HOÀN THÀNH</span>
                 </div>
 
-                <!-- ITEM -->
+                <!-- PRODUCT ITEM -->
                 <div class="order-item d-flex p-3 border rounded">
-                    <img src="../assets/avt_sangpt.jpg" class="image-rounded me-3" />
+                    <img :src="item.product_thumbnail" class="image-rounded me-3" />
 
                     <div class="flex-grow-1">
-                        <h6>Giày sneaker Handball Spezial Light Blue</h6>
-                        <p class="text-muted">Phân loại hàng: 43</p>
-                        <p>x1</p>
+                        <h6>{{ item.product_name }}</h6>
+                        <p class="text-muted">Danh mục: {{ item.category_title }}</p>
+                        <p>x{{ item.detail_quantity }}</p>
                     </div>
 
                     <div class="text-end">
-                        <p class="text-danger fw-bold">340.400đ</p>
-
+                        <p class="text-danger fw-bold">
+                            {{ (item.product_price * item.detail_quantity).toLocaleString() }}đ
+                        </p>
                         <div class="d-flex gap-2 justify-content-end">
                             <button class="btn btn-outline-secondary btn-sm">Đánh giá</button>
-                            <button class="btn btn-outline-primary btn-sm">Mua Lại</button>
+                            <button class="btn btn-outline-primary btn-sm">Mua lại</button>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-            <!-- Item 2 -->
-            <div class="order-wrapper p-3 border rounded mb-3">
-
-                <!-- HEADER -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-
-                    <!-- LEFT: CATEGORY IMAGE + TITLE + BTN -->
-                    <div class="d-flex align-items-center">
-                        <img src="../assets/cassete.png" class="category-thumb me-2" />
-                        <div class="me-3">
-                            <h5 class="mb-0">Đồng hồ thông minh</h5>
-                        </div>
-                        <button class="btn btn-outline-primary btn-sm">Xem danh mục</button>
-                    </div>
-
-                    <!-- RIGHT: ORDER STATUS -->
-                    <span class="order-status paid">HOÀN THÀNH</span>
-                </div>
-
-                <!-- ITEM -->
-                <div class="order-item d-flex p-3 border rounded">
-                    <img src="../assets/avt_sangpt.jpg" class="image-rounded me-3" />
-
-                    <div class="flex-grow-1">
-                        <h6>Giày sneaker Handball Spezial Light Blue</h6>
-                        <p class="text-muted">Phân loại hàng: 43</p>
-                        <p>x1</p>
-                    </div>
-
-                    <div class="text-end">
-                        <p class="text-danger fw-bold">340.400đ</p>
-
-                        <div class="d-flex gap-2 justify-content-end">
-                            <button class="btn btn-outline-secondary btn-sm">Đánh giá</button>
-                            <button class="btn btn-outline-primary btn-sm">Mua Lại</button>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- Item 3 -->
-            <div class="order-wrapper p-3 border rounded mb-3">
-
-                <!-- HEADER -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-
-                    <!-- LEFT: CATEGORY IMAGE + TITLE + BTN -->
-                    <div class="d-flex align-items-center">
-                        <img src="../assets/cassete.png" class="category-thumb me-2" />
-                        <div class="me-3">
-                            <h5 class="mb-0">Đồng hồ thông minh</h5>
-                        </div>
-                        <button class="btn btn-outline-primary btn-sm">Xem danh mục</button>
-                    </div>
-
-                    <!-- RIGHT: ORDER STATUS -->
-                    <span class="order-status paid">HOÀN THÀNH</span>
-                </div>
-
-                <!-- ITEM -->
-                <div class="order-item d-flex p-3 border rounded">
-                    <img src="../assets/avt_sangpt.jpg" class="image-rounded me-3" />
-
-                    <div class="flex-grow-1">
-                        <h6>Giày sneaker Handball Spezial Light Blue</h6>
-                        <p class="text-muted">Phân loại hàng: 43</p>
-                        <p>x1</p>
-                    </div>
-
-                    <div class="text-end">
-                        <p class="text-danger fw-bold">340.400đ</p>
-
-                        <div class="d-flex gap-2 justify-content-end">
-                            <button class="btn btn-outline-secondary btn-sm">Đánh giá</button>
-                            <button class="btn btn-outline-primary btn-sm">Mua Lại</button>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
         </div>
-
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { apiHelper } from '@/helpers/axios'
 
-const orderTab = ref("preparing")
+const orderTab = ref("completed")
+</script>
+<script>
+export default {
+    props: {
+        product: Object,
+    },
+
+    data() {
+        return {
+            orderPreparing: [],
+            orderShipping: [],
+            orderCompleted: [],
+        }
+    },
+    created() {
+        this.orderHistory()
+    },
+    mounted() {
+        this.orderHistory()
+    },
+    watch: {},
+    computed: {
+    },
+    methods: {
+        async orderHistory() {
+            try {
+                const token = sessionStorage.getItem('token');
+                if (!token) return; // nếu chưa đăng nhập
+
+                const res = await apiHelper.get('/order-history', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                if (res.status === 200 && res.data?.data) {
+                    this.orderPreparing = res.data.data.orderPreparing || [];
+                    this.orderShipping = res.data.data.orderShipping || [];
+                    this.orderCompleted = res.data.data.orderCompleted || [];
+                }
+            } catch (error) {
+                console.error('Lấy lịch sử đơn hàng thất bại:', error);
+            }
+        },
+    }
+
+}
 </script>
 
 <style scoped>

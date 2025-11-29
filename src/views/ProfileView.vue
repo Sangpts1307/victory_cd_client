@@ -9,19 +9,22 @@
             <div class="col-md-3">
                 <div class="sidebar">
                     <div class="user-info d-flex align-items-center px-3 py-3">
-                        <img class="avatar-img" src="../assets/avt_sangpt.jpg" alt="Avatar">
+                        <img :src="user.avatar || defaultAvatar" class="avatar-img" alt="Avatar" />
                         <div class="ms-3">
                             <div class="hello-text">Hello!</div>
-                            <p class="username">phamsangit137</p>
+                            <p class="username">{{ user.name }}</p>
                         </div>
                     </div>
 
                     <ul class="menu-list">
-                        <li :class="{ active: activeMainTab === 'profile' }" @click="activeMainTab = 'profile'">
+
+                        <!-- TAB PROFILE -->
+                        <li :class="{ active: activeMainTab === 'profile' }" @click="setMainTab('profile')">
                             Thông tin cá nhân
                         </li>
 
-                        <li :class="{ active: activeMainTab === 'orders' }" @click="activeMainTab = 'orders'">
+                        <!-- TAB ORDERS -->
+                        <li :class="{ active: activeMainTab === 'orders' }" @click="setMainTab('orders')">
                             Đơn hàng
                         </li>
 
@@ -37,7 +40,7 @@
 
                 <!-- TAB: THÔNG TIN CÁ NHÂN -->
                 <div v-if="activeMainTab === 'profile'" class="content-box">
-                    <UserInfoComponent />
+                    <UserInfoComponent :user="user" />
                 </div>
 
                 <!-- TAB: ĐƠN HÀNG -->
@@ -52,63 +55,80 @@
     <FooterComponent />
 </template>
 
-
-
 <script setup>
-import axios from 'axios'
 import HeaderComponent from '../components/HeaderComponent.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
-import { apiHelper } from '@/helpers/axios'
-import { ref } from 'vue'
 import OrderHistoryComponent from '@/components/OrderHistoryComponent.vue'
 import UserInfoComponent from '@/components/UserInfoComponent.vue'
 
-const activeMainTab = ref("profile");   // tab chính
-const orderTab = ref("preparing");      // tab con của Đơn hàng
+import { ref, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const products = ref([
-    { name: "Tai nghe Bluetooth Sony", price: 24.35, quantity: 1 },
-    { name: "Tai nghe Bluetooth Sony", price: 24.35, quantity: 1 },
-])
+const route = useRoute()
+const router = useRouter()
+const defaultAvatar = '../assets/MyLogo.jpg' // Nếu user chưa có avatar
+const user = ref({})
 
-const increase = (index) => {
-    products.value[index].quantity++
+// Tab chính
+const activeMainTab = ref("profile")
+
+// Hàm đổi tab + cập nhật URL
+const setMainTab = (tab) => {
+    activeMainTab.value = tab
+    router.replace({ query: { tab } })  // replace để không spam history
 }
 
-const decrease = (index) => {
-    if (products.value[index].quantity > 1) {
-        products.value[index].quantity--
+// Khi load trang → đọc URL để set tab mặc định
+onMounted(() => {
+    if (route.query.tab === 'orders' || route.query.tab === 'profile') {
+        activeMainTab.value = route.query.tab
     }
-}
-</script>
 
+    // Lấy thông tin user
+    const storedUser = localStorage.getItem('auth') || sessionStorage.getItem('auth')
+    if (storedUser) {
+        user.value = JSON.parse(storedUser)
+    }
+})
+
+// WATCH: Khi URL đổi → tab đổi theo (QUAN TRỌNG)
+watch(
+    () => route.query.tab,
+    (newTab) => {
+        if (newTab && ['profile', 'orders'].includes(newTab)) {
+            activeMainTab.value = newTab
+        }
+    }
+)
+</script>
 <script>
 export default {
     props: {
         product: Object,
     },
-
-    data() {
-        return {
-
-        }
-    },
-    created() { },
-    mounted() {
-    },
-    watch: {},
-    computed: {
-
-    },
     methods: {
-        formatPrice(value) {
-            if (!value) return '0 đ'
-            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ'
+        logout() {
+            try {
+                apiHelper
+                    .get('/logout', {
+                        headers: {
+                            Authorization: 'Bearer ' + this.token,
+                        },
+                    })
+                    .then((res) => {
+                        if (res.status == 200) {
+                            sessionStorage.removeItem('token')
+                            this.$router.push('/login')
+                        }
+                    })
+            } catch (error) {
+                console.log(error)
+            }
         },
-
-    },
+    }
 }
 </script>
+
 
 <style scoped>
 body {
@@ -176,7 +196,6 @@ body {
     cursor: pointer;
     font-size: 15px;
     color: #777;
-    /* Nhạt ban đầu */
     position: relative;
     font-weight: 400;
     transition: all .25s ease;
@@ -198,7 +217,6 @@ body {
 .menu-list li:hover {
     color: #111;
     font-weight: 600;
-    /* Chữ đậm khi hover */
     background: #f8f8f8;
 }
 
@@ -206,7 +224,7 @@ body {
     width: 4px;
 }
 
-/* Active mặc định đen trắng */
+/* Active */
 .menu-list li.active {
     background: #3449ca;
     color: #fff;

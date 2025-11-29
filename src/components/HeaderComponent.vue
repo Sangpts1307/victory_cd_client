@@ -29,8 +29,8 @@
                         </label>
 
                         <div class="dropdown-menu-account">
-                            <a href="#">Thông tin cá nhân</a>
-                            <a href="#">Lịch sử mua hàng</a>
+                            <a href="#" @click.prevent="goToProfile">Thông tin cá nhân</a>
+                            <a href="#" @click.prevent="goToOrders">Đơn hàng</a>
                             <a v-if="token !== null" href="#" @click="logout()">
                                 Đăng xuất
                                 <svg width="20" height="20" aria-hidden="true" role="img" focusable="false"
@@ -65,7 +65,7 @@
             <div class="container-custom">
                 <a href="#" class="shop-category">
                     <i class="bi bi-grid-3x3-gap-fill"></i>
-                    <div class="title">Giới thiệu</div>
+                    <div v-on:click="goToAboutUs()" class="title">Giới thiệu</div>
                     <i class="bi bi-chevron-down ms-auto text-muted"></i>
                 </a>
 
@@ -155,9 +155,25 @@ export default {
         },
         goToCart() {
             this.$router.push('/cart');
-        }
+        },
+        goToAboutUs() {
+            this.$router.push('about-us');
+        },
+        goToProfile() {
+            this.$router.push({
+                path: '/profile',
+                query: { tab: 'profile' }
+            })
+        },
+
+        goToOrders() {
+            this.$router.push({
+                path: '/profile',
+                query: { tab: 'orders' }
+            })
+        },
+
     },
-    /*******  36081e40-73b1-470e-a66b-e43fa183e34a  *******/
 }
 </script>
 
