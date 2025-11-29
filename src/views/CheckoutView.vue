@@ -188,7 +188,7 @@ export default {
                 .then((res) => {
                     if (res.status === 200 && this.paymentMethod == 'online') {
                         console.log(res.data.data);
-                        window.location.href = res.data.data.checkout_url;
+                        window.location.href = res.data.data.bill.checkout_url;
                     }
                     if (res.status === 200 && this.paymentMethod == 'offline') {
                         alert('Đặt hàng thành công! cảm ơn bạn đã mua hàng');
