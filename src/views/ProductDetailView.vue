@@ -3,13 +3,15 @@
 
     <div class="body container py-5">
         <div class="row g-5">
-            <!-- Cột trái: ảnh sản phẩm -->
             <div class="col-md-6 text-center">
-                <img :src="product_detail.thumbnail_url" class="img-fluid rounded zoom-on-hover"
-                    :alt="product_detail.name" style="max-height: 500px; object-fit: contain" />
+                <img
+                    :src="product_detail.thumbnail_url"
+                    class="img-fluid rounded zoom-on-hover"
+                    :alt="product_detail.name"
+                    style="max-height: 500px; object-fit: contain"
+                />
             </div>
 
-            <!-- Cột phải: thông tin sản phẩm -->
             <div class="col-md-6">
                 <span class="badge bg-warning text-dark mb-2">Hot</span>
                 <h3 class="fw-bold">{{ product_detail.name }}</h3>
@@ -17,19 +19,21 @@
 
                 <div class="mb-3">
                     <span style="font-size: 20px; font-weight: bold; color: #ffc107">
-                        {{ Number(product_detail.score).toFixed(2) }}
+                        {{ Number(product_detail.score || 0).toFixed(2) }}
                     </span>
                     <span class="text-warning" style="color: #ffc107; margin: 0 5px">
-                        {{ '★'.repeat(product_detail.score)
-                        }}{{ '☆'.repeat(5 - product_detail.score) }}
+                        {{ '★'.repeat(product_detail.score || 0)
+                        }}{{ '☆'.repeat(5 - (product_detail.score || 0)) }}
                     </span>
-                    <span style="
+                    <span
+                        style="
                             font-size: 16px;
                             color: #6c757d;
                             font-weight: semi-bold;
                             margin-left: 5px;
-                        ">
-                        | Đã bán {{ product_detail.total_sold }} sản phẩm
+                        "
+                    >
+                        | Đã bán {{ product_detail.total_sold || 0 }} sản phẩm
                     </span>
                 </div>
 
@@ -38,28 +42,30 @@
                         {{ formatPrice(product_detail.price) }}
                     </h4>
                     <p class="text-success fw-semibold m-0">
-                        Còn {{ product_detail.quantity }} sản phẩm
+                        Còn {{ product_detail.quantity || 0 }} sản phẩm
                     </p>
                 </div>
 
-                <!-- Nút hành động -->
                 <div class="d-flex align-items-center mb-4">
                     <div class="input-group" style="width: 120px">
                         <button class="btn btn-outline-secondary" @click="minus">-</button>
-                        <input type="number" class="form-control text-center no-spinner" v-model="quantity" />
+                        <input
+                            type="number"
+                            class="form-control text-center no-spinner"
+                            v-model.number="quantity"
+                        />
                         <button class="btn btn-outline-secondary" @click="plus">+</button>
                     </div>
                 </div>
 
                 <div class="d-flex gap-3 mb-3 flex-wrap">
-                    <button class="btn px-4 py-3 flex-fill btn-add-cart">
+                    <button class="btn px-4 py-3 flex-fill btn-add-cart" @click="addToCartDetail">
                         <i class="bi bi-cart-plus me-2"></i> Thêm vào giỏ
                     </button>
 
                     <button class="btn px-4 py-3 flex-fill btn-buy-now">Mua ngay</button>
                 </div>
 
-                <!-- Thông tin thêm -->
                 <ul class="list-unstyled small text-muted mt-4">
                     <li>🚚 Miễn phí giao hàng & hoàn hàng</li>
                     <li>📦 Vận chuyển đến tay trong 3-5 ngày làm việc</li>
@@ -67,18 +73,29 @@
             </div>
         </div>
 
-        <!-- Mô tả sản phẩm -->
         <div class="product-description mt-5">
             <ul class="nav nav-tabs" id="productTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc"
-                        type="button" role="tab">
+                    <button
+                        class="nav-link active"
+                        id="desc-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#desc"
+                        type="button"
+                        role="tab"
+                    >
                         Mô tả
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button"
-                        role="tab">
+                    <button
+                        class="nav-link"
+                        id="review-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#review"
+                        type="button"
+                        role="tab"
+                    >
                         Đánh giá
                     </button>
                 </li>
@@ -89,22 +106,20 @@
                     <h5 class="fw-bold mb-3">{{ product_detail.name }}</h5>
                     <p>{{ product_detail.description }}</p>
                 </div>
-                <!-- Tab Reviews -->
                 <div class="tab-pane fade show" id="review" role="tabpanel">
                     <div class="row g-4">
-                        <!-- Ratings tổng hợp -->
                         <div class="col-md-4">
                             <div class="border p-4 rounded-3">
                                 <h5 class="fw-bold mb-3">Đánh giá</h5>
 
                                 <div class="text-center mb-3">
                                     <h1 class="fw-bold mb-0">
-                                        {{ product_detail.score }}
+                                        {{ product_detail.score || 0 }}
                                         <span class="text-warning mb-0">★</span>
                                     </h1>
 
                                     <p class="text-muted small">
-                                        {{ feedback_count }} lượt đánh giá
+                                        {{ feedback_count || 0 }} lượt đánh giá
                                     </p>
                                 </div>
                                 <hr />
@@ -119,22 +134,36 @@
 
                         <!-- Customer reviews -->
                         <div class="col-md-8">
-                            <h5 class="fw-bold mb-3">Khách hàng đánh giá ({{ feedback_count }})</h5>
-                            <div v-for="fb in product_feedbacks" :key="fb.id" class="border-top pt-3">
+                            <h5 class="fw-bold mb-3">
+                                Khách hàng đánh giá ({{ feedback_count || 0 }})
+                            </h5>
+                            <div
+                                v-for="fb in product_feedbacks"
+                                :key="fb.id"
+                                class="border-top pt-3"
+                            >
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="d-flex align-items-center">
-                                        <img :src="fb.user_avatar
-                                                ? fb.user_avatar
-                                                : 'https://ui-avatars.com/api/?name=' +
-                                                fb.user_name
-                                            " alt="Avatar" class="rounded-circle me-3" width="48" height="48" />
+                                        <img
+                                            :src="
+                                                fb.user_avatar
+                                                    ? fb.user_avatar
+                                                    : 'https://ui-avatars.com/api/?name=' +
+                                                      fb.user_name
+                                            "
+                                            alt="Avatar"
+                                            class="rounded-circle me-3"
+                                            width="48"
+                                            height="48"
+                                        />
                                         <div>
                                             <h6 class="mb-0 fw-semibold">{{ fb.user_name }}</h6>
-                                            <small class="text-muted">{{
-                                                new Date(fb.created_at).toLocaleDateString(
-                                                    'vi-VN',
-                                                )
-                                            }}
+                                            <small class="text-muted"
+                                                >{{
+                                                    new Date(fb.created_at).toLocaleDateString(
+                                                        'vi-VN',
+                                                    )
+                                                }}
                                             </small>
                                         </div>
                                     </div>
@@ -153,6 +182,7 @@
             </div>
         </div>
     </div>
+
     <!-- Sản phẩm liên quan -->
     <div class="product-section">
         <div class="section-header d-flex justify-content-between align-items-center mb-4">
@@ -160,17 +190,32 @@
         </div>
         <div class="row g-4">
             <div v-for="product in similar_products" :key="product.id" class="col-md-2_4 col-sm-6">
-                <div v-on:click="getDetail(product.id)"
-                    class="product-card text-center p-3 rounded-3 position-relative">
-                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
-                    <img v-if="product.thumbnail_url" :src="product.thumbnail_url" @error="product.thumbnail_url = null"
-                        :alt="product.title || 'Small Appliances'" class="img-fluid" />
-                    <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
+                <div
+                    v-on:click="getDetail(product.id)"
+                    class="product-card text-center p-3 rounded-3 position-relative"
+                >
+                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2"
+                        >Hot</span
+                    >
+                    <img
+                        v-if="product.thumbnail_url"
+                        :src="product.thumbnail_url"
+                        @error="product.thumbnail_url = null"
+                        :alt="product.title || 'Small Appliances'"
+                        class="img-fluid"
+                    />
+                    <img
+                        v-else
+                        src="@/assets/default_thumbnail.jpg"
+                        alt="Default Image"
+                        class="img-fluid"
+                    />
                     <h6 class="fw-semibold product-name">{{ product.name }}</h6>
                     <p class="text-warning">
-                        <span>{{ '★'.repeat(product.score)
-                        }}{{ '☆'.repeat(5 - product.score) }}</span>
-                        <!-- <span v-for="i in product.score" :key="i">★</span> -->
+                        <span
+                            >{{ '★'.repeat(product.score || 0)
+                            }}{{ '☆'.repeat(5 - (product.score || 0)) }}</span
+                        >
                     </p>
 
                     <p class="text-dark fw-bold mb-2">
@@ -186,7 +231,12 @@
                     </h6>
 
                     <div class="product-actions">
-                        <button class="btn btn-add-cart w-100 mb-2">Thêm vào giỏ</button>
+                        <button
+                            class="btn btn-add-cart w-100 mb-2"
+                            @click.stop="addToCartFromSimilar(product)"
+                        >
+                            Thêm vào giỏ
+                        </button>
                         <button class="btn btn-buy-now w-100">Mua ngay</button>
                     </div>
                 </div>
@@ -201,7 +251,7 @@
     <FooterComponent />
 </template>
 
-<script setup>
+<script>
 import axios from 'axios'
 import HeaderComponent from '../components/HeaderComponent.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
@@ -210,39 +260,43 @@ import ProductComponent from '@/components/ProductComponent.vue'
 import { apiHelper } from '@/helpers/axios'
 import { mapStores } from 'pinia'
 import { useCategoriesStore } from '@/stores/categories'
-import { ref } from 'vue'
+import { useCartStore } from '@/stores/cart'
 
-const quantity = ref(1)
-
-const plus = () => quantity.value++
-const minus = () => {
-    if (quantity.value > 1) quantity.value--
-}
-</script>
-
-<script>
 export default {
+    components: {
+        HeaderComponent,
+        FooterComponent,
+        BannerComponent,
+        ProductComponent,
+    },
+
     props: {
         product: Object,
     },
 
     data() {
         return {
-            product_detail: '',
+            product_detail: {},
             product_feedback: '',
+            product_feedbacks: [],
             list_products: [],
             best_products: [],
-            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'], // 4 màu nền xoay vòng,
-            // categories: [],
+            bgColors: ['#d8f3dc', '#ffe0ef', '#dce9f5', '#f8e7db'],
             similar_products: [],
+            feedback_count: 0,
+            quantity: 1,
+            showSeeMore: false,
         }
     },
-    created() { },
+
+    created() {},
     mounted() {
         this.getDetail()
         this.listProduct()
         this.bestProducts()
-        this.categoriesStore.fetchListCategory()
+        if (this.categoriesStore && this.categoriesStore.fetchListCategory) {
+            this.categoriesStore.fetchListCategory()
+        }
     },
     watch: {},
     computed: {
@@ -250,9 +304,10 @@ export default {
     },
     methods: {
         formatPrice(value) {
-            if (!value) return '0 đ'
+            if (value === null || value === undefined || value === '') return '0 đ'
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ'
         },
+
         getDetail(id) {
             if (id == null) {
                 id = this.$route.params.id
@@ -266,41 +321,31 @@ export default {
                     })
                     .then((res) => {
                         if (res.status == 200) {
-                            console.log(res.data.data)
-                            this.product_detail = res.data.data.product
-                            this.product_feedbacks = res.data.data.product_feedbacks
-                            this.feedback_count = res.data.data.feedback_count
-                            this.similar_products = res.data.data.similar_products
+                            this.product_detail = res.data.data.product || {}
+                            this.product_feedbacks = res.data.data.product_feedbacks || []
+                            this.feedback_count = res.data.data.feedback_count || 0
+                            this.similar_products = res.data.data.similar_products || []
+
+                            this.quantity = 1
 
                             window.scrollTo(0, 0)
                         }
                     })
+                    .catch((err) => {
+                        console.error(err)
+                    })
             } catch (error) {
                 console.log(error)
             }
         },
-        /*************  ✨ Windsurf Command 🌟  *************/
-        /**
-         * List all categories
-         * @return {Promise<void>}
-         */
+
         listProduct() {
             try {
-                /**
-                 * Make a GET request to the API to list all products
-                 * @return {Promise<AxiosResponse>}
-                 */
                 apiHelper
                     .get('/list-product')
                     .then((res) => {
-                        // console.log(res);
                         if (res.status == 200) {
-                            /**
-                             * Set the products data to the component's data
-                             * @param {Object[]} products - The products data
-                             */
-                            this.list_products = res.data.data.list_products
-                            // console.log(this.list_products);
+                            this.list_products = res.data.data.list_products || []
                         }
                     })
                     .catch((error) => {
@@ -310,23 +355,14 @@ export default {
                 console.log(error)
             }
         },
+
         bestProducts() {
             try {
-                /**
-                 * Make a GET request to the API to list 4 best products
-                 * @return {Promise<AxiosResponse>}
-                 */
                 apiHelper
                     .get('/best-products')
                     .then((res) => {
-                        // console.log(res);
                         if (res.status == 200) {
-                            /**
-                             * Set the products data to the component's data
-                             * @param {Object[]} products - The best 4 products data
-                             */
-                            this.best_products = res.data.data.best_products
-                            // console.log(this.best_products);
+                            this.best_products = res.data.data.best_products || []
                         }
                     })
                     .catch((error) => {
@@ -335,6 +371,40 @@ export default {
             } catch (error) {
                 console.log(error)
             }
+        },
+
+        plus() {
+            this.quantity = Number(this.quantity) + 1
+        },
+        minus() {
+            if (Number(this.quantity) > 1) this.quantity = Number(this.quantity) - 1
+        },
+
+        addToCartDetail() {
+            const product = this.product_detail
+            if (!product || !product.id) return
+
+            const cartStore = useCartStore()
+            const payload = {
+                ...product,
+                quantity: Number(this.quantity) || 1,
+            }
+
+            cartStore.addToCart(payload)
+
+            alert('Sản phẩm đã được thêm vào giỏ hàng của bạn')
+        },
+
+        addToCartFromSimilar(product) {
+            if (!product || !product.id) return
+
+            const cartStore = useCartStore()
+            cartStore.addToCart({
+                ...product,
+                quantity: 1,
+            })
+
+            alert('Sản phẩm đã được thêm vào giỏ hàng của bạn')
         },
     },
 }
@@ -564,7 +634,6 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 @media (prefers-color-scheme: dark) {
-
     html,
     body,
     h1,
