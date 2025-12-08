@@ -12,7 +12,7 @@
                     <hr>
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h3 class="fw-bold">Tổng quan Dashboard</h3>
+                        <h3 class="fw-bold">Thống kê & Giám sát</h3>
                     </div>
                     <p class="text-muted">Thống kê và giám sát hệ thống</p>
 
@@ -21,7 +21,7 @@
                             <div class="p-3 bg-white shadow-sm rounded">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <p class="text-muted mb-1">Tổng người dùng</p>
+                                        <p class="text-muted mb-1">Tổng khách hàng</p>
                                         <h4 class="fw-bold mt-1">1,234</h4>
                                     </div>
 
@@ -37,7 +37,7 @@
                             <div class="p-3 bg-white shadow-sm rounded">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <p class="text-muted mb-1">Người dùng online</p>
+                                        <p class="text-muted mb-1">Tổng số sản phẩm</p>
                                         <h3 class="fw-bold">456</h3>
                                     </div>
 
@@ -53,7 +53,7 @@
                             <div class="p-3 bg-white shadow-sm rounded">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <p class="text-muted mb-1">Tổng bài đăng</p>
+                                        <p class="text-muted mb-1">Số đơn trong tháng</p>
                                         <h3 class="fw-bold">5,678</h3>
                                     </div>
 
@@ -83,17 +83,17 @@
                     </div>
 
                     <div class="row g-3 mt-4">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="p-4 bg-white shadow-sm rounded">
-                                <h6 class="fw-bold mb-3">Tăng trưởng người dùng</h6>
-                                <p class="text-muted">Biểu đồ placeholder</p>
+                                <h6 class="fw-bold mb-3">Doanh thu</h6>
+                                <p class="text-muted">Biểu đồ thống kê doanh thu (biểu đồ cột)</p>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="p-4 bg-white shadow-sm rounded">
-                                <h6 class="fw-bold mb-3">Thống kê bài đăng</h6>
-                                <p class="text-muted">Biểu đồ placeholder</p>
+                                <h6 class="fw-bold mb-3">Tỉ lệ đặt đơn</h6>
+                                <p class="text-muted">Tỉ lệ đặt đơn của từng danh mục (biểu đồ tròn)</p>
                             </div>
                         </div>
                     </div>
