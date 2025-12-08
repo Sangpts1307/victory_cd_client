@@ -72,27 +72,27 @@ const router = createRouter({
             component: AboutUsView,
         },
         {
-            path: '/admin-dashboard',
+            path: '/admin/dashboard',
             name: 'Admin Dashboard',
             component: AdminDashboardView,
         },
         {
-            path: '/admin-customers',
+            path: '/admin/customers',
             name: 'Admin Customers',
             component: AdminCustomerView,
         },
         {
-            path: '/admin-categories',
+            path: '/admin/categories',
             name: 'Admin Categories',
             component: AdminCategoryView,
         },
         {
-            path: '/admin-products',
+            path: '/admin/products',
             name: 'Admin Products',
             component: AdminProductView,
         },
         {
-            path: '/admin-orders',
+            path: '/admin/orders',
             name: 'Admin Orders',
             component: AdminOrderView,
         },
