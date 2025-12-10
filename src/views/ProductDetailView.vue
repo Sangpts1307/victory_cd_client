@@ -66,7 +66,9 @@
                         <i class="bi bi-cart-plus me-2"></i> Thêm vào giỏ
                     </button>
 
-                    <button class="btn px-4 py-3 flex-fill btn-buy-now">Mua ngay</button>
+                    <button class="btn px-4 py-3 flex-fill btn-buy-now" @click="buyNow">
+                        Mua ngay
+                    </button>
                 </div>
 
                 <ul class="list-unstyled small text-muted mt-4">
@@ -418,6 +420,30 @@ export default {
             })
 
             alert('Sản phẩm đã được thêm vào giỏ hàng của bạn')
+        },
+
+        buyNow() {
+            const token = sessionStorage.getItem('token')
+
+            if (!token) {
+                alert('Bạn cần đăng nhập để mua hàng, đăng nhập ngay')
+                this.$router.push('/login')
+                return
+            }
+
+            const product = this.product_detail
+            if (!product || !product.id) {
+                alert('Không tìm thấy thông tin sản phẩm')
+                return
+            }
+
+            const payload = {
+                ...product,
+                quantity: 1,
+            }
+
+            localStorage.setItem('checkout_items', JSON.stringify([payload]))
+            this.$router.push('/checkout')
         },
     },
 }

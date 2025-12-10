@@ -6,7 +6,11 @@
             <div v-if="showSortType" class="sort-container">
                 <label for="sort" class="me-2 fw-semibold">Sắp xếp theo:</label>
 
-                <select id="sort" v-model="localSelectedSort" class="form-select form-select-sm d-inline-block w-auto">
+                <select
+                    id="sort"
+                    v-model="localSelectedSort"
+                    class="form-select form-select-sm d-inline-block w-auto"
+                >
                     <option value="default">Mặc định</option>
                     <option value="newest">Mới nhất</option>
                     <option value="featured">Nổi bật nhất</option>
@@ -19,41 +23,66 @@
         <div class="row g-4">
             <template v-if="list_products && list_products.length > 0">
                 <div v-for="product in list_products" :key="product.id" class="col-md-2_4 col-sm-6">
-                    <div v-on:click="goToDetail(product.id)"
-                        class="product-card text-center p-3 rounded-3 position-relative">
-                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Hot</span>
+                    <div
+                        v-on:click="goToDetail(product.id)"
+                        class="product-card text-center p-3 rounded-3 position-relative"
+                    >
+                        <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2"
+                            >Hot</span
+                        >
 
-                        <img v-if="product.thumbnail_url" :src="product.thumbnail_url"
-                            @error="product.thumbnail_url = null" :alt="product.name" class="img-fluid" />
-                        <img v-else src="@/assets/default_thumbnail.jpg" alt="Default Image" class="img-fluid" />
+                        <img
+                            v-if="product.thumbnail_url"
+                            :src="product.thumbnail_url"
+                            @error="product.thumbnail_url = null"
+                            :alt="product.name"
+                            class="img-fluid"
+                        />
+                        <img
+                            v-else
+                            src="@/assets/default_thumbnail.jpg"
+                            alt="Default Image"
+                            class="img-fluid"
+                        />
 
                         <h6 class="fw-semibold product-name">{{ product.name }}</h6>
 
                         <p class="text-warning">
-                            <span>{{ "★".repeat(product.score) }}{{ "☆".repeat(5 - product.score) }}</span>
+                            <span
+                                >{{ '★'.repeat(product.score)
+                                }}{{ '☆'.repeat(5 - product.score) }}</span
+                            >
                         </p>
 
                         <p class="text-dark fw-bold mb-2">
                             {{
-                                new Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
+                                new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND',
                                 }).format(product.price)
                             }}
                         </p>
-                        <h6 class="fw-light product-name fst-italic text-muted">{{ product.total_sold }} lượt mua</h6>
+                        <h6 class="fw-light product-name fst-italic text-muted">
+                            {{ product.total_sold }} lượt mua
+                        </h6>
 
                         <div class="product-actions">
-                            <button v-on:click.stop="addToCart(product.id)" class="btn btn-add-cart w-100 mb-2">Thêm vào
-                                giỏ</button>
-                            <button class="btn btn-buy-now w-100">Mua ngay</button>
+                            <button
+                                v-on:click.stop="addToCart(product.id)"
+                                class="btn btn-add-cart w-100 mb-2"
+                            >
+                                Thêm vào giỏ
+                            </button>
+                            <button class="btn btn-buy-now w-100" @click.stop="buyNow(product)">
+                                Mua ngay
+                            </button>
                         </div>
                     </div>
                 </div>
             </template>
             <template v-else>
                 <div class="col-12 text-center text-muted py-5">
-                    <h5 style="opacity: 0.6; font-style: italic;">
+                    <h5 style="opacity: 0.6; font-style: italic">
                         Hiện chưa có sản phẩm nào trong danh mục. Hãy quay lại sau.
                     </h5>
                 </div>
@@ -67,9 +96,9 @@
 </template>
 
 <script>
-import { useProductStore } from "@/stores/products";
-import { mapState } from "pinia";
-import { useCartStore } from "@/stores/cart";
+import { useProductStore } from '@/stores/products'
+import { mapState } from 'pinia'
+import { useCartStore } from '@/stores/cart'
 
 export default {
     props: {
@@ -89,77 +118,106 @@ export default {
     },
 
     computed: {
-        ...mapState(useProductStore, ["list", "selectedSort", "selectedCategory", "loading", "lastFetchCount"]),
+        ...mapState(useProductStore, [
+            'list',
+            'selectedSort',
+            'selectedCategory',
+            'loading',
+            'lastFetchCount',
+        ]),
 
         list_products() {
-            return this.list;
+            return this.list
         },
 
         localSelectedSort: {
             get() {
-                const store = useProductStore();
-                return store.selectedSort;
+                const store = useProductStore()
+                return store.selectedSort
             },
             set(val) {
-                const store = useProductStore();
-                store.setSort(val);
+                const store = useProductStore()
+                store.setSort(val)
             },
         },
 
         canLoadMore() {
-            return this.lastFetchCount > 0;
+            return this.lastFetchCount > 0
         },
     },
 
     methods: {
         goToDetail(id) {
-            this.$router.push("/product-detail/" + id);
+            this.$router.push('/product-detail/' + id)
         },
 
         loadMore() {
-            const store = useProductStore();
-            store.loadMore();
+            const store = useProductStore()
+            store.loadMore()
         },
 
         addToCart(id) {
-            const product = this.list_products.find(p => p.id === id);
-            if (!product) return;
+            const product = this.list_products.find((p) => p.id === id)
+            if (!product) return
 
-            const cartStore = useCartStore();
-            cartStore.addToCart(product);
+            const cartStore = useCartStore()
+            cartStore.addToCart(product)
 
-            alert("Sản phẩm đã được thêm vào giỏ hàng của bạn");
-        }
+            alert('Sản phẩm đã được thêm vào giỏ hàng của bạn')
+        },
+        buyNow(product) {
+            const token = sessionStorage.getItem('token')
+
+            if (!token) {
+                alert('Bạn cần đăng nhập để mua hàng, đăng nhập ngay')
+                this.$router.push('/login')
+                return
+            }
+
+            if (!product || !product.id) {
+                alert('Không tìm thấy thông tin sản phẩm')
+                return
+            }
+
+            const payload = {
+                ...product,
+                quantity: 1,
+            }
+
+            localStorage.setItem('checkout_items', JSON.stringify([payload]))
+
+            this.$router.push('/checkout')
+        },
     },
 
     mounted() {
-        const store = useProductStore();
-        store.fetchProducts(true);
-        if (this.$route.path !== "/product") {
-            const store = useProductStore();
+        const store = useProductStore()
+        store.fetchProducts(true)
+        if (this.$route.path !== '/product') {
+            const store = useProductStore()
             if (!store.list.length) {
-                store.fetchProducts(true);
+                store.fetchProducts(true)
             }
         }
     },
 
     watch: {
-        "$route.query.category"(newCategory) {
-            if (this.$route.path === "/product") {
-                const store = useProductStore();
-                store.setCategory(newCategory || null);
+        '$route.query.category'(newCategory) {
+            if (this.$route.path === '/product') {
+                const store = useProductStore()
+                store.setCategory(newCategory || null)
             }
         },
-        "$route.query.category"(newCategory) {
-            const store = useProductStore();
-            store.setCategory(newCategory || null);
+        '$route.query.category'(newCategory) {
+            const store = useProductStore()
+            store.setCategory(newCategory || null)
         },
-        "$route.query.search_key"(newKey) {
-            const store = useProductStore();
-            store.setSearchKey(newKey || null);
-        }
+        '$route.query.search_key'(newKey) {
+            const store = useProductStore()
+            store.setSearchKey(newKey || null)
+        },
     },
-};
+}
 </script>
 
 <style scoped>
@@ -273,7 +331,6 @@ export default {
 }
 
 @media (prefers-color-scheme: dark) {
-
     html,
     body,
     h1,
