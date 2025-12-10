@@ -53,6 +53,9 @@
                             type="number"
                             class="form-control text-center no-spinner"
                             v-model.number="quantity"
+                            @input="onInput"
+                            :max="product_detail.quantity"
+                            min="1"
                         />
                         <button class="btn btn-outline-secondary" @click="plus">+</button>
                     </div>
@@ -374,10 +377,20 @@ export default {
         },
 
         plus() {
-            this.quantity = Number(this.quantity) + 1
+            if (Number(this.quantity) < Number(this.product_detail.quantity)) {
+                this.quantity = Number(this.quantity) + 1
+            }
         },
         minus() {
-            if (Number(this.quantity) > 1) this.quantity = Number(this.quantity) - 1
+            if (Number(this.quantity) > 1) {
+                this.quantity = Number(this.quantity) - 1
+            }
+        },
+
+        onInput(e) {
+            if (this.quantity < 1) this.quantity = 1
+            if (this.quantity > this.product_detail.quantity)
+                this.quantity = this.product_detail.quantity
         },
 
         addToCartDetail() {
