@@ -15,11 +15,7 @@
         </ul>
 
         <div v-if="orderTab === 'preparing'">
-            <div
-                v-for="(item, index) in orderPreparing"
-                :key="index"
-                class="order-wrapper p-3 border rounded mb-3"
-            >
+            <div v-for="(item, index) in orderPreparing" :key="index" class="order-wrapper p-3 border rounded mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="d-flex align-items-center">
                         <img :src="item.category_thumbnail" class="category-thumb me-2" />
@@ -29,10 +25,7 @@
                         <button class="btn btn-outline-primary btn-sm">Xem danh mục</button>
                     </div>
 
-                    <span
-                        class="order-status"
-                        :class="item.bill_status === 3 ? 'paid' : 'status-direct'"
-                    >
+                    <span class="order-status" :class="item.bill_status === 3 ? 'paid' : 'status-direct'">
                         {{ item.bill_status === 3 ? 'ĐÃ THANH TOÁN' : 'THANH TOÁN TRỰC TIẾP' }}
                     </span>
                 </div>
@@ -56,11 +49,7 @@
         </div>
 
         <div v-if="orderTab === 'shipping'">
-            <div
-                v-for="(item, index) in orderShipping"
-                :key="index"
-                class="order-wrapper p-3 border rounded mb-3"
-            >
+            <div v-for="(item, index) in orderShipping" :key="index" class="order-wrapper p-3 border rounded mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="d-flex align-items-center">
                         <img :src="item.category_thumbnail" class="category-thumb me-2" />
@@ -92,11 +81,7 @@
         </div>
 
         <div v-if="orderTab === 'completed'">
-            <div
-                v-for="(item, index) in orderCompleted"
-                :key="index"
-                class="order-wrapper p-3 border rounded mb-3"
-            >
+            <div v-for="(item, index) in orderCompleted" :key="index" class="order-wrapper p-3 border rounded mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="d-flex align-items-center">
                         <img :src="item.category_thumbnail" class="category-thumb me-2" />
@@ -123,26 +108,42 @@
                             {{ (item.product_price * item.detail_quantity).toLocaleString() }}đ
                         </p>
                         <div class="d-flex gap-2 justify-content-end">
-                            <button class="btn btn-outline-secondary btn-sm">Đánh giá</button>
-                            <button class="btn btn-outline-primary btn-sm">Mua lại</button>
+                            <button class="btn btn-outline-secondary btn-sm" @click="openFeedback(item.bill_id)">
+                                Đánh giá
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" @click="buyNow(item)">
+                                Mua lại
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <BillReviewModal :isVisible="showFeedbackModal" :billId="selectedBillId" @close="showFeedbackModal = false" />
     </div>
 </template>
 
 <script>
 import { apiHelper } from '@/helpers/axios'
+// 1. IMPORT COMPONENT
+import BillReviewModal from './BillReviewModal.vue'
 
 export default {
+    // 2. REGISTER COMPONENT
+    components: {
+        BillReviewModal
+    },
     data() {
         return {
             orderTab: 'completed',
             orderPreparing: [],
             orderShipping: [],
             orderCompleted: [],
+
+            // 3. KHAI BÁO BIẾN STATE
+            showFeedbackModal: false,
+            selectedBillId: null
         }
     },
 
@@ -187,6 +188,35 @@ export default {
                 console.error(error)
             }
         },
+
+        buyNow(item) {
+            const token = sessionStorage.getItem('token')
+
+            if (!token) {
+                alert('Bạn cần đăng nhập để mua hàng!')
+                return
+            }
+
+            const payload = {
+                id: item.product_id,
+                name: item.product_name,
+                price: item.product_price,
+                thumbnail_url: item.product_thumbnail,
+                quantity: 1,
+            }
+
+            localStorage.setItem('checkout_items', JSON.stringify([payload]))
+            this.$router.push('/checkout')
+        },
+
+        openFeedback(billId) {
+            if (!billId) {
+                console.error("Không tìm thấy Bill ID trong dữ liệu đơn hàng");
+                return;
+            }
+            this.selectedBillId = billId;
+            this.showFeedbackModal = true;
+        }
     },
 }
 </script>
@@ -198,6 +228,7 @@ export default {
     padding: 6px 12px;
     border-radius: 6px;
 }
+
 .order-status.paid {
     background: #e0f3e0;
     color: #1b8e1b;
@@ -208,6 +239,7 @@ export default {
     padding: 0;
     border-bottom: 1px solid #ddd;
 }
+
 .order-tabs li {
     padding: 10px 18px;
     cursor: pointer;
@@ -216,9 +248,11 @@ export default {
     border-bottom: 3px solid transparent;
     transition: 0.2s;
 }
+
 .order-tabs li:hover {
     color: #111;
 }
+
 .order-tabs li.active {
     color: #3449ca;
     font-weight: 600;
@@ -229,10 +263,12 @@ export default {
     background: #ffe8cc;
     color: #c76a00;
 }
+
 .order-status.status-shipping {
     background: #e0ecff;
     color: #1f57c3;
 }
+
 .order-status.status-completed {
     background: #dcfbe6;
     color: #128a41;
@@ -249,6 +285,7 @@ export default {
     border-radius: 6px;
     border: 1px solid #ddd;
 }
+
 .image-rounded {
     width: 90px;
     height: 90px;
