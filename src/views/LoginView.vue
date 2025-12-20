@@ -67,6 +67,10 @@ export default {
                     // console.log(res);
                     if (res.status == 200) {
                         sessionStorage.setItem('token', res.data.data.token);
+                        if (res.data.data.user.role == 0) {
+                            this.$router.push('/admin/dashboard');
+                            return;
+                        }
                         this.$router.push('/home');
                     }
                 }).catch((error) => {
