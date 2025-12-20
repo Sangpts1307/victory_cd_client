@@ -1,7 +1,5 @@
 <template>
-
     <body class="bg-light">
-
         <div class="container-fluid">
             <div class="row">
 
@@ -22,11 +20,11 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="text-muted mb-1">Tổng khách hàng</p>
-                                        <h4 class="fw-bold mt-1">1,234</h4>
+                                        <h4 class="fw-bold mt-1">
+                                            {{ statistics.count_customers }}
+                                        </h4>
                                     </div>
-
-                                    <div
-                                        class="bg-primary px-3 py-2 rounded me-3 d-flex align-items-center justify-content-center">
+                                    <div class="bg-primary px-3 py-2 rounded d-flex align-items-center">
                                         <i class="bi bi-people-fill text-white fs-3"></i>
                                     </div>
                                 </div>
@@ -38,12 +36,12 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="text-muted mb-1">Tổng số sản phẩm</p>
-                                        <h3 class="fw-bold">456</h3>
+                                        <h4 class="fw-bold">
+                                            {{ statistics.count_products }}
+                                        </h4>
                                     </div>
-
-                                    <div
-                                        class="bg-success px-3 py-2 rounded me-3 d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-activity text-white fs-3"></i>
+                                    <div class="bg-success px-3 py-2 rounded d-flex align-items-center">
+                                        <i class="bi bi-box-seam text-white fs-3"></i>
                                     </div>
                                 </div>
                             </div>
@@ -54,11 +52,11 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="text-muted mb-1">Số đơn trong tháng</p>
-                                        <h3 class="fw-bold">5,678</h3>
+                                        <h4 class="fw-bold">
+                                            {{ statistics.count_orders }}
+                                        </h4>
                                     </div>
-
-                                    <div
-                                        class="bg-secondary px-3 py-2 rounded me-3 d-flex align-items-center justify-content-center">
+                                    <div class="bg-secondary px-3 py-2 rounded d-flex align-items-center">
                                         <i class="bi bi-file-post text-white fs-3"></i>
                                     </div>
                                 </div>
@@ -70,11 +68,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="text-muted mb-1">Vi phạm chưa xử lý</p>
-                                        <h3 class="fw-bold">12</h3>
+                                        <h4 class="fw-bold">0</h4>
                                     </div>
-
-                                    <div
-                                        class="bg-danger px-3 py-2 rounded me-3 d-flex align-items-center justify-content-center">
+                                    <div class="bg-danger px-3 py-2 rounded d-flex align-items-center">
                                         <i class="bi bi-exclamation-triangle text-white fs-3"></i>
                                     </div>
                                 </div>
@@ -85,30 +81,108 @@
                     <div class="row g-3 mt-4">
                         <div class="col-md-8">
                             <div class="p-4 bg-white shadow-sm rounded">
-                                <h6 class="fw-bold mb-3">Doanh thu</h6>
-                                <p class="text-muted">Biểu đồ thống kê doanh thu (biểu đồ cột)</p>
+                                <h6 class="fw-bold mb-3">Doanh thu theo năm</h6>
+                                <ul class="list-group">
+                                    <li
+                                        v-for="item in revenueByYear"
+                                        :key="item.year"
+                                        class="list-group-item d-flex justify-content-between"
+                                    >
+                                        <span>{{ item.year }}</span>
+                                        <span class="fw-bold">
+                                            {{ formatMoney(item.total) }}
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="p-4 bg-white shadow-sm rounded">
                                 <h6 class="fw-bold mb-3">Tỉ lệ đặt đơn</h6>
-                                <p class="text-muted">Tỉ lệ đặt đơn của từng danh mục (biểu đồ tròn)</p>
+                                <p class="text-muted">Chưa triển khai</p>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
-
     </body>
 </template>
 
-<script setup>
+<script>
 import axios from 'axios'
 import AdminSidebarComponent from '@/components/AdminSidebarComponent.vue'
 import AdminHeaderComponent from '@/components/AdminHeaderComponent.vue'
-</script>
+import { apiHelper } from "@/helpers/axios";
 
-<script>
+export default {
+    name: 'AdminDashboardView',
+
+    components: {
+        AdminSidebarComponent,
+        AdminHeaderComponent,
+    },
+
+    data() {
+        return {
+            statistics: {
+                count_customers: 0,
+                count_products: 0,
+                count_orders: 0,
+            },
+            revenueByYear: [],
+        }
+    },
+
+    created() {
+        this.fetchStatistics()
+        this.fetchRevenueByYear()
+    },
+
+    methods: {
+        async fetchStatistics() {
+            try {
+                const res = await apiHelper.get(
+                    '/get-statistics',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                        },
+                    }
+                )
+
+                if (res.status === 200 && res.data.success) {
+                    this.statistics = res.data.data
+                }
+            } catch (err) {
+                console.error('fetchStatistics error:', err)
+            }
+        },
+
+        async fetchRevenueByYear() {
+            try {
+                const res = await apiHelper.get(
+                    '/get-revenue-by-year',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                        },
+                    }
+                )
+
+                if (res.status === 200 && res.data.success) {
+                    this.revenueByYear = res.data.data
+                }
+            } catch (err) {
+                console.error('fetchRevenueByYear error:', err)
+            }
+        },
+
+        formatMoney(value) {
+            return Number(value || 0).toLocaleString('vi-VN') + ' ₫'
+        },
+    },
+}
 </script>
