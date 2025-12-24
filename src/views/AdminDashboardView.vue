@@ -1,4 +1,5 @@
 <template>
+
     <body class="bg-light">
         <div class="container-fluid">
             <div class="row">
@@ -81,19 +82,10 @@
                     <div class="row g-3 mt-4">
                         <div class="col-md-8">
                             <div class="p-4 bg-white shadow-sm rounded">
-                                <h6 class="fw-bold mb-3">Doanh thu theo năm</h6>
-                                <ul class="list-group">
-                                    <li
-                                        v-for="item in revenueByYear"
-                                        :key="item.year"
-                                        class="list-group-item d-flex justify-content-between"
-                                    >
-                                        <span>{{ item.year }}</span>
-                                        <span class="fw-bold">
-                                            {{ formatMoney(item.total) }}
-                                        </span>
-                                    </li>
-                                </ul>
+                                <h6 class="fw-bold mb-3">Biểu đồ doanh thu 12 tháng gần nhất</h6>
+                                <div style="height: 300px;">
+                                    <canvas id="revenueChart"></canvas>
+                                </div>
                             </div>
                         </div>
 
@@ -116,6 +108,7 @@ import axios from 'axios'
 import AdminSidebarComponent from '@/components/AdminSidebarComponent.vue'
 import AdminHeaderComponent from '@/components/AdminHeaderComponent.vue'
 import { apiHelper } from "@/helpers/axios";
+import Chart from 'chart.js/auto'; // chạy lệnh npm install chart.js trước khi sử dụng
 
 export default {
     name: 'AdminDashboardView',
@@ -133,12 +126,14 @@ export default {
                 count_orders: 0,
             },
             revenueByYear: [],
+            chartInstance: null,
         }
     },
 
     created() {
         this.fetchStatistics()
         this.fetchRevenueByYear()
+        this.fetchMonthlyRevenue();
     },
 
     methods: {
@@ -178,6 +173,60 @@ export default {
             } catch (err) {
                 console.error('fetchRevenueByYear error:', err)
             }
+        },
+
+        async fetchMonthlyRevenue() {
+            try {
+                const res = await apiHelper.get('/get-monthly-revenue', {
+                    headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+                });
+
+                if (res.status === 200 && res.data.success) {
+                    const data = res.data.data;
+                    this.renderChart(data);
+                }
+            } catch (err) {
+                console.error('Lỗi lấy doanh thu tháng:', err);
+            }
+        },
+
+        renderChart(data) {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+
+            // Nếu đã có biểu đồ trước đó thì hủy để vẽ mới
+            if (this.chartInstance) {
+                this.chartInstance.destroy();
+            }
+
+            this.chartInstance = new Chart(ctx, {
+                type: 'bar', // Biểu đồ cột
+                data: {
+                    labels: data.map(item => item.label), // Trục X: Tháng/Năm
+                    datasets: [{
+                        label: 'Doanh thu (VND)',
+                        data: data.map(item => item.total), // Trục Y: Tiền
+                        backgroundColor: '#0d6efd',
+                        borderColor: '#0d6efd',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: (value) => this.formatMoney(value)
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
         },
 
         formatMoney(value) {
