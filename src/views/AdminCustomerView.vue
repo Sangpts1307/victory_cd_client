@@ -1,15 +1,12 @@
 <template>
-
     <body class="bg-light">
-
         <div class="container-fluid">
             <div class="row">
-
                 <AdminSidebarComponent />
 
                 <div class="col-9 col-md-10 p-4">
                     <AdminHeaderComponent />
-                    <hr>
+                    <hr />
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h3 class="fw-bold">Quản lý khách hàng</h3>
@@ -19,30 +16,32 @@
                     <div class="row g-3 mb-4 border rounded p-2">
                         <div class="col-md-4">
                             <p class="fw-semibold mb-1">Tìm kiếm</p>
-                            <input type="text" class="form-control" placeholder="🔍 Tên, email...">
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="🔍 Tên, email..."
+                            />
                         </div>
                     </div>
 
                     <div class="table-responsive row g-3 mb-4 border rounded p-3">
-                        <table class="table table-bordered table-hover border align-middle bg-white rounded shadow-sm">
+                        <table
+                            class="table table-bordered table-hover border align-middle bg-white rounded shadow-sm"
+                        >
                             <thead class="table-light text-center align-middle">
                                 <tr>
                                     <th>Người dùng</th>
                                     <th>Email</th>
+                                    <th>Số điện thoại</th>
                                     <th>Địa chỉ</th>
-                                    <th>Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center align-middle">
-                                <tr>
-                                    <td>
-                                        Nguyễn Kim Quang<br>
-                                        <small class="text-muted">@kim_quang</small>
-                                    </td>
-                                    <td>nguyenkimquang@email.com</td>
-                                    <td>Thái Bình, Hưng Yên</td>
-                                    <td><span class="text-success bg-success-subtle rounded px-3 py-1">Khách hàng mới/
-                                            Khách hàng</span></td>
+                                <tr v-for="item in listCustomer">
+                                    <td>{{ item.name }} <br /></td>
+                                    <td>{{ item.email }}</td>
+                                    <td>{{ item.phone }}</td>
+                                    <td>{{ item.address }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -50,7 +49,6 @@
                 </div>
             </div>
         </div>
-
     </body>
 </template>
 
@@ -58,7 +56,32 @@
 import axios from 'axios'
 import AdminSidebarComponent from '@/components/AdminSidebarComponent.vue'
 import AdminHeaderComponent from '@/components/AdminHeaderComponent.vue'
+import { apiHelper } from '@/helpers/axios'
 </script>
 
 <script>
+export default {
+    data() {
+        return {
+            listCustomer: [],
+        }
+    },
+    mounted() {
+        this.fetchCustomers()
+    },
+    methods: {
+        fetchCustomers() {
+            apiHelper
+                .get('/list-customer')
+                .then((res) => {
+                    if (res.status == 200) {
+                        this.listCustomer = res.data.data
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
+    },
+}
 </script>
