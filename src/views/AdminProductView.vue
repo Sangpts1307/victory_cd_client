@@ -11,9 +11,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h3 class="fw-bold">Danh sách sản phẩm</h3>
                     </div>
-                    <p class="text-muted mb-4">
-                        Quản lý danh sách sản phẩm có trong cửa hàng
-                    </p>
+                    <p class="text-muted mb-4">Quản lý danh sách sản phẩm có trong cửa hàng</p>
 
                     <div class="row g-3 mb-4 border rounded p-2">
                         <div class="col-3">
@@ -36,7 +34,9 @@
                     </div>
 
                     <div class="table-responsive row g-3 mb-4 border rounded p-3">
-                        <table class="table table-bordered table-hover align-middle bg-white rounded shadow-sm">
+                        <table
+                            class="table table-bordered table-hover align-middle bg-white rounded shadow-sm"
+                        >
                             <thead class="text-center">
                                 <tr>
                                     <th>Danh mục</th>
@@ -51,10 +51,7 @@
                             </thead>
 
                             <tbody class="text-center">
-                                <tr
-                                    v-for="product in productsStore.list"
-                                    :key="product.id"
-                                >
+                                <tr v-for="product in productsStore.list" :key="product.id">
                                     <td>{{ getCategoryTitle(product.category_id) }}</td>
                                     <td>{{ product.name }}</td>
                                     <td>{{ formatPrice(product.price) }}</td>
@@ -137,22 +134,17 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Đánh giá</label>
-                            <select class="form-select" v-model="form.rating">
-                                <option v-for="i in 5" :key="i" :value="i">
-                                    {{ i }} ⭐
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
                             <label class="form-label">Số lượng</label>
                             <input type="number" class="form-control" v-model="form.quantity" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Mô tả</label>
-                            <textarea class="form-control" rows="3" v-model="form.description"></textarea>
+                            <textarea
+                                class="form-control"
+                                rows="3"
+                                v-model="form.description"
+                            ></textarea>
                         </div>
                     </div>
 
@@ -175,6 +167,7 @@ import AdminHeaderComponent from '@/components/AdminHeaderComponent.vue'
 import { mapStores } from 'pinia'
 import { useProductStore } from '@/stores/products'
 import { useCategoriesStore } from '@/stores/categories'
+import { apiHelper } from '@/helpers/axios'
 
 export default {
     name: 'AdminProductView',
@@ -197,15 +190,15 @@ export default {
         ...mapStores(useProductStore, useCategoriesStore),
 
         parentCategories() {
-            return this.categoriesStore.listCategory.filter(c => c.parent_id === 0)
+            return this.categoriesStore.listCategory.filter((c) => c.parent_id === 0)
         },
 
         flatCategories() {
             const result = []
-            this.categoriesStore.listCategory.forEach(p => {
+            this.categoriesStore.listCategory.forEach((p) => {
                 result.push(p)
                 if (Array.isArray(p.children)) {
-                    p.children.forEach(c => result.push(c))
+                    p.children.forEach((c) => result.push(c))
                 }
             })
             return result
@@ -225,7 +218,7 @@ export default {
 
     methods: {
         getCategoryTitle(id) {
-            const c = this.flatCategories.find(i => Number(i.id) === Number(id))
+            const c = this.flatCategories.find((i) => Number(i.id) === Number(id))
             return c ? c.title : '---'
         },
 
@@ -234,8 +227,7 @@ export default {
         },
 
         deleteProduct(id) {
-            this.productsStore.list =
-                this.productsStore.list.filter(p => p.id !== id)
+            this.productsStore.list = this.productsStore.list.filter((p) => p.id !== id)
         },
 
         addProduct() {
@@ -249,6 +241,27 @@ export default {
                 sold: 0,
                 description: this.form.description,
             })
+            let data = new FormData()
+            data.append('name', this.form.name)
+            data.append('category_id', this.form.category_id)
+            data.append('description', this.form.description)
+            data.append('price', this.form.price)
+            data.append('quantity', this.form.price)
+
+            apiHelper
+                .post('/update-or-create-product', data, {
+                    headers: {
+                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+                    },
+                })
+                .then((res) => {
+                    if (res.status == 200) {
+                        console.log(res.data.data)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
 
             this.form = {
                 name: '',
@@ -258,8 +271,6 @@ export default {
                 quantity: '',
                 description: '',
             }
-
-            document.querySelector('#addProductModal .btn-close').click()
         },
     },
 }
