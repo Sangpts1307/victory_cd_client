@@ -52,7 +52,7 @@
                             </thead>
 
                             <tbody class="text-center">
-                                <tr v-for="product in productsStore.list" :key="product.id">
+                                <tr v-for="product in listProduct" :key="product.id">
                                     <td>{{ getCategoryTitle(product.category_id) }}</td>
                                     <td>{{ product.name }}</td>
                                     <td>{{ formatPrice(product.price) }}</td>
@@ -184,7 +184,12 @@ export default {
         return {
             searchKey: '',
             form: this.emptyForm(),
+            listProduct: [],
         }
+    },
+
+    mounted() {
+        this.fetchListProduct()
     },
 
     computed: {
@@ -218,6 +223,18 @@ export default {
     },
 
     methods: {
+        fetchListProduct() {
+            apiHelper
+                .get('/list-product-v2')
+                .then((res) => {
+                    if (res.status == 200) {
+                        this.listProduct = res.data.data.list_products
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
         emptyForm() {
             return {
                 id: null,
@@ -246,14 +263,18 @@ export default {
             data.append('price', this.form.price)
             data.append('quantity', this.form.quantity)
 
-            apiHelper.post('/update-or-create-product', data, {
-                headers: {
-                    Authorization: 'Bearer ' + sessionStorage.getItem('token'),
-                },
-            }).then(() => {
-                this.productsStore.fetchProducts(true)
-                document.querySelector('#productModal .btn-close').click()
-            })
+            apiHelper
+                .post('/update-or-create-product', data, {
+                    headers: {
+                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+                    },
+                })
+                .then(() => {
+                    this.productsStore.fetchProducts(true)
+                    document.querySelector('#productModal .btn-close').click()
+                })
+
+            this.fetchListProduct()
         },
 
         deleteProduct(id) {
