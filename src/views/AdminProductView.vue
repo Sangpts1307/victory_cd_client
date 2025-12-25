@@ -26,7 +26,8 @@
                             <button
                                 class="btn btn-primary w-50"
                                 data-bs-toggle="modal"
-                                data-bs-target="#addProductModal"
+                                data-bs-target="#productModal"
+                                @click="openAdd"
                             >
                                 <i class="bi bi-plus-lg"></i> Thêm
                             </button>
@@ -76,7 +77,12 @@
                                         }}
                                     </td>
                                     <td>
-                                        <button class="btn btn-success btn-sm me-1">
+                                        <button
+                                            class="btn btn-success btn-sm me-1"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#productModal"
+                                            @click="openEdit(product)"
+                                        >
                                             <i class="bi bi-save"></i>
                                         </button>
                                         <button
@@ -100,11 +106,13 @@
             </div>
         </div>
 
-        <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal fade" id="productModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Thêm sản phẩm</h5>
+                        <h5 class="modal-title">
+                            {{ form.id ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm' }}
+                        </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
@@ -150,7 +158,7 @@
 
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button class="btn btn-primary" @click="addProduct">Lưu</button>
+                        <button class="btn btn-primary" @click="submitProduct">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -175,14 +183,7 @@ export default {
     data() {
         return {
             searchKey: '',
-            form: {
-                name: '',
-                category_id: '',
-                price: '',
-                rating: '',
-                quantity: '',
-                description: '',
-            },
+            form: this.emptyForm(),
         }
     },
 
@@ -217,6 +218,48 @@ export default {
     },
 
     methods: {
+        emptyForm() {
+            return {
+                id: null,
+                name: '',
+                category_id: '',
+                price: '',
+                quantity: '',
+                description: '',
+            }
+        },
+
+        openAdd() {
+            this.form = this.emptyForm()
+        },
+
+        openEdit(product) {
+            this.form = { ...product }
+        },
+
+        submitProduct() {
+            const data = new FormData()
+            if (this.form.id) data.append('id', this.form.id)
+            data.append('name', this.form.name)
+            data.append('category_id', this.form.category_id)
+            data.append('description', this.form.description)
+            data.append('price', this.form.price)
+            data.append('quantity', this.form.quantity)
+
+            apiHelper.post('/update-or-create-product', data, {
+                headers: {
+                    Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+                },
+            }).then(() => {
+                this.productsStore.fetchProducts(true)
+                document.querySelector('#productModal .btn-close').click()
+            })
+        },
+
+        deleteProduct(id) {
+            this.productsStore.list = this.productsStore.list.filter((p) => p.id !== id)
+        },
+
         getCategoryTitle(id) {
             const c = this.flatCategories.find((i) => Number(i.id) === Number(id))
             return c ? c.title : '---'
@@ -224,53 +267,6 @@ export default {
 
         formatPrice(v) {
             return Number(v || 0).toLocaleString('vi-VN') + ' ₫'
-        },
-
-        deleteProduct(id) {
-            this.productsStore.list = this.productsStore.list.filter((p) => p.id !== id)
-        },
-
-        addProduct() {
-            this.productsStore.list.unshift({
-                id: Date.now(),
-                name: this.form.name,
-                category_id: this.form.category_id,
-                price: this.form.price,
-                rating: this.form.rating,
-                quantity: this.form.quantity,
-                sold: 0,
-                description: this.form.description,
-            })
-            let data = new FormData()
-            data.append('name', this.form.name)
-            data.append('category_id', this.form.category_id)
-            data.append('description', this.form.description)
-            data.append('price', this.form.price)
-            data.append('quantity', this.form.price)
-
-            apiHelper
-                .post('/update-or-create-product', data, {
-                    headers: {
-                        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
-                    },
-                })
-                .then((res) => {
-                    if (res.status == 200) {
-                        console.log(res.data.data)
-                    }
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-
-            this.form = {
-                name: '',
-                category_id: '',
-                price: '',
-                rating: '',
-                quantity: '',
-                description: '',
-            }
         },
     },
 }
